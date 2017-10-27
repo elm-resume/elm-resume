@@ -1,0 +1,15 @@
+name: Franco Ponticelli
+dateOfBirth: "1972-05-07"
+address: "427 Graham Cir\nErie, CO 80516"
+email: franco.ponticelli@gmail.com
+contacts:
+  - type: github
+    value: fponticelli
+  - type: twitter
+    value: fponticelli
+  - type: skype
+    value: francoponticelli
+    prio: secondary
+  - type: gtalk
+    value: franco.ponticelli@gmail.com
+    prio: secondary

@@ -5,12 +5,18 @@
   "main": "index.js",
   "scripts": {
     "setup": "yarn install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "make": "elm-make --output=build/index.js --yes --warn src/Main.elm",
+    "live": "elm-live --output=build/index.js --dir=build --pushstate --open --debug src/Main.elm ",
+    "yaml2json": "yaml2json assets/data.yaml > build/data.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "elm": "^0.18.0",
+    "elm-live": "^2.7.5",
+    "elm-test": "^0.18.9",
+    "yamljs": "^0.3.0",
     "yarn": "^1.2.1"
   }
 }
