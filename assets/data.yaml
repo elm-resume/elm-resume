@@ -1,15 +1,23 @@
-name: Franco Ponticelli
-dateOfBirth: "1972-05-07"
-address: "427 Graham Cir\nErie, CO 80516"
-email: franco.ponticelli@gmail.com
-contacts:
+name: Jane Doe
+contact:
+  address: "777 Spanish River blvd\nBoca Raton, FL 33432"
+  email: jane.doe@example.com
+  phone: (777) 666-5555
+dateOfBirth: "1980-08-05"
+socialMedia:
   - type: github
-    value: fponticelli
+    value: janedoe80
   - type: twitter
-    value: fponticelli
+    value: janedoe80
   - type: skype
-    value: francoponticelli
+    value: janedoe80
     prio: secondary
   - type: gtalk
-    value: franco.ponticelli@gmail.com
+    value: jane.doe80@gmail.com
+    prio: secondary
+  - type: linkedin
+    value: janedoe80
+    prio: secondary
+  - type: stackoverflow
+    value: janedoe80
     prio: secondary

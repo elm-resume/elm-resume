@@ -12078,6 +12078,12 @@ var _user$project$Model$priorityDecoder = function () {
 	};
 	return A2(_elm_lang$core$Json_Decode$andThen, match, _elm_lang$core$Json_Decode$string);
 }();
+var _user$project$Model$StackOverflow = function (a) {
+	return {ctor: 'StackOverflow', _0: a};
+};
+var _user$project$Model$LinkedIn = function (a) {
+	return {ctor: 'LinkedIn', _0: a};
+};
 var _user$project$Model$Skype = function (a) {
 	return {ctor: 'Skype', _0: a};
 };
@@ -12118,7 +12124,15 @@ var _user$project$Model$contactDecoder = function () {
 				_1: {
 					ctor: '::',
 					_0: A3(matchValue, 'skype', _user$project$Model$Skype, _elm_lang$core$Json_Decode$string),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A3(matchValue, 'linkedin', _user$project$Model$LinkedIn, _elm_lang$core$Json_Decode$string),
+						_1: {
+							ctor: '::',
+							_0: A3(matchValue, 'stackoverflow', _user$project$Model$StackOverflow, _elm_lang$core$Json_Decode$string),
+							_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
 		});

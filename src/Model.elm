@@ -41,6 +41,8 @@ type Contact
   = Twitter String
   | Github String
   | Skype String
+  | LinkedIn String
+  | StackOverflow String
 
 contactDecoder : Decoder Contact
 contactDecoder =
@@ -55,9 +57,11 @@ contactDecoder =
         andThen matchType <| field "type" string
   in
     oneOf
-      [ matchValue "github"  Github  string
-      , matchValue "twitter" Twitter string
-      , matchValue "skype"   Skype   string
+      [ matchValue "github"        Github        string
+      , matchValue "twitter"       Twitter       string
+      , matchValue "skype"         Skype         string
+      , matchValue "linkedin"      LinkedIn      string
+      , matchValue "stackoverflow" StackOverflow string
       ]
 
 type alias ContactWithPriority =
