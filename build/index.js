@@ -12051,16 +12051,22 @@ var _user$project$Model$uDateDecoder = A2(
 			_user$project$Model$uDateParse(_p1));
 	},
 	_elm_lang$core$Json_Decode$string);
+var _user$project$Model$sectionDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
+var _user$project$Model$contactDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
 var _user$project$Model$initModel = {};
 var _user$project$Model$Model = {};
-var _user$project$Model$Resume = F3(
-	function (a, b, c) {
-		return {name: a, address: b, contacts: c};
+var _user$project$Model$Resume = F4(
+	function (a, b, c, d) {
+		return {name: a, contact: b, socialMedia: c, sections: d};
 	});
-var _user$project$Model$ContactWithPriority = F2(
+var _user$project$Model$Contact = {};
+var _user$project$Model$SocialMediaWithPriority = F2(
 	function (a, b) {
-		return {contact: a, priority: b};
+		return {handle: a, priority: b};
 	});
+var _user$project$Model$Section = function (a) {
+	return {title: a};
+};
 var _user$project$Model$Secondary = {ctor: 'Secondary'};
 var _user$project$Model$Primary = {ctor: 'Primary'};
 var _user$project$Model$priorityDecoder = function () {
@@ -12093,7 +12099,7 @@ var _user$project$Model$Github = function (a) {
 var _user$project$Model$Twitter = function (a) {
 	return {ctor: 'Twitter', _0: a};
 };
-var _user$project$Model$contactDecoder = function () {
+var _user$project$Model$socialMediaDecoder = function () {
 	var matchValue = F3(
 		function (s, c, d) {
 			var matchType = function (t) {
@@ -12137,7 +12143,7 @@ var _user$project$Model$contactDecoder = function () {
 			}
 		});
 }();
-var _user$project$Model$contactWithPriorityDecoder = A2(
+var _user$project$Model$socialMediaWithPriorityDecoder = A2(
 	_elm_lang$core$Json_Decode$andThen,
 	function (c) {
 		return A4(
@@ -12146,23 +12152,28 @@ var _user$project$Model$contactWithPriorityDecoder = A2(
 			_user$project$Model$priorityDecoder,
 			_user$project$Model$Primary,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(
-				_user$project$Model$ContactWithPriority(c)));
+				_user$project$Model$SocialMediaWithPriority(c)));
 	},
-	_user$project$Model$contactDecoder);
+	_user$project$Model$socialMediaDecoder);
 var _user$project$Model$resumeDecoder = A4(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-	'contacts',
-	_elm_lang$core$Json_Decode$list(_user$project$Model$contactWithPriorityDecoder),
+	'sections',
+	_elm_lang$core$Json_Decode$list(_user$project$Model$sectionDecoder),
 	{ctor: '[]'},
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'address',
-		_elm_lang$core$Json_Decode$string,
+	A4(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+		'socialMedia',
+		_elm_lang$core$Json_Decode$list(_user$project$Model$socialMediaWithPriorityDecoder),
+		{ctor: '[]'},
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'name',
-			_elm_lang$core$Json_Decode$string,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume))));
+			'contact',
+			_user$project$Model$contactDecoder,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'name',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume)))));
 var _user$project$Model$Present = {ctor: 'Present'};
 var _user$project$Model$Unknown = {ctor: 'Unknown'};
 var _user$project$Model$Day = F3(

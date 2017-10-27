@@ -3,7 +3,6 @@ contact:
   address: "777 Spanish River blvd\nBoca Raton, FL 33432"
   email: jane.doe@example.com
   phone: (777) 666-5555
-dateOfBirth: "1980-08-05"
 socialMedia:
   - type: github
     value: janedoe80
@@ -21,3 +20,12 @@ socialMedia:
   - type: stackoverflow
     value: janedoe80
     prio: secondary
+sections:
+  - title: Work Experience
+    content: "I don't have any"
+  - title: Gaming Experience
+    skills:
+      -
+  - title: Gaming Experience
+    experiences:
+      -

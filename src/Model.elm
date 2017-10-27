@@ -12,16 +12,31 @@ initModel = {}
 
 type alias Resume =
   { name : String
-  , address : String
-  , contacts : List ContactWithPriority
+  , contact : Contact
+  , socialMedia : List SocialMediaWithPriority
+  , sections : List Section
   }
+
+type alias Contact =
+  {
+
+  }
+
+contactDecoder : Decoder Contact
+contactDecoder = fail "not implemented"
+
+-- name
+-- contact
+-- socialMedia
+-- sections
 
 resumeDecoder : Decoder Resume
 resumeDecoder =
   decode Resume
     |> required "name" string
-    |> required "address" string
-    |> optional "contacts" (list contactWithPriorityDecoder) []
+    |> required "contact" contactDecoder
+    |> optional "socialMedia" (list socialMediaWithPriorityDecoder) []
+    |> optional "sections" (list sectionDecoder) []
 
 type Priority
   = Primary
@@ -37,15 +52,15 @@ priorityDecoder =
   in
     andThen match string
 
-type Contact
+type SocialMedia
   = Twitter String
   | Github String
   | Skype String
   | LinkedIn String
   | StackOverflow String
 
-contactDecoder : Decoder Contact
-contactDecoder =
+socialMediaDecoder : Decoder SocialMedia
+socialMediaDecoder =
   let
     matchValue s c d =
       let
@@ -64,16 +79,24 @@ contactDecoder =
       , matchValue "stackoverflow" StackOverflow string
       ]
 
-type alias ContactWithPriority =
-  { contact : Contact
+type alias SocialMediaWithPriority =
+  { handle : SocialMedia
   , priority : Priority
   }
 
-contactWithPriorityDecoder : Decoder ContactWithPriority
-contactWithPriorityDecoder =
+socialMediaWithPriorityDecoder : Decoder SocialMediaWithPriority
+socialMediaWithPriorityDecoder =
   andThen (\c ->
-    decode (ContactWithPriority c) |> optional "prio" priorityDecoder Primary
-  ) contactDecoder
+    decode (SocialMediaWithPriority c) |> optional "prio" priorityDecoder Primary
+  ) socialMediaDecoder
+
+type alias Section =
+  { title : String
+
+  }
+
+sectionDecoder : Decoder Section
+sectionDecoder = fail "not implemented"
 
 type UDate
   = Year Int
