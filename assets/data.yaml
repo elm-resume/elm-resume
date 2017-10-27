@@ -25,7 +25,10 @@ sections:
     content: "I don't have any"
   - title: Gaming Experience
     skills:
-      -
+      - title: some
+      - body: some
   - title: Gaming Experience
     experiences:
-      -
+      - title: some
+      - body: some
+      - begin: 2017
