@@ -18,17 +18,17 @@ type alias Resume =
   }
 
 type alias Contact =
-  {
-
+  { address: String
+  , email: String
+  , phone : String
   }
 
 contactDecoder : Decoder Contact
-contactDecoder = fail "not implemented"
-
--- name
--- contact
--- socialMedia
--- sections
+contactDecoder =
+  decode Contact
+    |> required "address" string
+    |> required "email" string
+    |> required "phone" string
 
 resumeDecoder : Decoder Resume
 resumeDecoder =
@@ -90,9 +90,56 @@ socialMediaWithPriorityDecoder =
     decode (SocialMediaWithPriority c) |> optional "prio" priorityDecoder Primary
   ) socialMediaDecoder
 
+type alias SkillItem =
+  { title : String
+  , body : String
+  }
+
+skillItemDecoder : Decoder SkillItem
+skillItemDecoder =
+  decode SkillItem
+    |> required "title" string
+    |> required "body" string
+
+type alias ExperienceItem =
+  { title : String
+  , body : String
+  , begin : UDate
+  , end : Maybe UDate
+  }
+
+experienceItemDecoder : Decoder ExperienceItem
+experienceItemDecoder =
+  decode ExperienceItem
+    |> required "title" string
+    |> required "body" string
+    |> required "begin" uDateDecoder
+    |> optional "end" (oneOf
+      [ null Nothing
+      , (custom uDateDecoder <| decode Just)
+      ]) Nothing
+
+type SectionBody
+  = Text String
+  | Skills (List SkillItem)
+  | Experience (List ExperienceItem)
+
+sectionBodyDecoder : Decoder SectionBody
+sectionBodyDecoder =
+  let
+    textDecoder = decode Text |> required "content" string
+    skillsDecoder = decode Skills |> required "skills" (list skillItemDecoder)
+    experienceDecoder = decode Experience |> required "experience" (list experienceItemDecoder)
+  in
+    oneOf
+      [ textDecoder
+      , skillsDecoder
+      , experienceDecoder
+      ]
+
 type alias Section =
   { title : String
-
+  , body : SectionBody
   }
 
 sectionDecoder : Decoder Section

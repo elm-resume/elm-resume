@@ -12052,21 +12052,84 @@ var _user$project$Model$uDateDecoder = A2(
 	},
 	_elm_lang$core$Json_Decode$string);
 var _user$project$Model$sectionDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
-var _user$project$Model$contactDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
 var _user$project$Model$initModel = {};
 var _user$project$Model$Model = {};
 var _user$project$Model$Resume = F4(
 	function (a, b, c, d) {
 		return {name: a, contact: b, socialMedia: c, sections: d};
 	});
-var _user$project$Model$Contact = {};
+var _user$project$Model$Contact = F3(
+	function (a, b, c) {
+		return {address: a, email: b, phone: c};
+	});
+var _user$project$Model$contactDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'phone',
+	_elm_lang$core$Json_Decode$string,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'email',
+		_elm_lang$core$Json_Decode$string,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'address',
+			_elm_lang$core$Json_Decode$string,
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Contact))));
 var _user$project$Model$SocialMediaWithPriority = F2(
 	function (a, b) {
 		return {handle: a, priority: b};
 	});
-var _user$project$Model$Section = function (a) {
-	return {title: a};
-};
+var _user$project$Model$SkillItem = F2(
+	function (a, b) {
+		return {title: a, body: b};
+	});
+var _user$project$Model$skillItemDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'body',
+	_elm_lang$core$Json_Decode$string,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'title',
+		_elm_lang$core$Json_Decode$string,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$SkillItem)));
+var _user$project$Model$ExperienceItem = F4(
+	function (a, b, c, d) {
+		return {title: a, body: b, begin: c, end: d};
+	});
+var _user$project$Model$experienceItemDecoder = A4(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+	'end',
+	_elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+					_user$project$Model$uDateDecoder,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+				_1: {ctor: '[]'}
+			}
+		}),
+	_elm_lang$core$Maybe$Nothing,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'begin',
+		_user$project$Model$uDateDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'body',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'title',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
+var _user$project$Model$Section = F2(
+	function (a, b) {
+		return {title: a, body: b};
+	});
 var _user$project$Model$Secondary = {ctor: 'Secondary'};
 var _user$project$Model$Primary = {ctor: 'Primary'};
 var _user$project$Model$priorityDecoder = function () {
@@ -12174,6 +12237,46 @@ var _user$project$Model$resumeDecoder = A4(
 				'name',
 				_elm_lang$core$Json_Decode$string,
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume)))));
+var _user$project$Model$Experience = function (a) {
+	return {ctor: 'Experience', _0: a};
+};
+var _user$project$Model$Skills = function (a) {
+	return {ctor: 'Skills', _0: a};
+};
+var _user$project$Model$Text = function (a) {
+	return {ctor: 'Text', _0: a};
+};
+var _user$project$Model$sectionBodyDecoder = function () {
+	var experienceDecoder = A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'experience',
+		_elm_lang$core$Json_Decode$list(_user$project$Model$experienceItemDecoder),
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Experience));
+	var skillsDecoder = A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'skills',
+		_elm_lang$core$Json_Decode$list(_user$project$Model$skillItemDecoder),
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Skills));
+	var textDecoder = A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'content',
+		_elm_lang$core$Json_Decode$string,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Text));
+	return _elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: textDecoder,
+			_1: {
+				ctor: '::',
+				_0: skillsDecoder,
+				_1: {
+					ctor: '::',
+					_0: experienceDecoder,
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+}();
 var _user$project$Model$Present = {ctor: 'Present'};
 var _user$project$Model$Unknown = {ctor: 'Unknown'};
 var _user$project$Model$Day = F3(
