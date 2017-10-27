@@ -153,7 +153,7 @@ type UDate
   | Present
 
 uDateParse : String -> Result String UDate
-uDateParse s = Err "meh"
+uDateParse s = Ok (Year 2011)
 
 resultToDecoder : Result String a -> Decoder a
 resultToDecoder r = case r of

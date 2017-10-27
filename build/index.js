@@ -12041,16 +12041,6 @@ var _user$project$Model$resultToDecoder = function (r) {
 		return _elm_lang$core$Json_Decode$succeed(_p0._0);
 	}
 };
-var _user$project$Model$uDateParse = function (s) {
-	return _elm_lang$core$Result$Err('meh');
-};
-var _user$project$Model$uDateDecoder = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (_p1) {
-		return _user$project$Model$resultToDecoder(
-			_user$project$Model$uDateParse(_p1));
-	},
-	_elm_lang$core$Json_Decode$string);
 var _user$project$Model$sectionDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
 var _user$project$Model$initModel = {};
 var _user$project$Model$Model = {};
@@ -12096,36 +12086,6 @@ var _user$project$Model$ExperienceItem = F4(
 	function (a, b, c, d) {
 		return {title: a, body: b, begin: c, end: d};
 	});
-var _user$project$Model$experienceItemDecoder = A4(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-	'end',
-	_elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
-					_user$project$Model$uDateDecoder,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
-				_1: {ctor: '[]'}
-			}
-		}),
-	_elm_lang$core$Maybe$Nothing,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'begin',
-		_user$project$Model$uDateDecoder,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'body',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'title',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$Section = F2(
 	function (a, b) {
 		return {title: a, body: b};
@@ -12134,15 +12094,15 @@ var _user$project$Model$Secondary = {ctor: 'Secondary'};
 var _user$project$Model$Primary = {ctor: 'Primary'};
 var _user$project$Model$priorityDecoder = function () {
 	var match = function (s) {
-		var _p2 = s;
-		switch (_p2) {
+		var _p1 = s;
+		switch (_p1) {
 			case 'primary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Primary);
 			case 'secondary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Secondary);
 			default:
 				return _elm_lang$core$Json_Decode$fail(
-					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p2));
+					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p1));
 		}
 	};
 	return A2(_elm_lang$core$Json_Decode$andThen, match, _elm_lang$core$Json_Decode$string);
@@ -12166,8 +12126,8 @@ var _user$project$Model$socialMediaDecoder = function () {
 	var matchValue = F3(
 		function (s, c, d) {
 			var matchType = function (t) {
-				var _p3 = _elm_lang$core$Native_Utils.eq(s, t);
-				if (_p3 === true) {
+				var _p2 = _elm_lang$core$Native_Utils.eq(s, t);
+				if (_p2 === true) {
 					return A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 						'value',
@@ -12246,6 +12206,60 @@ var _user$project$Model$Skills = function (a) {
 var _user$project$Model$Text = function (a) {
 	return {ctor: 'Text', _0: a};
 };
+var _user$project$Model$Present = {ctor: 'Present'};
+var _user$project$Model$Unknown = {ctor: 'Unknown'};
+var _user$project$Model$Day = F3(
+	function (a, b, c) {
+		return {ctor: 'Day', _0: a, _1: b, _2: c};
+	});
+var _user$project$Model$Month = F2(
+	function (a, b) {
+		return {ctor: 'Month', _0: a, _1: b};
+	});
+var _user$project$Model$Year = function (a) {
+	return {ctor: 'Year', _0: a};
+};
+var _user$project$Model$uDateParse = function (s) {
+	return _elm_lang$core$Result$Ok(
+		_user$project$Model$Year(2011));
+};
+var _user$project$Model$uDateDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (_p3) {
+		return _user$project$Model$resultToDecoder(
+			_user$project$Model$uDateParse(_p3));
+	},
+	_elm_lang$core$Json_Decode$string);
+var _user$project$Model$experienceItemDecoder = A4(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+	'end',
+	_elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+					_user$project$Model$uDateDecoder,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+				_1: {ctor: '[]'}
+			}
+		}),
+	_elm_lang$core$Maybe$Nothing,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'begin',
+		_user$project$Model$uDateDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'body',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'title',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$sectionBodyDecoder = function () {
 	var experienceDecoder = A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
@@ -12277,19 +12291,6 @@ var _user$project$Model$sectionBodyDecoder = function () {
 			}
 		});
 }();
-var _user$project$Model$Present = {ctor: 'Present'};
-var _user$project$Model$Unknown = {ctor: 'Unknown'};
-var _user$project$Model$Day = F3(
-	function (a, b, c) {
-		return {ctor: 'Day', _0: a, _1: b, _2: c};
-	});
-var _user$project$Model$Month = F2(
-	function (a, b) {
-		return {ctor: 'Month', _0: a, _1: b};
-	});
-var _user$project$Model$Year = function (a) {
-	return {ctor: 'Year', _0: a};
-};
 
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Model$initModel, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$subscriptions = function (model) {
