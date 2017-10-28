@@ -6249,6 +6249,143 @@ var _elm_lang$core$Time$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
 
@@ -9349,7 +9486,124 @@ var _krisajenkins$remotedata$RemoteData$update = F2(
 
 var _user$project$Action$Do = {ctor: 'Do'};
 
-var _user$project$Model$resultToDecoder = function (r) {
+var _user$project$UDate$daysToMonth366_ = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: 0,
+		_1: {
+			ctor: '::',
+			_0: 31,
+			_1: {
+				ctor: '::',
+				_0: 60,
+				_1: {
+					ctor: '::',
+					_0: 91,
+					_1: {
+						ctor: '::',
+						_0: 121,
+						_1: {
+							ctor: '::',
+							_0: 152,
+							_1: {
+								ctor: '::',
+								_0: 182,
+								_1: {
+									ctor: '::',
+									_0: 213,
+									_1: {
+										ctor: '::',
+										_0: 244,
+										_1: {
+											ctor: '::',
+											_0: 274,
+											_1: {
+												ctor: '::',
+												_0: 305,
+												_1: {
+													ctor: '::',
+													_0: 335,
+													_1: {
+														ctor: '::',
+														_0: 366,
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _user$project$UDate$daysToMonth365_ = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: 0,
+		_1: {
+			ctor: '::',
+			_0: 31,
+			_1: {
+				ctor: '::',
+				_0: 59,
+				_1: {
+					ctor: '::',
+					_0: 90,
+					_1: {
+						ctor: '::',
+						_0: 120,
+						_1: {
+							ctor: '::',
+							_0: 151,
+							_1: {
+								ctor: '::',
+								_0: 181,
+								_1: {
+									ctor: '::',
+									_0: 212,
+									_1: {
+										ctor: '::',
+										_0: 243,
+										_1: {
+											ctor: '::',
+											_0: 273,
+											_1: {
+												ctor: '::',
+												_0: 304,
+												_1: {
+													ctor: '::',
+													_0: 334,
+													_1: {
+														ctor: '::',
+														_0: 365,
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _user$project$UDate$isLeapYear = function (y) {
+	return _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 4),
+		0) && ((!_elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 100),
+		0)) || _elm_lang$core$Native_Utils.eq(
+		A2(_elm_lang$core$Basics_ops['%'], y, 400),
+		0));
+};
+var _user$project$UDate$resultToDecoder = function (r) {
 	var _p0 = r;
 	if (_p0.ctor === 'Err') {
 		return _elm_lang$core$Json_Decode$fail(_p0._0);
@@ -9357,6 +9611,189 @@ var _user$project$Model$resultToDecoder = function (r) {
 		return _elm_lang$core$Json_Decode$succeed(_p0._0);
 	}
 };
+var _user$project$UDate$uDateToString = function (d) {
+	var f = function (i) {
+		return _elm_lang$core$Basics$toString(i);
+	};
+	var f2 = function (i) {
+		var _p1 = _elm_lang$core$Native_Utils.cmp(i, 10) < 0;
+		if (_p1 === true) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'0',
+				f(i));
+		} else {
+			return f(i);
+		}
+	};
+	var fd = function (i) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'-',
+			f2(i));
+	};
+	var _p2 = d;
+	switch (_p2.ctor) {
+		case 'Year':
+			return f(_p2._0);
+		case 'Month':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				f(_p2._0),
+				fd(_p2._1));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				f(_p2._0),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					fd(_p2._1),
+					fd(_p2._2)));
+	}
+};
+var _user$project$UDate$month_ = F2(
+	function (y, m) {
+		var dm = A2(_elm_lang$core$Basics_ops['%'], m - 1, 12) + 1;
+		var dy = _elm_lang$core$Basics$floor(
+			(_elm_lang$core$Basics$toFloat(m) - 1) / 12);
+		return {y: y + dy, m: dm};
+	});
+var _user$project$UDate$daysInMonth = F2(
+	function (y, m) {
+		var n = A2(_user$project$UDate$month_, y, m);
+		var days = function () {
+			var _p3 = _user$project$UDate$isLeapYear(n.y);
+			if (_p3 === true) {
+				return _user$project$UDate$daysToMonth366_;
+			} else {
+				return _user$project$UDate$daysToMonth365_;
+			}
+		}();
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			A3(
+				_elm_lang$core$Maybe$map2,
+				F2(
+					function (a, b) {
+						return a - b;
+					}),
+				A2(_elm_lang$core$Array$get, n.m, days),
+				A2(_elm_lang$core$Array$get, n.m - 1, days)));
+	});
+var _user$project$UDate$Day = F3(
+	function (a, b, c) {
+		return {ctor: 'Day', _0: a, _1: b, _2: c};
+	});
+var _user$project$UDate$day = F3(
+	function (y, m, d) {
+		day:
+		while (true) {
+			var n = A2(_user$project$UDate$month_, y, m);
+			var dm = A2(_user$project$UDate$daysInMonth, n.y, n.m);
+			if (_elm_lang$core$Native_Utils.cmp(d, dm) > 0) {
+				var _v4 = n.y,
+					_v5 = n.m + 1,
+					_v6 = d - dm;
+				y = _v4;
+				m = _v5;
+				d = _v6;
+				continue day;
+			} else {
+				if (_elm_lang$core$Native_Utils.cmp(d, 0) < 1) {
+					var _v7 = n.y,
+						_v8 = n.m - 1,
+						_v9 = d + A2(_user$project$UDate$daysInMonth, n.y, n.m - 1);
+					y = _v7;
+					m = _v8;
+					d = _v9;
+					continue day;
+				} else {
+					return A3(_user$project$UDate$Day, n.y, n.m, d);
+				}
+			}
+		}
+	});
+var _user$project$UDate$Month = F2(
+	function (a, b) {
+		return {ctor: 'Month', _0: a, _1: b};
+	});
+var _user$project$UDate$month = F2(
+	function (y, m) {
+		var n = A2(_user$project$UDate$month_, y, m);
+		return A2(_user$project$UDate$Month, n.y, n.m);
+	});
+var _user$project$UDate$Year = function (a) {
+	return {ctor: 'Year', _0: a};
+};
+var _user$project$UDate$year = function (y) {
+	return _user$project$UDate$Year(y);
+};
+var _user$project$UDate$uDateParse = function (s) {
+	var uDatePattern = _elm_lang$core$Regex$regex('^(\\d{4})(?:[-](\\d{2}))?(?:[-](\\d{2}))?$');
+	var matches = A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, uDatePattern, s);
+	var _p4 = matches;
+	if ((_p4.ctor === '::') && (_p4._1.ctor === '[]')) {
+		var _p5 = _p4._0.submatches;
+		_v11_3:
+		do {
+			if (((_p5.ctor === '::') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === '::')) {
+				if (_p5._1._0.ctor === 'Nothing') {
+					if (((_p5._1._1.ctor === '::') && (_p5._1._1._0.ctor === 'Nothing')) && (_p5._1._1._1.ctor === '[]')) {
+						return A2(
+							_elm_lang$core$Result$map,
+							_user$project$UDate$year,
+							_elm_lang$core$String$toInt(_p5._0._0));
+					} else {
+						break _v11_3;
+					}
+				} else {
+					if (_p5._1._1.ctor === '::') {
+						if (_p5._1._1._0.ctor === 'Nothing') {
+							if (_p5._1._1._1.ctor === '[]') {
+								return A3(
+									_elm_lang$core$Result$map2,
+									_user$project$UDate$month,
+									_elm_lang$core$String$toInt(_p5._0._0),
+									_elm_lang$core$String$toInt(_p5._1._0._0));
+							} else {
+								break _v11_3;
+							}
+						} else {
+							if (_p5._1._1._1.ctor === '[]') {
+								return A4(
+									_elm_lang$core$Result$map3,
+									_user$project$UDate$day,
+									_elm_lang$core$String$toInt(_p5._0._0),
+									_elm_lang$core$String$toInt(_p5._1._0._0),
+									_elm_lang$core$String$toInt(_p5._1._1._0._0));
+							} else {
+								break _v11_3;
+							}
+						}
+					} else {
+						break _v11_3;
+					}
+				}
+			} else {
+				break _v11_3;
+			}
+		} while(false);
+		return _elm_lang$core$Result$Err(
+			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
+	} else {
+		return _elm_lang$core$Result$Err(
+			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
+	}
+};
+var _user$project$UDate$uDateDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (_p6) {
+		return _user$project$UDate$resultToDecoder(
+			_user$project$UDate$uDateParse(_p6));
+	},
+	_elm_lang$core$Json_Decode$string);
+
 var _user$project$Model$sectionDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
 var _user$project$Model$initModel = {resume: _krisajenkins$remotedata$RemoteData$NotAsked};
 var _user$project$Model$Model = function (a) {
@@ -9404,6 +9841,36 @@ var _user$project$Model$ExperienceItem = F4(
 	function (a, b, c, d) {
 		return {title: a, body: b, begin: c, end: d};
 	});
+var _user$project$Model$experienceItemDecoder = A4(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+	'end',
+	_elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+					_user$project$UDate$uDateDecoder,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+				_1: {ctor: '[]'}
+			}
+		}),
+	_elm_lang$core$Maybe$Nothing,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'begin',
+		_user$project$UDate$uDateDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'body',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'title',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$Section = F2(
 	function (a, b) {
 		return {title: a, body: b};
@@ -9412,15 +9879,15 @@ var _user$project$Model$Secondary = {ctor: 'Secondary'};
 var _user$project$Model$Primary = {ctor: 'Primary'};
 var _user$project$Model$priorityDecoder = function () {
 	var match = function (s) {
-		var _p1 = s;
-		switch (_p1) {
+		var _p0 = s;
+		switch (_p0) {
 			case 'primary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Primary);
 			case 'secondary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Secondary);
 			default:
 				return _elm_lang$core$Json_Decode$fail(
-					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p1));
+					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p0));
 		}
 	};
 	return A2(_elm_lang$core$Json_Decode$andThen, match, _elm_lang$core$Json_Decode$string);
@@ -9444,8 +9911,8 @@ var _user$project$Model$socialMediaDecoder = function () {
 	var matchValue = F3(
 		function (s, c, d) {
 			var matchType = function (t) {
-				var _p2 = _elm_lang$core$Native_Utils.eq(s, t);
-				if (_p2 === true) {
+				var _p1 = _elm_lang$core$Native_Utils.eq(s, t);
+				if (_p1 === true) {
 					return A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 						'value',
@@ -9524,60 +9991,6 @@ var _user$project$Model$Skills = function (a) {
 var _user$project$Model$Text = function (a) {
 	return {ctor: 'Text', _0: a};
 };
-var _user$project$Model$Present = {ctor: 'Present'};
-var _user$project$Model$Unknown = {ctor: 'Unknown'};
-var _user$project$Model$Day = F3(
-	function (a, b, c) {
-		return {ctor: 'Day', _0: a, _1: b, _2: c};
-	});
-var _user$project$Model$Month = F2(
-	function (a, b) {
-		return {ctor: 'Month', _0: a, _1: b};
-	});
-var _user$project$Model$Year = function (a) {
-	return {ctor: 'Year', _0: a};
-};
-var _user$project$Model$uDateParse = function (s) {
-	return _elm_lang$core$Result$Ok(
-		_user$project$Model$Year(2011));
-};
-var _user$project$Model$uDateDecoder = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (_p3) {
-		return _user$project$Model$resultToDecoder(
-			_user$project$Model$uDateParse(_p3));
-	},
-	_elm_lang$core$Json_Decode$string);
-var _user$project$Model$experienceItemDecoder = A4(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-	'end',
-	_elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
-					_user$project$Model$uDateDecoder,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
-				_1: {ctor: '[]'}
-			}
-		}),
-	_elm_lang$core$Maybe$Nothing,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'begin',
-		_user$project$Model$uDateDecoder,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'body',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'title',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$sectionBodyDecoder = function () {
 	var experienceDecoder = A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,

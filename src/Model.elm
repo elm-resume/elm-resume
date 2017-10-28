@@ -1,8 +1,11 @@
 module Model exposing (..)
 
 import RemoteData exposing (RemoteData(..))
+import Array
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
+import Regex exposing (..)
+import UDate exposing (..)
 
 type alias Model =
   { resume : RemoteData String Resume
@@ -20,6 +23,14 @@ type alias Resume =
   , sections : List Section
   }
 
+resumeDecoder : Decoder Resume
+resumeDecoder =
+  decode Resume
+    |> required "name" string
+    |> required "contact" contactDecoder
+    |> optional "socialMedia" (list socialMediaWithPriorityDecoder) []
+    |> optional "sections" (list sectionDecoder) []
+
 type alias Contact =
   { address: String
   , email: String
@@ -32,14 +43,6 @@ contactDecoder =
     |> required "address" string
     |> required "email" string
     |> required "phone" string
-
-resumeDecoder : Decoder Resume
-resumeDecoder =
-  decode Resume
-    |> required "name" string
-    |> required "contact" contactDecoder
-    |> optional "socialMedia" (list socialMediaWithPriorityDecoder) []
-    |> optional "sections" (list sectionDecoder) []
 
 type Priority
   = Primary
@@ -147,28 +150,3 @@ type alias Section =
 
 sectionDecoder : Decoder Section
 sectionDecoder = fail "not implemented"
-
-type UDate
-  = Year Int
-  | Month Int Int
-  | Day Int Int Int
-  | Unknown
-  | Present
-
-uDateParse : String -> Result String UDate
-uDateParse s = Ok (Year 2011)
-
-resultToDecoder : Result String a -> Decoder a
-resultToDecoder r = case r of
-  Err e -> fail e
-  Ok v -> succeed v
-
-uDateDecoder : Decoder UDate
-uDateDecoder =
-  andThen (resultToDecoder << uDateParse) string
-
--- dateOfBirth: "1972-05-07"
--- contacts:
---   - type: skype
---     value: francoponticelli
---     prio: primary

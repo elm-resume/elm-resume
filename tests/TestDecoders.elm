@@ -1,9 +1,7 @@
-module Example exposing (..)
+module TestDecoders exposing (..)
 
-import Expect exposing (Expectation)
+import Common exposing (..)
 import Test exposing (..)
-
-import Json.Decode exposing (Decoder, decodeString)
 import Model exposing (..)
 
 suite : Test
@@ -32,15 +30,3 @@ suite =
         testDecode """{ "type" : "twitter", "value" : "t" }""" socialMediaWithPriorityDecoder ({ handle = Twitter "t", priority = Primary })
       ]
     ]
-
-assertDecode : String -> Decoder a -> a -> Expectation
-assertDecode s d a =
-  let
-    decoded = decodeString d s
-  in
-    case decoded of
-      Ok value -> Expect.equal a value
-      Err f -> Expect.fail f
-
-testDecode : String -> Decoder a -> a -> (() -> Expectation)
-testDecode s d a = \() -> assertDecode s d a
