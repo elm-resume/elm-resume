@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "setup": "yarn install",
+    "setup": "npm install yarn && yarn install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "make": "elm-make --output=build/index.js --yes --warn src/Main.elm",
     "live": "elm-live --output=build/index.js --dir=build --pushstate --open --debug src/Main.elm ",

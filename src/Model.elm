@@ -1,5 +1,6 @@
 module Model exposing (..)
 
+import RemoteData exposing (RemoteData(..))
 import Array
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
@@ -7,11 +8,13 @@ import Regex exposing (..)
 import UDate exposing (..)
 
 type alias Model =
-  {
+  { resume : RemoteData String Resume
   }
 
 initModel : Model
-initModel = {}
+initModel =
+  { resume = NotAsked
+  }
 
 type alias Resume =
   { name : String
