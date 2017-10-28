@@ -1,12 +1,13 @@
 module Main exposing (main)
 
-import Html exposing (..)
+import Html exposing (program)
 import Model exposing (..)
 import Action exposing (..)
+import View exposing (view)
 
 main : Program Never Model Action
 main =
-  Html.program
+  program
     { init = init
     , view = view
     , update = update
@@ -18,13 +19,6 @@ update action model =
   case action of
     Do ->
       (model, Cmd.none)
-
-
-view : Model -> Html Action
-view model =
-  div []
-    [ text "New Html Program"
-    ]
 
 
 subscriptions : Model -> Sub Action
