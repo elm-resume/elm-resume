@@ -1,18 +1,20 @@
 module Model exposing (..)
 
-import RemoteData exposing (RemoteData(..))
-import Array
+import RemoteData exposing (WebData, RemoteData(..))
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
 import UDate exposing (..)
+import Config exposing (Config)
 
 type alias Model =
-  { resume : RemoteData String Resume
+  { resume : WebData Resume
+  , config : Config
   }
 
-initModel : Model
-initModel =
+initModel : Config -> Model
+initModel config =
   { resume = NotAsked
+  , config = config
   }
 
 type alias Resume =
@@ -60,6 +62,7 @@ priorityDecoder =
 type SocialMedia
   = Twitter String
   | Github String
+  | GTalk String
   | Skype String
   | LinkedIn String
   | StackOverflow String
@@ -78,6 +81,7 @@ socialMediaDecoder =
   in
     oneOf
       [ matchValue "github"        Github        string
+      , matchValue "gtalk"         GTalk         string
       , matchValue "twitter"       Twitter       string
       , matchValue "skype"         Skype         string
       , matchValue "linkedin"      LinkedIn      string

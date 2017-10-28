@@ -81,7 +81,10 @@ resultToDecoder r = case r of
 
 uDateDecoder : Decoder UDate
 uDateDecoder =
-  andThen (resultToDecoder << uDateParse) string
+  oneOf [
+    Json.Decode.map year int,
+    andThen (resultToDecoder << uDateParse) string
+  ]
 
 isLeapYear : Int -> Bool
 isLeapYear y = y % 4 == 0 && (y % 100 /= 0 || y % 400 == 0)

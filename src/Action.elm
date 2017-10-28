@@ -1,3 +1,7 @@
 module Action exposing (..)
 
-type Action = Do
+import Model exposing (Resume)
+import RemoteData exposing (WebData)
+
+type Action
+  = RequestedData (WebData Resume)

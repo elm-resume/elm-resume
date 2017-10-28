@@ -22,13 +22,17 @@ socialMedia:
     prio: secondary
 sections:
   - title: Work Experience
-    content: "I don't have any"
+    body: "I don't have any"
   - title: Gaming Experience
-    skills:
-      - title: some
-      - body: some
+    body:
+      skills:
+        - title: some skill name
+          body: some skill description
+        - title: another skill name
+          body: another skill description
   - title: Gaming Experience
-    experiences:
-      - title: some
-      - body: some
-      - begin: 2017
+    body:
+      experiences:
+        - title: some
+          body: body
+          begin: 2017

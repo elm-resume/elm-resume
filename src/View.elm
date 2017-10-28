@@ -10,7 +10,7 @@ view : Model -> Html a
 view { resume } =
   case resume of
     Success r -> viewResume r
-    Failure msg -> div [] [text msg]
+    Failure msg -> div [style [("font-family", "monospace")]] [Markdown.toHtml [] <| toString msg]
     _ -> div [] []
 
 viewResume : Resume -> Html a
@@ -49,6 +49,8 @@ viewSocialMedia { handle, priority } =
       a [ class "resume-social-link", href <| "http://github.com/" ++ v ]
         [ text v ]
     (Primary, Skype v) -> Just <|
+      a [] [ text v ] -- TODO
+    (Primary, GTalk v) -> Just <|
       a [] [ text v ] -- TODO
     (Primary, LinkedIn v) -> Just <|
       a [ class "resume-social-link", href <| "http://linkedin.com/in/" ++ v ]

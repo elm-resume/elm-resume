@@ -13443,8 +13443,6 @@ var _krisajenkins$remotedata$RemoteData$update = F2(
 		}
 	});
 
-var _user$project$Action$Do = {ctor: 'Do'};
-
 var _user$project$UDate$daysToMonth366_ = _elm_lang$core$Array$fromList(
 	{
 		ctor: '::',
@@ -13745,18 +13743,34 @@ var _user$project$UDate$uDateParse = function (s) {
 			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
 	}
 };
-var _user$project$UDate$uDateDecoder = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (_p6) {
-		return _user$project$UDate$resultToDecoder(
-			_user$project$UDate$uDateParse(_p6));
-	},
-	_elm_lang$core$Json_Decode$string);
+var _user$project$UDate$uDateDecoder = _elm_lang$core$Json_Decode$oneOf(
+	{
+		ctor: '::',
+		_0: A2(_elm_lang$core$Json_Decode$map, _user$project$UDate$year, _elm_lang$core$Json_Decode$int),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (_p6) {
+					return _user$project$UDate$resultToDecoder(
+						_user$project$UDate$uDateParse(_p6));
+				},
+				_elm_lang$core$Json_Decode$string),
+			_1: {ctor: '[]'}
+		}
+	});
 
-var _user$project$Model$initModel = {resume: _krisajenkins$remotedata$RemoteData$NotAsked};
-var _user$project$Model$Model = function (a) {
-	return {resume: a};
+var _user$project$Config$Config = function (a) {
+	return {api_base_url: a};
 };
+
+var _user$project$Model$initModel = function (config) {
+	return {resume: _krisajenkins$remotedata$RemoteData$NotAsked, config: config};
+};
+var _user$project$Model$Model = F2(
+	function (a, b) {
+		return {resume: a, config: b};
+	});
 var _user$project$Model$Resume = F4(
 	function (a, b, c, d) {
 		return {name: a, contact: b, socialMedia: c, sections: d};
@@ -13820,6 +13834,9 @@ var _user$project$Model$LinkedIn = function (a) {
 var _user$project$Model$Skype = function (a) {
 	return {ctor: 'Skype', _0: a};
 };
+var _user$project$Model$GTalk = function (a) {
+	return {ctor: 'GTalk', _0: a};
+};
 var _user$project$Model$Github = function (a) {
 	return {ctor: 'Github', _0: a};
 };
@@ -13853,17 +13870,21 @@ var _user$project$Model$socialMediaDecoder = function () {
 			_0: A3(matchValue, 'github', _user$project$Model$Github, _elm_lang$core$Json_Decode$string),
 			_1: {
 				ctor: '::',
-				_0: A3(matchValue, 'twitter', _user$project$Model$Twitter, _elm_lang$core$Json_Decode$string),
+				_0: A3(matchValue, 'gtalk', _user$project$Model$GTalk, _elm_lang$core$Json_Decode$string),
 				_1: {
 					ctor: '::',
-					_0: A3(matchValue, 'skype', _user$project$Model$Skype, _elm_lang$core$Json_Decode$string),
+					_0: A3(matchValue, 'twitter', _user$project$Model$Twitter, _elm_lang$core$Json_Decode$string),
 					_1: {
 						ctor: '::',
-						_0: A3(matchValue, 'linkedin', _user$project$Model$LinkedIn, _elm_lang$core$Json_Decode$string),
+						_0: A3(matchValue, 'skype', _user$project$Model$Skype, _elm_lang$core$Json_Decode$string),
 						_1: {
 							ctor: '::',
-							_0: A3(matchValue, 'stackoverflow', _user$project$Model$StackOverflow, _elm_lang$core$Json_Decode$string),
-							_1: {ctor: '[]'}
+							_0: A3(matchValue, 'linkedin', _user$project$Model$LinkedIn, _elm_lang$core$Json_Decode$string),
+							_1: {
+								ctor: '::',
+								_0: A3(matchValue, 'stackoverflow', _user$project$Model$StackOverflow, _elm_lang$core$Json_Decode$string),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
 				}
@@ -13993,6 +14014,10 @@ var _user$project$Model$resumeDecoder = A4(
 				'name',
 				_elm_lang$core$Json_Decode$string,
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume)))));
+
+var _user$project$Action$RequestedData = function (a) {
+	return {ctor: 'RequestedData', _0: a};
+};
 
 var _user$project$View$viewExperienceItem = function (_p0) {
 	var _p1 = _p0;
@@ -14144,6 +14169,16 @@ var _user$project$View$viewSocialMedia = function (_p7) {
 							_1: {ctor: '[]'}
 						}));
 			case 'Skype':
+				return _elm_lang$core$Maybe$Just(
+					A2(
+						_elm_lang$html$Html$a,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p9._1._0),
+							_1: {ctor: '[]'}
+						}));
+			case 'GTalk':
 				return _elm_lang$core$Maybe$Just(
 					A2(
 						_elm_lang$html$Html$a,
@@ -14335,10 +14370,22 @@ var _user$project$View$view = function (_p21) {
 		case 'Failure':
 			return A2(
 				_elm_lang$html$Html$div,
-				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(_p23._0),
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'font-family', _1: 'monospace'},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_evancz$elm_markdown$Markdown$toHtml,
+						{ctor: '[]'},
+						_elm_lang$core$Basics$toString(_p23._0)),
 					_1: {ctor: '[]'}
 				});
 		default:
@@ -14349,22 +14396,52 @@ var _user$project$View$view = function (_p21) {
 	}
 };
 
-var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Model$initModel, _1: _elm_lang$core$Platform_Cmd$none};
+var _user$project$Main$getData = function (base_url) {
+	var url = A2(_elm_lang$core$Basics_ops['++'], base_url, 'data.json');
+	return A2(
+		_elm_lang$core$Platform_Cmd$map,
+		_user$project$Action$RequestedData,
+		_krisajenkins$remotedata$RemoteData$sendRequest(
+			A2(_elm_lang$http$Http$get, url, _user$project$Model$resumeDecoder)));
+};
+var _user$project$Main$init = function (cfg) {
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		_user$project$Model$initModel(cfg),
+		{
+			ctor: '::',
+			_0: _user$project$Main$getData(cfg.api_base_url),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _user$project$Main$update = F2(
 	function (action, model) {
 		var _p0 = action;
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{resume: _p0._0}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
 	});
-var _user$project$Main$main = _elm_lang$html$Html$program(
-	{init: _user$project$Main$init, view: _user$project$View$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
+var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
+	{init: _user$project$Main$init, view: _user$project$View$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (api_base_url) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{api_base_url: api_base_url});
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'api_base_url', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Action.Action":{"args":[],"tags":{"Do":[]}}},"aliases":{},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Model.Resume"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Model.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Model.Priority":{"args":[],"tags":{"Secondary":[],"Primary":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Model.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Model.SkillItem"],"Experiences":["List Model.ExperienceItem"]}}},"aliases":{"Model.ExperienceItem":{"args":[],"type":"{ title : String , body : Model.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Model.SkillItem":{"args":[],"type":"{ title : String, body : Model.Body }"},"Model.Resume":{"args":[],"type":"{ name : String , contact : Model.Contact , socialMedia : List Model.SocialMediaWithPriority , sections : List Model.Section }"},"Model.SocialMediaWithPriority":{"args":[],"type":"{ handle : Model.SocialMedia, priority : Model.Priority }"},"Model.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"Model.Section":{"args":[],"type":"{ title : String, body : Model.Body }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
