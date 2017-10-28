@@ -12478,7 +12478,6 @@ var _user$project$UDate$uDateDecoder = A2(
 	},
 	_elm_lang$core$Json_Decode$string);
 
-var _user$project$Model$sectionDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
 var _user$project$Model$initModel = {};
 var _user$project$Model$Model = {};
 var _user$project$Model$Resume = F4(
@@ -12510,49 +12509,10 @@ var _user$project$Model$SkillItem = F2(
 	function (a, b) {
 		return {title: a, body: b};
 	});
-var _user$project$Model$skillItemDecoder = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'body',
-	_elm_lang$core$Json_Decode$string,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'title',
-		_elm_lang$core$Json_Decode$string,
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$SkillItem)));
 var _user$project$Model$ExperienceItem = F4(
 	function (a, b, c, d) {
 		return {title: a, body: b, begin: c, end: d};
 	});
-var _user$project$Model$experienceItemDecoder = A4(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-	'end',
-	_elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
-					_user$project$UDate$uDateDecoder,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
-				_1: {ctor: '[]'}
-			}
-		}),
-	_elm_lang$core$Maybe$Nothing,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'begin',
-		_user$project$UDate$uDateDecoder,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'body',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'title',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$Section = F2(
 	function (a, b) {
 		return {title: a, body: b};
@@ -12645,6 +12605,98 @@ var _user$project$Model$socialMediaWithPriorityDecoder = A2(
 				_user$project$Model$SocialMediaWithPriority(c)));
 	},
 	_user$project$Model$socialMediaDecoder);
+var _user$project$Model$Experiences = function (a) {
+	return {ctor: 'Experiences', _0: a};
+};
+var _user$project$Model$Skills = function (a) {
+	return {ctor: 'Skills', _0: a};
+};
+var _user$project$Model$Text = function (a) {
+	return {ctor: 'Text', _0: a};
+};
+var _user$project$Model$bodyDecoder = function () {
+	var experienceDecoder = A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'experiences',
+		_elm_lang$core$Json_Decode$list(
+			_elm_lang$core$Json_Decode$lazy(
+				function (_p2) {
+					return _user$project$Model$experienceItemDecoder;
+				})),
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Experiences));
+	var skillsDecoder = A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'skills',
+		_elm_lang$core$Json_Decode$list(
+			_elm_lang$core$Json_Decode$lazy(
+				function (_p3) {
+					return _user$project$Model$skillItemDecoder;
+				})),
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Skills));
+	var textDecoder = A2(_elm_lang$core$Json_Decode$map, _user$project$Model$Text, _elm_lang$core$Json_Decode$string);
+	return _elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: textDecoder,
+			_1: {
+				ctor: '::',
+				_0: skillsDecoder,
+				_1: {
+					ctor: '::',
+					_0: experienceDecoder,
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+}();
+var _user$project$Model$experienceItemDecoder = A4(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+	'end',
+	_elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+					_user$project$UDate$uDateDecoder,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+				_1: {ctor: '[]'}
+			}
+		}),
+	_elm_lang$core$Maybe$Nothing,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'begin',
+		_user$project$UDate$uDateDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'body',
+			_user$project$Model$bodyDecoder,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'title',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
+var _user$project$Model$skillItemDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'body',
+	_user$project$Model$bodyDecoder,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'title',
+		_elm_lang$core$Json_Decode$string,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$SkillItem)));
+var _user$project$Model$sectionDecoder = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'body',
+	_user$project$Model$bodyDecoder,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'title',
+		_elm_lang$core$Json_Decode$string,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Section)));
 var _user$project$Model$resumeDecoder = A4(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
 	'sections',
@@ -12664,46 +12716,6 @@ var _user$project$Model$resumeDecoder = A4(
 				'name',
 				_elm_lang$core$Json_Decode$string,
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume)))));
-var _user$project$Model$Experience = function (a) {
-	return {ctor: 'Experience', _0: a};
-};
-var _user$project$Model$Skills = function (a) {
-	return {ctor: 'Skills', _0: a};
-};
-var _user$project$Model$Text = function (a) {
-	return {ctor: 'Text', _0: a};
-};
-var _user$project$Model$sectionBodyDecoder = function () {
-	var experienceDecoder = A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'experience',
-		_elm_lang$core$Json_Decode$list(_user$project$Model$experienceItemDecoder),
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Experience));
-	var skillsDecoder = A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'skills',
-		_elm_lang$core$Json_Decode$list(_user$project$Model$skillItemDecoder),
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Skills));
-	var textDecoder = A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'content',
-		_elm_lang$core$Json_Decode$string,
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Text));
-	return _elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: textDecoder,
-			_1: {
-				ctor: '::',
-				_0: skillsDecoder,
-				_1: {
-					ctor: '::',
-					_0: experienceDecoder,
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-}();
 
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Model$initModel, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$subscriptions = function (model) {

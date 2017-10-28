@@ -1,9 +1,7 @@
 module Model exposing (..)
 
-import Array
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
-import Regex exposing (..)
 import UDate exposing (..)
 
 type alias Model =
@@ -95,18 +93,18 @@ socialMediaWithPriorityDecoder =
 
 type alias SkillItem =
   { title : String
-  , body : String
+  , body : Body
   }
 
 skillItemDecoder : Decoder SkillItem
 skillItemDecoder =
   decode SkillItem
     |> required "title" string
-    |> required "body" string
+    |> required "body" bodyDecoder
 
 type alias ExperienceItem =
   { title : String
-  , body : String
+  , body : Body
   , begin : UDate
   , end : Maybe UDate
   }
@@ -115,24 +113,24 @@ experienceItemDecoder : Decoder ExperienceItem
 experienceItemDecoder =
   decode ExperienceItem
     |> required "title" string
-    |> required "body" string
+    |> required "body" bodyDecoder
     |> required "begin" uDateDecoder
     |> optional "end" (oneOf
       [ null Nothing
       , (custom uDateDecoder <| decode Just)
       ]) Nothing
 
-type SectionBody
+type Body
   = Text String
   | Skills (List SkillItem)
-  | Experience (List ExperienceItem)
+  | Experiences (List ExperienceItem)
 
-sectionBodyDecoder : Decoder SectionBody
-sectionBodyDecoder =
+bodyDecoder : Decoder Body
+bodyDecoder =
   let
-    textDecoder = decode Text |> required "content" string
-    skillsDecoder = decode Skills |> required "skills" (list skillItemDecoder)
-    experienceDecoder = decode Experience |> required "experience" (list experienceItemDecoder)
+    textDecoder = map Text string
+    skillsDecoder = decode Skills |> required "skills" (list (lazy (\_ -> skillItemDecoder)))
+    experienceDecoder = decode Experiences |> required "experiences" (list (lazy (\_ -> experienceItemDecoder)))
   in
     oneOf
       [ textDecoder
@@ -142,8 +140,11 @@ sectionBodyDecoder =
 
 type alias Section =
   { title : String
-  , body : SectionBody
+  , body : Body
   }
 
 sectionDecoder : Decoder Section
-sectionDecoder = fail "not implemented"
+sectionDecoder =
+  decode Section
+    |> required "title" string
+    |> required "body" bodyDecoder
