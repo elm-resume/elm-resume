@@ -12170,55 +12170,7 @@ var _elm_lang$html$Html$menu = _elm_lang$html$Html$node('menu');
 
 var _user$project$Action$Do = {ctor: 'Do'};
 
-var _user$project$Model$resultToDecoder = function (r) {
-	var _p0 = r;
-	if (_p0.ctor === 'Err') {
-		return _elm_lang$core$Json_Decode$fail(_p0._0);
-	} else {
-		return _elm_lang$core$Json_Decode$succeed(_p0._0);
-	}
-};
-var _user$project$Model$uDateToString = function (d) {
-	var f = function (i) {
-		return _elm_lang$core$Basics$toString(i);
-	};
-	var f2 = function (i) {
-		var _p1 = _elm_lang$core$Native_Utils.cmp(i, 10) < 0;
-		if (_p1 === true) {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'0',
-				f(i));
-		} else {
-			return f(i);
-		}
-	};
-	var fd = function (i) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'-',
-			f2(i));
-	};
-	var _p2 = d;
-	switch (_p2.ctor) {
-		case 'Year':
-			return f(_p2._0);
-		case 'Month':
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				f(_p2._0),
-				fd(_p2._1));
-		default:
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				f(_p2._0),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					fd(_p2._1),
-					fd(_p2._2)));
-	}
-};
-var _user$project$Model$daysToMonth366_ = _elm_lang$core$Array$fromList(
+var _user$project$UDate$daysToMonth366_ = _elm_lang$core$Array$fromList(
 	{
 		ctor: '::',
 		_0: 0,
@@ -12272,7 +12224,7 @@ var _user$project$Model$daysToMonth366_ = _elm_lang$core$Array$fromList(
 			}
 		}
 	});
-var _user$project$Model$daysToMonth365_ = _elm_lang$core$Array$fromList(
+var _user$project$UDate$daysToMonth365_ = _elm_lang$core$Array$fromList(
 	{
 		ctor: '::',
 		_0: 0,
@@ -12326,7 +12278,7 @@ var _user$project$Model$daysToMonth365_ = _elm_lang$core$Array$fromList(
 			}
 		}
 	});
-var _user$project$Model$isLeapYear = function (y) {
+var _user$project$UDate$isLeapYear = function (y) {
 	return _elm_lang$core$Native_Utils.eq(
 		A2(_elm_lang$core$Basics_ops['%'], y, 4),
 		0) && ((!_elm_lang$core$Native_Utils.eq(
@@ -12335,22 +12287,70 @@ var _user$project$Model$isLeapYear = function (y) {
 		A2(_elm_lang$core$Basics_ops['%'], y, 400),
 		0));
 };
-var _user$project$Model$month_ = F2(
+var _user$project$UDate$resultToDecoder = function (r) {
+	var _p0 = r;
+	if (_p0.ctor === 'Err') {
+		return _elm_lang$core$Json_Decode$fail(_p0._0);
+	} else {
+		return _elm_lang$core$Json_Decode$succeed(_p0._0);
+	}
+};
+var _user$project$UDate$uDateToString = function (d) {
+	var f = function (i) {
+		return _elm_lang$core$Basics$toString(i);
+	};
+	var f2 = function (i) {
+		var _p1 = _elm_lang$core$Native_Utils.cmp(i, 10) < 0;
+		if (_p1 === true) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'0',
+				f(i));
+		} else {
+			return f(i);
+		}
+	};
+	var fd = function (i) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'-',
+			f2(i));
+	};
+	var _p2 = d;
+	switch (_p2.ctor) {
+		case 'Year':
+			return f(_p2._0);
+		case 'Month':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				f(_p2._0),
+				fd(_p2._1));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				f(_p2._0),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					fd(_p2._1),
+					fd(_p2._2)));
+	}
+};
+var _user$project$UDate$month_ = F2(
 	function (y, m) {
 		var dm = A2(_elm_lang$core$Basics_ops['%'], m - 1, 12) + 1;
 		var dy = _elm_lang$core$Basics$floor(
 			(_elm_lang$core$Basics$toFloat(m) - 1) / 12);
 		return {y: y + dy, m: dm};
 	});
-var _user$project$Model$daysInMonth = F2(
+var _user$project$UDate$daysInMonth = F2(
 	function (y, m) {
-		var n = A2(_user$project$Model$month_, y, m);
+		var n = A2(_user$project$UDate$month_, y, m);
 		var days = function () {
-			var _p3 = _user$project$Model$isLeapYear(n.y);
+			var _p3 = _user$project$UDate$isLeapYear(n.y);
 			if (_p3 === true) {
-				return _user$project$Model$daysToMonth366_;
+				return _user$project$UDate$daysToMonth366_;
 			} else {
-				return _user$project$Model$daysToMonth365_;
+				return _user$project$UDate$daysToMonth365_;
 			}
 		}();
 		return A2(
@@ -12365,6 +12365,119 @@ var _user$project$Model$daysInMonth = F2(
 				A2(_elm_lang$core$Array$get, n.m, days),
 				A2(_elm_lang$core$Array$get, n.m - 1, days)));
 	});
+var _user$project$UDate$Day = F3(
+	function (a, b, c) {
+		return {ctor: 'Day', _0: a, _1: b, _2: c};
+	});
+var _user$project$UDate$day = F3(
+	function (y, m, d) {
+		day:
+		while (true) {
+			var n = A2(_user$project$UDate$month_, y, m);
+			var dm = A2(_user$project$UDate$daysInMonth, n.y, n.m);
+			if (_elm_lang$core$Native_Utils.cmp(d, dm) > 0) {
+				var _v4 = n.y,
+					_v5 = n.m + 1,
+					_v6 = d - dm;
+				y = _v4;
+				m = _v5;
+				d = _v6;
+				continue day;
+			} else {
+				if (_elm_lang$core$Native_Utils.cmp(d, 0) < 1) {
+					var _v7 = n.y,
+						_v8 = n.m - 1,
+						_v9 = d + A2(_user$project$UDate$daysInMonth, n.y, n.m - 1);
+					y = _v7;
+					m = _v8;
+					d = _v9;
+					continue day;
+				} else {
+					return A3(_user$project$UDate$Day, n.y, n.m, d);
+				}
+			}
+		}
+	});
+var _user$project$UDate$Month = F2(
+	function (a, b) {
+		return {ctor: 'Month', _0: a, _1: b};
+	});
+var _user$project$UDate$month = F2(
+	function (y, m) {
+		var n = A2(_user$project$UDate$month_, y, m);
+		return A2(_user$project$UDate$Month, n.y, n.m);
+	});
+var _user$project$UDate$Year = function (a) {
+	return {ctor: 'Year', _0: a};
+};
+var _user$project$UDate$year = function (y) {
+	return _user$project$UDate$Year(y);
+};
+var _user$project$UDate$uDateParse = function (s) {
+	var uDatePattern = _elm_lang$core$Regex$regex('^(\\d{4})(?:[-](\\d{2}))?(?:[-](\\d{2}))?$');
+	var matches = A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, uDatePattern, s);
+	var _p4 = matches;
+	if ((_p4.ctor === '::') && (_p4._1.ctor === '[]')) {
+		var _p5 = _p4._0.submatches;
+		_v11_3:
+		do {
+			if (((_p5.ctor === '::') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === '::')) {
+				if (_p5._1._0.ctor === 'Nothing') {
+					if (((_p5._1._1.ctor === '::') && (_p5._1._1._0.ctor === 'Nothing')) && (_p5._1._1._1.ctor === '[]')) {
+						return A2(
+							_elm_lang$core$Result$map,
+							_user$project$UDate$year,
+							_elm_lang$core$String$toInt(_p5._0._0));
+					} else {
+						break _v11_3;
+					}
+				} else {
+					if (_p5._1._1.ctor === '::') {
+						if (_p5._1._1._0.ctor === 'Nothing') {
+							if (_p5._1._1._1.ctor === '[]') {
+								return A3(
+									_elm_lang$core$Result$map2,
+									_user$project$UDate$month,
+									_elm_lang$core$String$toInt(_p5._0._0),
+									_elm_lang$core$String$toInt(_p5._1._0._0));
+							} else {
+								break _v11_3;
+							}
+						} else {
+							if (_p5._1._1._1.ctor === '[]') {
+								return A4(
+									_elm_lang$core$Result$map3,
+									_user$project$UDate$day,
+									_elm_lang$core$String$toInt(_p5._0._0),
+									_elm_lang$core$String$toInt(_p5._1._0._0),
+									_elm_lang$core$String$toInt(_p5._1._1._0._0));
+							} else {
+								break _v11_3;
+							}
+						}
+					} else {
+						break _v11_3;
+					}
+				}
+			} else {
+				break _v11_3;
+			}
+		} while(false);
+		return _elm_lang$core$Result$Err(
+			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
+	} else {
+		return _elm_lang$core$Result$Err(
+			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
+	}
+};
+var _user$project$UDate$uDateDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (_p6) {
+		return _user$project$UDate$resultToDecoder(
+			_user$project$UDate$uDateParse(_p6));
+	},
+	_elm_lang$core$Json_Decode$string);
+
 var _user$project$Model$sectionDecoder = _elm_lang$core$Json_Decode$fail('not implemented');
 var _user$project$Model$initModel = {};
 var _user$project$Model$Model = {};
@@ -12410,6 +12523,36 @@ var _user$project$Model$ExperienceItem = F4(
 	function (a, b, c, d) {
 		return {title: a, body: b, begin: c, end: d};
 	});
+var _user$project$Model$experienceItemDecoder = A4(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+	'end',
+	_elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+					_user$project$UDate$uDateDecoder,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+				_1: {ctor: '[]'}
+			}
+		}),
+	_elm_lang$core$Maybe$Nothing,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'begin',
+		_user$project$UDate$uDateDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'body',
+			_elm_lang$core$Json_Decode$string,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'title',
+				_elm_lang$core$Json_Decode$string,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$Section = F2(
 	function (a, b) {
 		return {title: a, body: b};
@@ -12418,15 +12561,15 @@ var _user$project$Model$Secondary = {ctor: 'Secondary'};
 var _user$project$Model$Primary = {ctor: 'Primary'};
 var _user$project$Model$priorityDecoder = function () {
 	var match = function (s) {
-		var _p4 = s;
-		switch (_p4) {
+		var _p0 = s;
+		switch (_p0) {
 			case 'primary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Primary);
 			case 'secondary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Secondary);
 			default:
 				return _elm_lang$core$Json_Decode$fail(
-					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p4));
+					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p0));
 		}
 	};
 	return A2(_elm_lang$core$Json_Decode$andThen, match, _elm_lang$core$Json_Decode$string);
@@ -12450,8 +12593,8 @@ var _user$project$Model$socialMediaDecoder = function () {
 	var matchValue = F3(
 		function (s, c, d) {
 			var matchType = function (t) {
-				var _p5 = _elm_lang$core$Native_Utils.eq(s, t);
-				if (_p5 === true) {
+				var _p1 = _elm_lang$core$Native_Utils.eq(s, t);
+				if (_p1 === true) {
 					return A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 						'value',
@@ -12530,148 +12673,6 @@ var _user$project$Model$Skills = function (a) {
 var _user$project$Model$Text = function (a) {
 	return {ctor: 'Text', _0: a};
 };
-var _user$project$Model$Day = F3(
-	function (a, b, c) {
-		return {ctor: 'Day', _0: a, _1: b, _2: c};
-	});
-var _user$project$Model$day = F3(
-	function (y, m, d) {
-		day:
-		while (true) {
-			var n = A2(_user$project$Model$month_, y, m);
-			var dm = A2(_user$project$Model$daysInMonth, n.y, n.m);
-			if (_elm_lang$core$Native_Utils.cmp(d, dm) > 0) {
-				var _v6 = n.y,
-					_v7 = n.m + 1,
-					_v8 = d - dm;
-				y = _v6;
-				m = _v7;
-				d = _v8;
-				continue day;
-			} else {
-				if (_elm_lang$core$Native_Utils.cmp(d, 0) < 1) {
-					var _v9 = n.y,
-						_v10 = n.m - 1,
-						_v11 = d + A2(_user$project$Model$daysInMonth, n.y, n.m - 1);
-					y = _v9;
-					m = _v10;
-					d = _v11;
-					continue day;
-				} else {
-					return A3(_user$project$Model$Day, n.y, n.m, d);
-				}
-			}
-		}
-	});
-var _user$project$Model$Month = F2(
-	function (a, b) {
-		return {ctor: 'Month', _0: a, _1: b};
-	});
-var _user$project$Model$month = F2(
-	function (y, m) {
-		var n = A2(_user$project$Model$month_, y, m);
-		return A2(_user$project$Model$Month, n.y, n.m);
-	});
-var _user$project$Model$Year = function (a) {
-	return {ctor: 'Year', _0: a};
-};
-var _user$project$Model$year = function (y) {
-	return _user$project$Model$Year(y);
-};
-var _user$project$Model$uDateParse = function (s) {
-	var uDatePattern = _elm_lang$core$Regex$regex('^([0-9]{4})(?:[-]([0-9]{2}))?(?:[-]([0-9]{2}))?$');
-	var matches = A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, uDatePattern, s);
-	var _p6 = matches;
-	if ((_p6.ctor === '::') && (_p6._1.ctor === '[]')) {
-		var _p7 = _p6._0.submatches;
-		_v13_3:
-		do {
-			if (((_p7.ctor === '::') && (_p7._0.ctor === 'Just')) && (_p7._1.ctor === '::')) {
-				if (_p7._1._0.ctor === 'Nothing') {
-					if (((_p7._1._1.ctor === '::') && (_p7._1._1._0.ctor === 'Nothing')) && (_p7._1._1._1.ctor === '[]')) {
-						return A2(
-							_elm_lang$core$Result$map,
-							_user$project$Model$year,
-							_elm_lang$core$String$toInt(_p7._0._0));
-					} else {
-						break _v13_3;
-					}
-				} else {
-					if (_p7._1._1.ctor === '::') {
-						if (_p7._1._1._0.ctor === 'Nothing') {
-							if (_p7._1._1._1.ctor === '[]') {
-								return A3(
-									_elm_lang$core$Result$map2,
-									_user$project$Model$month,
-									_elm_lang$core$String$toInt(_p7._0._0),
-									_elm_lang$core$String$toInt(_p7._1._0._0));
-							} else {
-								break _v13_3;
-							}
-						} else {
-							if (_p7._1._1._1.ctor === '[]') {
-								return A4(
-									_elm_lang$core$Result$map3,
-									_user$project$Model$day,
-									_elm_lang$core$String$toInt(_p7._0._0),
-									_elm_lang$core$String$toInt(_p7._1._0._0),
-									_elm_lang$core$String$toInt(_p7._1._1._0._0));
-							} else {
-								break _v13_3;
-							}
-						}
-					} else {
-						break _v13_3;
-					}
-				}
-			} else {
-				break _v13_3;
-			}
-		} while(false);
-		return _elm_lang$core$Result$Err(
-			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
-	} else {
-		return _elm_lang$core$Result$Err(
-			A2(_elm_lang$core$Basics_ops['++'], 'Failed to parse date: ', s));
-	}
-};
-var _user$project$Model$uDateDecoder = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (_p8) {
-		return _user$project$Model$resultToDecoder(
-			_user$project$Model$uDateParse(_p8));
-	},
-	_elm_lang$core$Json_Decode$string);
-var _user$project$Model$experienceItemDecoder = A4(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-	'end',
-	_elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
-					_user$project$Model$uDateDecoder,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
-				_1: {ctor: '[]'}
-			}
-		}),
-	_elm_lang$core$Maybe$Nothing,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'begin',
-		_user$project$Model$uDateDecoder,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'body',
-			_elm_lang$core$Json_Decode$string,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'title',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
 var _user$project$Model$sectionBodyDecoder = function () {
 	var experienceDecoder = A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
