@@ -13771,9 +13771,9 @@ var _user$project$Model$Model = F2(
 	function (a, b) {
 		return {resume: a, config: b};
 	});
-var _user$project$Model$Resume = F4(
-	function (a, b, c, d) {
-		return {name: a, contact: b, socialMedia: c, sections: d};
+var _user$project$Model$Resume = F5(
+	function (a, b, c, d, e) {
+		return {name: a, contact: b, socialMedia: c, secondarySocialMedia: d, sections: e};
 	});
 var _user$project$Model$Contact = F3(
 	function (a, b, c) {
@@ -13792,10 +13792,6 @@ var _user$project$Model$contactDecoder = A3(
 			'address',
 			_elm_lang$core$Json_Decode$string,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Contact))));
-var _user$project$Model$SocialMediaWithPriority = F2(
-	function (a, b) {
-		return {handle: a, priority: b};
-	});
 var _user$project$Model$SkillItem = F2(
 	function (a, b) {
 		return {title: a, body: b};
@@ -13891,18 +13887,6 @@ var _user$project$Model$socialMediaDecoder = function () {
 			}
 		});
 }();
-var _user$project$Model$socialMediaWithPriorityDecoder = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (c) {
-		return A4(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-			'prio',
-			_user$project$Model$priorityDecoder,
-			_user$project$Model$Primary,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(
-				_user$project$Model$SocialMediaWithPriority(c)));
-	},
-	_user$project$Model$socialMediaDecoder);
 var _user$project$Model$Experiences = function (a) {
 	return {ctor: 'Experiences', _0: a};
 };
@@ -14002,18 +13986,23 @@ var _user$project$Model$resumeDecoder = A4(
 	{ctor: '[]'},
 	A4(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-		'socialMedia',
-		_elm_lang$core$Json_Decode$list(_user$project$Model$socialMediaWithPriorityDecoder),
+		'secondarySocialMedia',
+		_elm_lang$core$Json_Decode$list(_user$project$Model$socialMediaDecoder),
 		{ctor: '[]'},
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'contact',
-			_user$project$Model$contactDecoder,
+		A4(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+			'socialMedia',
+			_elm_lang$core$Json_Decode$list(_user$project$Model$socialMediaDecoder),
+			{ctor: '[]'},
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'name',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume)))));
+				'contact',
+				_user$project$Model$contactDecoder,
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'name',
+					_elm_lang$core$Json_Decode$string,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume))))));
 
 var _user$project$Action$RequestedData = function (a) {
 	return {ctor: 'RequestedData', _0: a};
@@ -14121,117 +14110,112 @@ var _user$project$View$viewSection = function (_p5) {
 			}
 		});
 };
-var _user$project$View$viewSocialMedia = function (_p7) {
-	var _p8 = _p7;
-	var _p9 = {ctor: '_Tuple2', _0: _p8.priority, _1: _p8.handle};
-	if (_p9._0.ctor === 'Secondary') {
-		return _elm_lang$core$Maybe$Nothing;
-	} else {
-		switch (_p9._1.ctor) {
-			case 'Twitter':
-				var _p10 = _p9._1._0;
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$html$Html$a,
-						{
+var _user$project$View$viewSocialMedia = function (handle) {
+	var _p7 = handle;
+	switch (_p7.ctor) {
+		case 'Twitter':
+			var _p8 = _p7._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'http://twitter.com/', _p10)),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p10),
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'http://twitter.com/', _p8)),
 							_1: {ctor: '[]'}
-						}));
-			case 'Github':
-				var _p11 = _p9._1._0;
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$html$Html$a,
-						{
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p8),
+						_1: {ctor: '[]'}
+					}));
+		case 'Github':
+			var _p9 = _p7._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'http://github.com/', _p11)),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p11),
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'http://github.com/', _p9)),
 							_1: {ctor: '[]'}
-						}));
-			case 'Skype':
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$html$Html$a,
-						{ctor: '[]'},
-						{
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p9),
+						_1: {ctor: '[]'}
+					}));
+		case 'Skype':
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p7._0),
+						_1: {ctor: '[]'}
+					}));
+		case 'GTalk':
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p7._0),
+						_1: {ctor: '[]'}
+					}));
+		case 'LinkedIn':
+			var _p10 = _p7._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p9._1._0),
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'http://linkedin.com/in/', _p10)),
 							_1: {ctor: '[]'}
-						}));
-			case 'GTalk':
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$html$Html$a,
-						{ctor: '[]'},
-						{
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p10),
+						_1: {ctor: '[]'}
+					}));
+		default:
+			var _p11 = _p7._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p9._1._0),
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'http://stackoverflow.com/users/', _p11)),
 							_1: {ctor: '[]'}
-						}));
-			case 'LinkedIn':
-				var _p12 = _p9._1._0;
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$html$Html$a,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'http://linkedin.com/in/', _p12)),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p12),
-							_1: {ctor: '[]'}
-						}));
-			default:
-				var _p13 = _p9._1._0;
-				return _elm_lang$core$Maybe$Just(
-					A2(
-						_elm_lang$html$Html$a,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'http://stackoverflow.com/users/', _p13)),
-								_1: {ctor: '[]'}
-							}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p13),
-							_1: {ctor: '[]'}
-						}));
-		}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p11),
+						_1: {ctor: '[]'}
+					}));
 	}
 };
-var _user$project$View$viewSocialMediaList = function (_p14) {
+var _user$project$View$viewSocialMediaList = function (_p12) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14239,12 +14223,12 @@ var _user$project$View$viewSocialMediaList = function (_p14) {
 			_0: _elm_lang$html$Html_Attributes$class('resume-social'),
 			_1: {ctor: '[]'}
 		},
-		A2(_elm_lang$core$List$filterMap, _user$project$View$viewSocialMedia, _p14));
+		A2(_elm_lang$core$List$filterMap, _user$project$View$viewSocialMedia, _p12));
 };
-var _user$project$View$viewContact = function (_p15) {
-	var _p16 = _p15;
-	var _p18 = _p16.phone;
-	var _p17 = _p16.email;
+var _user$project$View$viewContact = function (_p13) {
+	var _p14 = _p13;
+	var _p16 = _p14.phone;
+	var _p15 = _p14.email;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14267,7 +14251,7 @@ var _user$project$View$viewContact = function (_p15) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_p16.address),
+						_p14.address),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
@@ -14280,13 +14264,13 @@ var _user$project$View$viewContact = function (_p15) {
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'mailto:', _p17)),
+								A2(_elm_lang$core$Basics_ops['++'], 'mailto:', _p15)),
 							_1: {ctor: '[]'}
 						}
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p17),
+						_0: _elm_lang$html$Html$text(_p15),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -14299,13 +14283,13 @@ var _user$project$View$viewContact = function (_p15) {
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'tel:', _p18)),
+									A2(_elm_lang$core$Basics_ops['++'], 'tel:', _p16)),
 								_1: {ctor: '[]'}
 							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p18),
+							_0: _elm_lang$html$Html$text(_p16),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -14313,8 +14297,8 @@ var _user$project$View$viewContact = function (_p15) {
 			}
 		});
 };
-var _user$project$View$viewResume = function (_p19) {
-	var _p20 = _p19;
+var _user$project$View$viewResume = function (_p17) {
+	var _p18 = _p17;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14335,7 +14319,7 @@ var _user$project$View$viewResume = function (_p19) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p20.name),
+						_0: _elm_lang$html$Html$text(_p18.name),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -14349,24 +14333,24 @@ var _user$project$View$viewResume = function (_p19) {
 						},
 						{
 							ctor: '::',
-							_0: _user$project$View$viewContact(_p20.contact),
+							_0: _user$project$View$viewContact(_p18.contact),
 							_1: {
 								ctor: '::',
-								_0: _user$project$View$viewSocialMediaList(_p20.socialMedia),
+								_0: _user$project$View$viewSocialMediaList(_p18.socialMedia),
 								_1: {ctor: '[]'}
 							}
 						}),
 					_1: {ctor: '[]'}
 				}
 			},
-			A2(_elm_lang$core$List$map, _user$project$View$viewSection, _p20.sections)));
+			A2(_elm_lang$core$List$map, _user$project$View$viewSection, _p18.sections)));
 };
-var _user$project$View$view = function (_p21) {
-	var _p22 = _p21;
-	var _p23 = _p22.resume;
-	switch (_p23.ctor) {
+var _user$project$View$view = function (_p19) {
+	var _p20 = _p19;
+	var _p21 = _p20.resume;
+	switch (_p21.ctor) {
 		case 'Success':
-			return _user$project$View$viewResume(_p23._0);
+			return _user$project$View$viewResume(_p21._0);
 		case 'Failure':
 			return A2(
 				_elm_lang$html$Html$div,
@@ -14385,7 +14369,7 @@ var _user$project$View$view = function (_p21) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_elm_lang$core$Basics$toString(_p23._0)),
+						_elm_lang$core$Basics$toString(_p21._0)),
 					_1: {ctor: '[]'}
 				});
 		default:
@@ -14441,7 +14425,7 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Model.Resume"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Model.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Model.Priority":{"args":[],"tags":{"Secondary":[],"Primary":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Model.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Model.SkillItem"],"Experiences":["List Model.ExperienceItem"]}}},"aliases":{"Model.ExperienceItem":{"args":[],"type":"{ title : String , body : Model.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Model.SkillItem":{"args":[],"type":"{ title : String, body : Model.Body }"},"Model.Resume":{"args":[],"type":"{ name : String , contact : Model.Contact , socialMedia : List Model.SocialMediaWithPriority , sections : List Model.Section }"},"Model.SocialMediaWithPriority":{"args":[],"type":"{ handle : Model.SocialMedia, priority : Model.Priority }"},"Model.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"Model.Section":{"args":[],"type":"{ title : String, body : Model.Body }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Model.Resume"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Model.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Model.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Model.SkillItem"],"Experiences":["List Model.ExperienceItem"]}}},"aliases":{"Model.ExperienceItem":{"args":[],"type":"{ title : String , body : Model.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Model.SkillItem":{"args":[],"type":"{ title : String, body : Model.Body }"},"Model.Resume":{"args":[],"type":"{ name : String , contact : Model.Contact , socialMedia : List Model.SocialMedia , secondarySocialMedia : List Model.SocialMedia , sections : List Model.Section }"},"Model.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"Model.Section":{"args":[],"type":"{ title : String, body : Model.Body }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

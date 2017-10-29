@@ -33,29 +33,28 @@ viewContact { address, email, phone } =
     , a [ class "resume-address-phone", href <| "tel:" ++ phone ] [ text phone ]
     ]
 
-viewSocialMediaList : List SocialMediaWithPriority -> Html a
+viewSocialMediaList : List SocialMedia -> Html a
 viewSocialMediaList =
   div [ class "resume-social" ] << List.filterMap viewSocialMedia
 
 -- TODO icons
-viewSocialMedia : SocialMediaWithPriority -> Maybe (Html a)
-viewSocialMedia { handle, priority } =
-  case (priority, handle) of
-    (Secondary, _) -> Nothing
-    (Primary, Twitter v) -> Just <|
+viewSocialMedia : SocialMedia -> Maybe (Html a)
+viewSocialMedia handle =
+  case handle of
+    Twitter v -> Just <|
       a [ class "resume-social-link", href <| "http://twitter.com/" ++ v ]
         [ text v ]
-    (Primary, Github v) -> Just <|
+    Github v -> Just <|
       a [ class "resume-social-link", href <| "http://github.com/" ++ v ]
         [ text v ]
-    (Primary, Skype v) -> Just <|
+    Skype v -> Just <|
       a [] [ text v ] -- TODO
-    (Primary, GTalk v) -> Just <|
+    GTalk v -> Just <|
       a [] [ text v ] -- TODO
-    (Primary, LinkedIn v) -> Just <|
+    LinkedIn v -> Just <|
       a [ class "resume-social-link", href <| "http://linkedin.com/in/" ++ v ]
         [ text v ]
-    (Primary, StackOverflow v) -> Just <| -- TODO: string should be int here
+    StackOverflow v -> Just <| -- TODO: string should be int here
       a [ class "resume-social-link", href <| "http://stackoverflow.com/users/" ++ v ]
         [ text v ]
 

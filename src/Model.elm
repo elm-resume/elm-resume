@@ -20,7 +20,8 @@ initModel config =
 type alias Resume =
   { name : String
   , contact : Contact
-  , socialMedia : List SocialMediaWithPriority
+  , socialMedia : List SocialMedia
+  , secondarySocialMedia : List SocialMedia
   , sections : List Section
   }
 
@@ -29,7 +30,8 @@ resumeDecoder =
   decode Resume
     |> required "name" string
     |> required "contact" contactDecoder
-    |> optional "socialMedia" (list socialMediaWithPriorityDecoder) []
+    |> optional "socialMedia" (list socialMediaDecoder) []
+    |> optional "secondarySocialMedia" (list socialMediaDecoder) []
     |> optional "sections" (list sectionDecoder) []
 
 type alias Contact =
@@ -87,17 +89,6 @@ socialMediaDecoder =
       , matchValue "linkedin"      LinkedIn      string
       , matchValue "stackoverflow" StackOverflow string
       ]
-
-type alias SocialMediaWithPriority =
-  { handle : SocialMedia
-  , priority : Priority
-  }
-
-socialMediaWithPriorityDecoder : Decoder SocialMediaWithPriority
-socialMediaWithPriorityDecoder =
-  andThen (\c ->
-    decode (SocialMediaWithPriority c) |> optional "prio" priorityDecoder Primary
-  ) socialMediaDecoder
 
 type alias SkillItem =
   { title : String

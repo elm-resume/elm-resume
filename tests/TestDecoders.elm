@@ -10,7 +10,7 @@ suite =
   describe "Resume Tests"
     [ describe "Resume decoder"
       [ test "Resume" <|
-        testDecode """{ "name" : "Jane", "contact" : { "address" : "", "email" : "", "phone" : "" }, "socialMedia" : [], "sections" : [] }""" resumeDecoder { name = "Jane", contact = { address = "", email = "", phone = "" }, socialMedia = [], sections = [] }
+        testDecode """{ "name" : "Jane", "contact" : { "address" : "", "email" : "", "phone" : "" } }""" resumeDecoder { name = "Jane", contact = { address = "", email = "", phone = "" }, socialMedia = [], secondarySocialMedia = [], sections = [] }
       ]
     , describe "Contact decoders"
       [ test "Twitter" <|
@@ -26,13 +26,9 @@ suite =
       , test "Secondary" <|
         testDecode "\"secondary\"" priorityDecoder Secondary
       ]
-    , describe "SocialMediatWithPrioriy decoders"
+    , describe "SocialMedia decoders"
       [ test "Twitter Secondary" <|
-        testDecode """{ "type" : "twitter", "value" : "t", "prio" : "secondary" }""" socialMediaWithPriorityDecoder { handle = Twitter "t", priority = Secondary }
-      , test "Twitter Primary" <|
-        testDecode """{ "type" : "twitter", "value" : "t", "prio" : "primary" }""" socialMediaWithPriorityDecoder { handle = Twitter "t", priority = Primary }
-      , test "Twitter Default" <|
-        testDecode """{ "type" : "twitter", "value" : "t" }""" socialMediaWithPriorityDecoder { handle = Twitter "t", priority = Primary }
+        testDecode """{ "type" : "twitter", "value" : "t" }""" socialMediaDecoder (Twitter "t")
       ]
     , describe "SkillItem decoders"
       [ test "SkillItem with text body" <|
