@@ -28,13 +28,13 @@ suite =
       ]
     , describe "SkillItem decoders"
       [ test "SkillItem with text body" <|
-        testDecode """{ "title" : "TITLE", "body" : "hi!" }""" skillItemDecoder { title = "TITLE", body = Text "hi!" }
+        testDecode """{ "title" : "TITLE", "body" : "hi!" }""" skillItemDecoder { title = "TITLE", body = Text "hi!", prio = Mandatory }
       ]
     , describe "ExperienceItem decoders"
       [ test "Experience with text body" <|
-        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007" }""" experienceItemDecoder { title = "TITLE", body = Text "hi!", begin = year 2007, end = Nothing }
+        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007" }""" experienceItemDecoder { title = "TITLE", body = Text "hi!", begin = year 2007, end = Nothing, prio = Mandatory }
       , test "Experience with text body and `end` date" <|
-        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007", "end" : "2010-10" }""" experienceItemDecoder { title = "TITLE", body = Text "hi!", begin = year 2007, end = Just (month 2010 10) }
+        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007", "end" : "2010-10", "optional" : "blah" }""" experienceItemDecoder { title = "TITLE", body = Text "hi!", begin = year 2007, end = Just (month 2010 10), prio = Optional "blah" }
       ]
     , describe "Body decoders"
       [ test "Body Text" <|

@@ -102,31 +102,33 @@ socialMediaDecoder =
 type alias SkillItem =
   { title : String
   , body : Body
+  , prio : Priority
   }
 
 skillItemDecoder : Decoder SkillItem
 skillItemDecoder =
-  decode SkillItem
+  andThen (\f -> map f priorityDecoder) (decode SkillItem
     |> required "title" string
-    |> required "body" bodyDecoder
+    |> required "body" bodyDecoder)
 
 type alias ExperienceItem =
   { title : String
   , body : Body
   , begin : UDate
   , end : Maybe UDate
+  , prio : Priority
   }
 
 experienceItemDecoder : Decoder ExperienceItem
 experienceItemDecoder =
-  decode ExperienceItem
+  andThen (\f -> map f priorityDecoder) (decode ExperienceItem
     |> required "title" string
     |> required "body" bodyDecoder
     |> required "begin" uDateDecoder
     |> optional "end" (oneOf
       [ null Nothing
       , (custom uDateDecoder <| decode Just)
-      ]) Nothing
+      ]) Nothing)
 
 type Body
   = Text String

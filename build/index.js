@@ -13920,13 +13920,13 @@ var _user$project$Model$contactDecoder = A3(
 			'address',
 			_elm_lang$core$Json_Decode$string,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Contact))));
-var _user$project$Model$SkillItem = F2(
-	function (a, b) {
-		return {title: a, body: b};
+var _user$project$Model$SkillItem = F3(
+	function (a, b, c) {
+		return {title: a, body: b, prio: c};
 	});
-var _user$project$Model$ExperienceItem = F4(
-	function (a, b, c, d) {
-		return {title: a, body: b, begin: c, end: d};
+var _user$project$Model$ExperienceItem = F5(
+	function (a, b, c, d, e) {
+		return {title: a, body: b, begin: c, end: d, prio: e};
 	});
 var _user$project$Model$Section = F2(
 	function (a, b) {
@@ -14082,45 +14082,55 @@ var _user$project$Model$bodyDecoder = function () {
 			}
 		});
 }();
-var _user$project$Model$experienceItemDecoder = A4(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-	'end',
-	_elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-			_1: {
+var _user$project$Model$experienceItemDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (f) {
+		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Model$priorityDecoder);
+	},
+	A4(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+		'end',
+		_elm_lang$core$Json_Decode$oneOf(
+			{
 				ctor: '::',
-				_0: A2(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
-					_user$project$UDate$uDateDecoder,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
-				_1: {ctor: '[]'}
-			}
-		}),
-	_elm_lang$core$Maybe$Nothing,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'begin',
-		_user$project$UDate$uDateDecoder,
+				_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+						_user$project$UDate$uDateDecoder,
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_elm_lang$core$Maybe$Nothing,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'body',
-			_user$project$Model$bodyDecoder,
+			'begin',
+			_user$project$UDate$uDateDecoder,
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'title',
-				_elm_lang$core$Json_Decode$string,
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem)))));
-var _user$project$Model$skillItemDecoder = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'body',
-	_user$project$Model$bodyDecoder,
+				'body',
+				_user$project$Model$bodyDecoder,
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'title',
+					_elm_lang$core$Json_Decode$string,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem))))));
+var _user$project$Model$skillItemDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (f) {
+		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Model$priorityDecoder);
+	},
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'title',
-		_elm_lang$core$Json_Decode$string,
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$SkillItem)));
+		'body',
+		_user$project$Model$bodyDecoder,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'title',
+			_elm_lang$core$Json_Decode$string,
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$SkillItem))));
 var _user$project$Model$sectionDecoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 	'body',
@@ -14576,7 +14586,7 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Model.Resume"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Model.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Model.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Model.SkillItem"],"Experiences":["List Model.ExperienceItem"]}}},"aliases":{"Model.ExperienceItem":{"args":[],"type":"{ title : String , body : Model.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Model.SkillItem":{"args":[],"type":"{ title : String, body : Model.Body }"},"Model.Resume":{"args":[],"type":"{ name : String , contact : Model.Contact , socialMedia : List Model.SocialMedia , secondarySocialMedia : List Model.SocialMedia , sections : List Model.Section }"},"Model.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"Model.Section":{"args":[],"type":"{ title : String, body : Model.Body }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Model.Resume"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Model.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Model.Priority":{"args":[],"tags":{"Mandatory":[],"Optional":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Model.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Model.SkillItem"],"Experiences":["List Model.ExperienceItem"]}}},"aliases":{"Model.ExperienceItem":{"args":[],"type":"{ title : String , body : Model.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate , prio : Model.Priority }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Model.SkillItem":{"args":[],"type":"{ title : String, body : Model.Body, prio : Model.Priority }"},"Model.Resume":{"args":[],"type":"{ name : String , contact : Model.Contact , socialMedia : List Model.SocialMedia , secondarySocialMedia : List Model.SocialMedia , sections : List Model.Section }"},"Model.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"Model.Section":{"args":[],"type":"{ title : String, body : Model.Body }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
