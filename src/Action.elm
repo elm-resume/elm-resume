@@ -1,7 +1,10 @@
 module Action exposing (..)
 
-import Model exposing (Resume)
 import RemoteData exposing (WebData)
+import Resume exposing (Resume)
+import ResumeState exposing (Id)
 
 type Action
   = RequestedData (WebData Resume)
+  | ToggleOptionalSocialMedia
+  | ToggleItem Id

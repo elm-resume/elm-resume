@@ -6249,6 +6249,137 @@ var _elm_lang$core$Time$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
+var _elm_lang$core$Set$foldr = F3(
+	function (f, b, _p0) {
+		var _p1 = _p0;
+		return A3(
+			_elm_lang$core$Dict$foldr,
+			F3(
+				function (k, _p2, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p1._0);
+	});
+var _elm_lang$core$Set$foldl = F3(
+	function (f, b, _p3) {
+		var _p4 = _p3;
+		return A3(
+			_elm_lang$core$Dict$foldl,
+			F3(
+				function (k, _p5, b) {
+					return A2(f, k, b);
+				}),
+			b,
+			_p4._0);
+	});
+var _elm_lang$core$Set$toList = function (_p6) {
+	var _p7 = _p6;
+	return _elm_lang$core$Dict$keys(_p7._0);
+};
+var _elm_lang$core$Set$size = function (_p8) {
+	var _p9 = _p8;
+	return _elm_lang$core$Dict$size(_p9._0);
+};
+var _elm_lang$core$Set$member = F2(
+	function (k, _p10) {
+		var _p11 = _p10;
+		return A2(_elm_lang$core$Dict$member, k, _p11._0);
+	});
+var _elm_lang$core$Set$isEmpty = function (_p12) {
+	var _p13 = _p12;
+	return _elm_lang$core$Dict$isEmpty(_p13._0);
+};
+var _elm_lang$core$Set$Set_elm_builtin = function (a) {
+	return {ctor: 'Set_elm_builtin', _0: a};
+};
+var _elm_lang$core$Set$empty = _elm_lang$core$Set$Set_elm_builtin(_elm_lang$core$Dict$empty);
+var _elm_lang$core$Set$singleton = function (k) {
+	return _elm_lang$core$Set$Set_elm_builtin(
+		A2(
+			_elm_lang$core$Dict$singleton,
+			k,
+			{ctor: '_Tuple0'}));
+};
+var _elm_lang$core$Set$insert = F2(
+	function (k, _p14) {
+		var _p15 = _p14;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A3(
+				_elm_lang$core$Dict$insert,
+				k,
+				{ctor: '_Tuple0'},
+				_p15._0));
+	});
+var _elm_lang$core$Set$fromList = function (xs) {
+	return A3(_elm_lang$core$List$foldl, _elm_lang$core$Set$insert, _elm_lang$core$Set$empty, xs);
+};
+var _elm_lang$core$Set$map = F2(
+	function (f, s) {
+		return _elm_lang$core$Set$fromList(
+			A2(
+				_elm_lang$core$List$map,
+				f,
+				_elm_lang$core$Set$toList(s)));
+	});
+var _elm_lang$core$Set$remove = F2(
+	function (k, _p16) {
+		var _p17 = _p16;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$remove, k, _p17._0));
+	});
+var _elm_lang$core$Set$union = F2(
+	function (_p19, _p18) {
+		var _p20 = _p19;
+		var _p21 = _p18;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$union, _p20._0, _p21._0));
+	});
+var _elm_lang$core$Set$intersect = F2(
+	function (_p23, _p22) {
+		var _p24 = _p23;
+		var _p25 = _p22;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$intersect, _p24._0, _p25._0));
+	});
+var _elm_lang$core$Set$diff = F2(
+	function (_p27, _p26) {
+		var _p28 = _p27;
+		var _p29 = _p26;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(_elm_lang$core$Dict$diff, _p28._0, _p29._0));
+	});
+var _elm_lang$core$Set$filter = F2(
+	function (p, _p30) {
+		var _p31 = _p30;
+		return _elm_lang$core$Set$Set_elm_builtin(
+			A2(
+				_elm_lang$core$Dict$filter,
+				F2(
+					function (k, _p32) {
+						return p(k);
+					}),
+				_p31._0));
+	});
+var _elm_lang$core$Set$partition = F2(
+	function (p, _p33) {
+		var _p34 = _p33;
+		var _p35 = A2(
+			_elm_lang$core$Dict$partition,
+			F2(
+				function (k, _p36) {
+					return p(k);
+				}),
+			_p34._0);
+		var p1 = _p35._0;
+		var p2 = _p35._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Set$Set_elm_builtin(p1),
+			_1: _elm_lang$core$Set$Set_elm_builtin(p2)
+		};
+	});
+
 var _elm_community$result_extra$Result_Extra$merge = function (r) {
 	var _p0 = r;
 	if (_p0.ctor === 'Ok') {
@@ -13880,11 +14011,7 @@ var _user$project$UDate$uDateDecoder = _elm_lang$core$Json_Decode$oneOf(
 		}
 	});
 
-var _user$project$Config$Config = function (a) {
-	return {api_base_url: a};
-};
-
-var _user$project$Model$resultToDecoder = function (r) {
+var _user$project$Resume$resultToDecoder = function (r) {
 	var _p0 = r;
 	if (_p0.ctor === 'Err') {
 		return _elm_lang$core$Json_Decode$fail(_p0._0);
@@ -13892,22 +14019,15 @@ var _user$project$Model$resultToDecoder = function (r) {
 		return _elm_lang$core$Json_Decode$succeed(_p0._0);
 	}
 };
-var _user$project$Model$initModel = function (config) {
-	return {resume: _krisajenkins$remotedata$RemoteData$NotAsked, config: config};
-};
-var _user$project$Model$Model = F2(
-	function (a, b) {
-		return {resume: a, config: b};
-	});
-var _user$project$Model$Resume = F5(
+var _user$project$Resume$Resume = F5(
 	function (a, b, c, d, e) {
-		return {name: a, contact: b, socialMedia: c, secondarySocialMedia: d, sections: e};
+		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e};
 	});
-var _user$project$Model$Contact = F3(
+var _user$project$Resume$Contact = F3(
 	function (a, b, c) {
 		return {address: a, email: b, phone: c};
 	});
-var _user$project$Model$contactDecoder = A3(
+var _user$project$Resume$contactDecoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 	'phone',
 	_elm_lang$core$Json_Decode$string,
@@ -13919,31 +14039,31 @@ var _user$project$Model$contactDecoder = A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 			'address',
 			_elm_lang$core$Json_Decode$string,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Contact))));
-var _user$project$Model$SkillItem = F3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Contact))));
+var _user$project$Resume$SkillItem = F3(
 	function (a, b, c) {
 		return {title: a, body: b, prio: c};
 	});
-var _user$project$Model$ExperienceItem = F5(
+var _user$project$Resume$ExperienceItem = F5(
 	function (a, b, c, d, e) {
 		return {title: a, body: b, begin: c, end: d, prio: e};
 	});
-var _user$project$Model$Section = F2(
+var _user$project$Resume$Section = F2(
 	function (a, b) {
 		return {title: a, body: b};
 	});
-var _user$project$Model$Optional = function (a) {
+var _user$project$Resume$Optional = function (a) {
 	return {ctor: 'Optional', _0: a};
 };
-var _user$project$Model$Mandatory = {ctor: 'Mandatory'};
-var _user$project$Model$priorityDecoder = function () {
+var _user$project$Resume$Mandatory = {ctor: 'Mandatory'};
+var _user$project$Resume$priorityDecoder = function () {
 	var match = function (s) {
 		var _p1 = s;
 		if (_p1 === '') {
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Mandatory);
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Resume$Mandatory);
 		} else {
 			return _elm_lang$core$Json_Decode$succeed(
-				_user$project$Model$Optional(_p1));
+				_user$project$Resume$Optional(_p1));
 		}
 	};
 	return A2(
@@ -13956,27 +14076,27 @@ var _user$project$Model$priorityDecoder = function () {
 			'',
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Basics$identity)));
 }();
-var _user$project$Model$StackOverflow = function (a) {
+var _user$project$Resume$StackOverflow = function (a) {
 	return {ctor: 'StackOverflow', _0: a};
 };
-var _user$project$Model$LinkedIn = function (a) {
+var _user$project$Resume$LinkedIn = function (a) {
 	return {ctor: 'LinkedIn', _0: a};
 };
-var _user$project$Model$Skype = function (a) {
+var _user$project$Resume$Skype = function (a) {
 	return {ctor: 'Skype', _0: a};
 };
-var _user$project$Model$GTalk = function (a) {
+var _user$project$Resume$GTalk = function (a) {
 	return {ctor: 'GTalk', _0: a};
 };
-var _user$project$Model$Github = function (a) {
+var _user$project$Resume$Github = function (a) {
 	return {ctor: 'Github', _0: a};
 };
-var _user$project$Model$Twitter = function (a) {
+var _user$project$Resume$Twitter = function (a) {
 	return {ctor: 'Twitter', _0: a};
 };
-var _user$project$Model$socialMediaDecoder = function () {
+var _user$project$Resume$socialMediaDecoder = function () {
 	var mapAllMediaDecoder = function (r) {
-		return _user$project$Model$resultToDecoder(r);
+		return _user$project$Resume$resultToDecoder(r);
 	};
 	var mapMedia = function (_p2) {
 		var _p3 = _p2;
@@ -13985,22 +14105,22 @@ var _user$project$Model$socialMediaDecoder = function () {
 		switch (_p4) {
 			case 'github':
 				return _elm_lang$core$Result$Ok(
-					_user$project$Model$Github(_p5));
+					_user$project$Resume$Github(_p5));
 			case 'gtalk':
 				return _elm_lang$core$Result$Ok(
-					_user$project$Model$GTalk(_p5));
+					_user$project$Resume$GTalk(_p5));
 			case 'twitter':
 				return _elm_lang$core$Result$Ok(
-					_user$project$Model$Twitter(_p5));
+					_user$project$Resume$Twitter(_p5));
 			case 'skype':
 				return _elm_lang$core$Result$Ok(
-					_user$project$Model$Skype(_p5));
+					_user$project$Resume$Skype(_p5));
 			case 'linkedin':
 				return _elm_lang$core$Result$Ok(
-					_user$project$Model$LinkedIn(_p5));
+					_user$project$Resume$LinkedIn(_p5));
 			case 'stackoverflow':
 				return _elm_lang$core$Result$Ok(
-					_user$project$Model$StackOverflow(_p5));
+					_user$project$Resume$StackOverflow(_p5));
 			default:
 				return _elm_lang$core$Result$Err(
 					A2(_elm_lang$core$Basics_ops['++'], 'No match for social media handler: ', _p4));
@@ -14038,35 +14158,35 @@ var _user$project$Model$socialMediaDecoder = function () {
 		},
 		_elm_lang$core$Json_Decode$keyValuePairs(_elm_lang$core$Json_Decode$string));
 }();
-var _user$project$Model$Experiences = function (a) {
+var _user$project$Resume$Experiences = function (a) {
 	return {ctor: 'Experiences', _0: a};
 };
-var _user$project$Model$Skills = function (a) {
+var _user$project$Resume$Skills = function (a) {
 	return {ctor: 'Skills', _0: a};
 };
-var _user$project$Model$Text = function (a) {
+var _user$project$Resume$Text = function (a) {
 	return {ctor: 'Text', _0: a};
 };
-var _user$project$Model$bodyDecoder = function () {
+var _user$project$Resume$bodyDecoder = function () {
 	var experienceDecoder = A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'experiences',
 		_elm_lang$core$Json_Decode$list(
 			_elm_lang$core$Json_Decode$lazy(
 				function (_p8) {
-					return _user$project$Model$experienceItemDecoder;
+					return _user$project$Resume$experienceItemDecoder;
 				})),
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Experiences));
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Experiences));
 	var skillsDecoder = A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'skills',
 		_elm_lang$core$Json_Decode$list(
 			_elm_lang$core$Json_Decode$lazy(
 				function (_p9) {
-					return _user$project$Model$skillItemDecoder;
+					return _user$project$Resume$skillItemDecoder;
 				})),
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Skills));
-	var textDecoder = A2(_elm_lang$core$Json_Decode$map, _user$project$Model$Text, _elm_lang$core$Json_Decode$string);
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Skills));
+	var textDecoder = A2(_elm_lang$core$Json_Decode$map, _user$project$Resume$Text, _elm_lang$core$Json_Decode$string);
 	return _elm_lang$core$Json_Decode$oneOf(
 		{
 			ctor: '::',
@@ -14082,10 +14202,10 @@ var _user$project$Model$bodyDecoder = function () {
 			}
 		});
 }();
-var _user$project$Model$experienceItemDecoder = A2(
+var _user$project$Resume$experienceItemDecoder = A2(
 	_elm_lang$core$Json_Decode$andThen,
 	function (f) {
-		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Model$priorityDecoder);
+		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Resume$priorityDecoder);
 	},
 	A4(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
@@ -14111,63 +14231,94 @@ var _user$project$Model$experienceItemDecoder = A2(
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 				'body',
-				_user$project$Model$bodyDecoder,
+				_user$project$Resume$bodyDecoder,
 				A3(
 					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 					'title',
 					_elm_lang$core$Json_Decode$string,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$ExperienceItem))))));
-var _user$project$Model$skillItemDecoder = A2(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$ExperienceItem))))));
+var _user$project$Resume$skillItemDecoder = A2(
 	_elm_lang$core$Json_Decode$andThen,
 	function (f) {
-		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Model$priorityDecoder);
+		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Resume$priorityDecoder);
 	},
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'body',
-		_user$project$Model$bodyDecoder,
+		_user$project$Resume$bodyDecoder,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 			'title',
 			_elm_lang$core$Json_Decode$string,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$SkillItem))));
-var _user$project$Model$sectionDecoder = A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$SkillItem))));
+var _user$project$Resume$sectionDecoder = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 	'body',
-	_user$project$Model$bodyDecoder,
+	_user$project$Resume$bodyDecoder,
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'title',
 		_elm_lang$core$Json_Decode$string,
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Section)));
-var _user$project$Model$resumeDecoder = A4(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Section)));
+var _user$project$Resume$resumeDecoder = A4(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
 	'sections',
-	_elm_lang$core$Json_Decode$list(_user$project$Model$sectionDecoder),
+	_elm_lang$core$Json_Decode$list(_user$project$Resume$sectionDecoder),
 	{ctor: '[]'},
 	A4(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-		'secondarySocialMedia',
-		_user$project$Model$socialMediaDecoder,
+		'optionalSocialMedia',
+		_user$project$Resume$socialMediaDecoder,
 		{ctor: '[]'},
 		A4(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
 			'socialMedia',
-			_user$project$Model$socialMediaDecoder,
+			_user$project$Resume$socialMediaDecoder,
 			{ctor: '[]'},
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 				'contact',
-				_user$project$Model$contactDecoder,
+				_user$project$Resume$contactDecoder,
 				A3(
 					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 					'name',
 					_elm_lang$core$Json_Decode$string,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Resume))))));
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Resume))))));
 
+var _user$project$ResumeState$ResumeState = F6(
+	function (a, b, c, d, e, f) {
+		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e, visible: f};
+	});
+
+var _user$project$Action$ToggleItem = function (a) {
+	return {ctor: 'ToggleItem', _0: a};
+};
+var _user$project$Action$ToggleOptionalSocialMedia = {ctor: 'ToggleOptionalSocialMedia'};
 var _user$project$Action$RequestedData = function (a) {
 	return {ctor: 'RequestedData', _0: a};
 };
+
+var _user$project$Config$Config = function (a) {
+	return {api_base_url: a};
+};
+
+var _user$project$Model$resumeToResumeState = function (r) {
+	return {
+		name: r.name,
+		contact: r.contact,
+		socialMedia: r.socialMedia,
+		optionalSocialMedia: {visible: false, handles: r.optionalSocialMedia},
+		sections: r.sections,
+		visible: _elm_lang$core$Set$empty
+	};
+};
+var _user$project$Model$initModel = function (config) {
+	return {resume: _krisajenkins$remotedata$RemoteData$NotAsked, config: config};
+};
+var _user$project$Model$Model = F2(
+	function (a, b) {
+		return {resume: a, config: b};
+	});
 
 var _user$project$View$viewExperienceItem = function (_p0) {
 	var _p1 = _p0;
@@ -14547,7 +14698,7 @@ var _user$project$Main$getData = function (base_url) {
 		_elm_lang$core$Platform_Cmd$map,
 		_user$project$Action$RequestedData,
 		_krisajenkins$remotedata$RemoteData$sendRequest(
-			A2(_elm_lang$http$Http$get, url, _user$project$Model$resumeDecoder)));
+			A2(_elm_lang$http$Http$get, url, _user$project$Resume$resumeDecoder)));
 };
 var _user$project$Main$init = function (cfg) {
 	return A2(
@@ -14564,14 +14715,70 @@ var _user$project$Main$subscriptions = function (model) {
 };
 var _user$project$Main$update = F2(
 	function (action, model) {
-		var _p0 = action;
-		return {
-			ctor: '_Tuple2',
-			_0: _elm_lang$core$Native_Utils.update(
-				model,
-				{resume: _p0._0}),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
+		var _p0 = {ctor: '_Tuple2', _0: action, _1: model.resume};
+		_v0_3:
+		do {
+			switch (_p0._0.ctor) {
+				case 'RequestedData':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								resume: A2(_krisajenkins$remotedata$RemoteData$map, _user$project$Model$resumeToResumeState, _p0._0._0)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'ToggleOptionalSocialMedia':
+					if (_p0._1.ctor === 'Success') {
+						var _p1 = _p0._1._0;
+						var osm = _p1.optionalSocialMedia;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									resume: _krisajenkins$remotedata$RemoteData$Success(
+										_elm_lang$core$Native_Utils.update(
+											_p1,
+											{
+												optionalSocialMedia: _elm_lang$core$Native_Utils.update(
+													osm,
+													{visible: !osm.visible})
+											}))
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						break _v0_3;
+					}
+				default:
+					if (_p0._1.ctor === 'Success') {
+						var _p3 = _p0._1._0;
+						var _p2 = _p0._0._0;
+						var contains = A2(_elm_lang$core$Set$member, _p2, _p3.visible);
+						var visible = A2(
+							contains ? _elm_lang$core$Set$remove : _elm_lang$core$Set$insert,
+							_p2,
+							_p3.visible);
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									resume: _krisajenkins$remotedata$RemoteData$Success(
+										_elm_lang$core$Native_Utils.update(
+											_p3,
+											{visible: visible}))
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						break _v0_3;
+					}
+			}
+		} while(false);
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 	});
 var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 	{init: _user$project$Main$init, view: _user$project$View$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})(
@@ -14586,7 +14793,7 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Model.Resume"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Model.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Model.Priority":{"args":[],"tags":{"Mandatory":[],"Optional":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Model.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Model.SkillItem"],"Experiences":["List Model.ExperienceItem"]}}},"aliases":{"Model.ExperienceItem":{"args":[],"type":"{ title : String , body : Model.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate , prio : Model.Priority }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Model.SkillItem":{"args":[],"type":"{ title : String, body : Model.Body, prio : Model.Priority }"},"Model.Resume":{"args":[],"type":"{ name : String , contact : Model.Contact , socialMedia : List Model.SocialMedia , secondarySocialMedia : List Model.SocialMedia , sections : List Model.Section }"},"Model.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"Model.Section":{"args":[],"type":"{ title : String, body : Model.Body }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Resume.Resume"],"ToggleItem":["ResumeState.Id"],"ToggleOptionalSocialMedia":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Resume.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Resume.SkillItem"],"Experiences":["List Resume.ExperienceItem"]}},"Resume.Priority":{"args":[],"tags":{"Mandatory":[],"Optional":["String"]}},"Resume.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}}},"aliases":{"Resume.ExperienceItem":{"args":[],"type":"{ title : String , body : Resume.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate , prio : Resume.Priority }"},"Resume.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"ResumeState.Id":{"args":[],"type":"String"},"Resume.SkillItem":{"args":[],"type":"{ title : String, body : Resume.Body, prio : Resume.Priority }"},"Resume.Section":{"args":[],"type":"{ title : String, body : Resume.Body }"},"Resume.Resume":{"args":[],"type":"{ name : String , contact : Resume.Contact , socialMedia : List Resume.SocialMedia , optionalSocialMedia : List Resume.SocialMedia , sections : List Resume.Section }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

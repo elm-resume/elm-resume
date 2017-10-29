@@ -2,7 +2,7 @@ module TestDecoders exposing (..)
 
 import Common exposing (..)
 import Test exposing (..)
-import Model exposing (..)
+import Resume exposing (..)
 import UDate exposing (year, month)
 
 suite : Test
@@ -10,7 +10,7 @@ suite =
   describe "Resume Tests"
     [ describe "Resume decoder"
       [ test "Resume" <|
-        testDecode """{ "name" : "Jane", "contact" : { "address" : "", "email" : "", "phone" : "" } }""" resumeDecoder { name = "Jane", contact = { address = "", email = "", phone = "" }, socialMedia = [], secondarySocialMedia = [], sections = [] }
+        testDecode """{ "name" : "Jane", "contact" : { "address" : "", "email" : "", "phone" : "" } }""" resumeDecoder { name = "Jane", contact = { address = "", email = "", phone = "" }, socialMedia = [], optionalSocialMedia = [], sections = [] }
       ]
     , describe "Contact decoders"
       [ test "Contact" <|
@@ -23,7 +23,7 @@ suite =
         testDecode """{ "optional" : "label" }""" priorityDecoder (Optional "label")
       ]
     , describe "SocialMedia decoders"
-      [ test "Twitter Secondary" <|
+      [ test "Twitter" <|
         testDecode """{ "twitter" : "t" }""" socialMediaDecoder [Twitter "t"]
       ]
     , describe "SkillItem decoders"

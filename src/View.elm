@@ -5,6 +5,8 @@ import Markdown
 import Html.Attributes exposing (..)
 import RemoteData exposing (RemoteData(..))
 import Model exposing (..)
+import Resume exposing (..)
+import ResumeState exposing (..)
 
 view : Model -> Html a
 view { resume } =
@@ -13,8 +15,10 @@ view { resume } =
     Failure msg -> div [style [("font-family", "monospace")]] [Markdown.toHtml [] <| toString msg]
     _ -> div [] []
 
-viewResume : Resume -> Html a
-viewResume { name, contact, socialMedia, sections } =
+viewResume : ResumeState -> Html a
+viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible } =
+  -- TODO optionalSocialMedia
+  -- TODO visible
   div
     [ class "resume" ] <|
     [ h1 [ class "resume-name" ] [ text name ]
