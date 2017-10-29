@@ -17,10 +17,10 @@ suite =
         testDecode """{ "address" : "a", "email" : "e", "phone" : "p" }""" contactDecoder { address = "a", email = "e", phone = "p" }
       ]
     , describe "Priority decoders"
-      [ test "Primary" <|
-        testDecode "\"primary\"" priorityDecoder Primary
-      , test "Secondary" <|
-        testDecode "\"secondary\"" priorityDecoder Secondary
+      [ test "Mandatory" <|
+        testDecode """{}""" priorityDecoder Mandatory
+      , test "Optional" <|
+        testDecode """{ "optional" : "label" }""" priorityDecoder (Optional "label")
       ]
     , describe "SocialMedia decoders"
       [ test "Twitter Secondary" <|

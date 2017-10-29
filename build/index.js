@@ -13932,22 +13932,29 @@ var _user$project$Model$Section = F2(
 	function (a, b) {
 		return {title: a, body: b};
 	});
-var _user$project$Model$Secondary = {ctor: 'Secondary'};
-var _user$project$Model$Primary = {ctor: 'Primary'};
+var _user$project$Model$Optional = function (a) {
+	return {ctor: 'Optional', _0: a};
+};
+var _user$project$Model$Mandatory = {ctor: 'Mandatory'};
 var _user$project$Model$priorityDecoder = function () {
 	var match = function (s) {
 		var _p1 = s;
-		switch (_p1) {
-			case 'primary':
-				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Primary);
-			case 'secondary':
-				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Secondary);
-			default:
-				return _elm_lang$core$Json_Decode$fail(
-					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p1));
+		if (_p1 === '') {
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Mandatory);
+		} else {
+			return _elm_lang$core$Json_Decode$succeed(
+				_user$project$Model$Optional(_p1));
 		}
 	};
-	return A2(_elm_lang$core$Json_Decode$andThen, match, _elm_lang$core$Json_Decode$string);
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		match,
+		A4(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+			'optional',
+			_elm_lang$core$Json_Decode$string,
+			'',
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Basics$identity)));
 }();
 var _user$project$Model$StackOverflow = function (a) {
 	return {ctor: 'StackOverflow', _0: a};

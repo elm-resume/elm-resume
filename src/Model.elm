@@ -49,18 +49,19 @@ contactDecoder =
     |> required "phone" string
 
 type Priority
-  = Primary
-  | Secondary
+  = Mandatory
+  | Optional String
 
 priorityDecoder : Decoder Priority
 priorityDecoder =
   let
     match s = case s of
-      "primary" -> succeed Primary
-      "secondary" -> succeed Secondary
-      other -> fail <| "invalid priority: " ++ other
+      "" -> succeed Mandatory
+      name -> succeed (Optional name)
   in
-    andThen match string
+    andThen match
+      (decode identity |>
+        optional "optional" string "")
 
 type SocialMedia
   = Twitter String
