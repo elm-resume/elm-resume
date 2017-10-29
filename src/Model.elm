@@ -98,14 +98,6 @@ socialMediaDecoder =
     mapAllMediaDecoder r = resultToDecoder r
   in
     Json.Decode.andThen (mapAllMediaDecoder << mapAllMedia) (keyValuePairs string)
-    -- oneOf
-    --   [ matchValue "github"        Github        string
-    --   , matchValue "gtalk"         GTalk         string
-    --   , matchValue "twitter"       Twitter       string
-    --   , matchValue "skype"         Skype         string
-    --   , matchValue "linkedin"      LinkedIn      string
-    --   , matchValue "stackoverflow" StackOverflow string
-    --   ]
 
 type alias SkillItem =
   { title : String
