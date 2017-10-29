@@ -6249,6 +6249,126 @@ var _elm_lang$core$Time$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
+var _elm_community$result_extra$Result_Extra$merge = function (r) {
+	var _p0 = r;
+	if (_p0.ctor === 'Ok') {
+		return _p0._0;
+	} else {
+		return _p0._0;
+	}
+};
+var _elm_community$result_extra$Result_Extra$orElse = F2(
+	function (ra, rb) {
+		var _p1 = rb;
+		if (_p1.ctor === 'Err') {
+			return ra;
+		} else {
+			return rb;
+		}
+	});
+var _elm_community$result_extra$Result_Extra$orElseLazy = F2(
+	function (fra, rb) {
+		var _p2 = rb;
+		if (_p2.ctor === 'Err') {
+			return fra(
+				{ctor: '_Tuple0'});
+		} else {
+			return rb;
+		}
+	});
+var _elm_community$result_extra$Result_Extra$orLazy = F2(
+	function (ra, frb) {
+		var _p3 = ra;
+		if (_p3.ctor === 'Err') {
+			return frb(
+				{ctor: '_Tuple0'});
+		} else {
+			return ra;
+		}
+	});
+var _elm_community$result_extra$Result_Extra$or = F2(
+	function (ra, rb) {
+		var _p4 = ra;
+		if (_p4.ctor === 'Err') {
+			return rb;
+		} else {
+			return ra;
+		}
+	});
+var _elm_community$result_extra$Result_Extra$andMap = F2(
+	function (ra, rb) {
+		var _p5 = {ctor: '_Tuple2', _0: ra, _1: rb};
+		if (_p5._1.ctor === 'Err') {
+			return _elm_lang$core$Result$Err(_p5._1._0);
+		} else {
+			return A2(_elm_lang$core$Result$map, _p5._1._0, _p5._0);
+		}
+	});
+var _elm_community$result_extra$Result_Extra$singleton = _elm_lang$core$Result$Ok;
+var _elm_community$result_extra$Result_Extra$combine = A2(
+	_elm_lang$core$List$foldr,
+	_elm_lang$core$Result$map2(
+		F2(
+			function (x, y) {
+				return {ctor: '::', _0: x, _1: y};
+			})),
+	_elm_lang$core$Result$Ok(
+		{ctor: '[]'}));
+var _elm_community$result_extra$Result_Extra$mapBoth = F3(
+	function (errFunc, okFunc, result) {
+		var _p6 = result;
+		if (_p6.ctor === 'Ok') {
+			return _elm_lang$core$Result$Ok(
+				okFunc(_p6._0));
+		} else {
+			return _elm_lang$core$Result$Err(
+				errFunc(_p6._0));
+		}
+	});
+var _elm_community$result_extra$Result_Extra$unpack = F3(
+	function (errFunc, okFunc, result) {
+		var _p7 = result;
+		if (_p7.ctor === 'Ok') {
+			return okFunc(_p7._0);
+		} else {
+			return errFunc(_p7._0);
+		}
+	});
+var _elm_community$result_extra$Result_Extra$unwrap = F3(
+	function (defaultValue, okFunc, result) {
+		var _p8 = result;
+		if (_p8.ctor === 'Ok') {
+			return okFunc(_p8._0);
+		} else {
+			return defaultValue;
+		}
+	});
+var _elm_community$result_extra$Result_Extra$extract = F2(
+	function (f, x) {
+		var _p9 = x;
+		if (_p9.ctor === 'Ok') {
+			return _p9._0;
+		} else {
+			return f(_p9._0);
+		}
+	});
+var _elm_community$result_extra$Result_Extra$isErr = function (x) {
+	var _p10 = x;
+	if (_p10.ctor === 'Ok') {
+		return false;
+	} else {
+		return true;
+	}
+};
+var _elm_community$result_extra$Result_Extra$isOk = function (x) {
+	var _p11 = x;
+	if (_p11.ctor === 'Ok') {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 //import Maybe, Native.List //
 
 var _elm_lang$core$Native_Regex = function() {
@@ -13764,6 +13884,14 @@ var _user$project$Config$Config = function (a) {
 	return {api_base_url: a};
 };
 
+var _user$project$Model$resultToDecoder = function (r) {
+	var _p0 = r;
+	if (_p0.ctor === 'Err') {
+		return _elm_lang$core$Json_Decode$fail(_p0._0);
+	} else {
+		return _elm_lang$core$Json_Decode$succeed(_p0._0);
+	}
+};
 var _user$project$Model$initModel = function (config) {
 	return {resume: _krisajenkins$remotedata$RemoteData$NotAsked, config: config};
 };
@@ -13808,15 +13936,15 @@ var _user$project$Model$Secondary = {ctor: 'Secondary'};
 var _user$project$Model$Primary = {ctor: 'Primary'};
 var _user$project$Model$priorityDecoder = function () {
 	var match = function (s) {
-		var _p0 = s;
-		switch (_p0) {
+		var _p1 = s;
+		switch (_p1) {
 			case 'primary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Primary);
 			case 'secondary':
 				return _elm_lang$core$Json_Decode$succeed(_user$project$Model$Secondary);
 			default:
 				return _elm_lang$core$Json_Decode$fail(
-					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p0));
+					A2(_elm_lang$core$Basics_ops['++'], 'invalid priority: ', _p1));
 		}
 	};
 	return A2(_elm_lang$core$Json_Decode$andThen, match, _elm_lang$core$Json_Decode$string);
@@ -13840,11 +13968,46 @@ var _user$project$Model$Twitter = function (a) {
 	return {ctor: 'Twitter', _0: a};
 };
 var _user$project$Model$socialMediaDecoder = function () {
+	var mapAllMediaDecoder = function (r) {
+		return _user$project$Model$resultToDecoder(r);
+	};
+	var mapMedia = function (_p2) {
+		var _p3 = _p2;
+		var _p5 = _p3._1;
+		var _p4 = _p3._0;
+		switch (_p4) {
+			case 'github':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Model$Github(_p5));
+			case 'gtalk':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Model$GTalk(_p5));
+			case 'twitter':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Model$Twitter(_p5));
+			case 'skype':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Model$Skype(_p5));
+			case 'linkedin':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Model$LinkedIn(_p5));
+			case 'stackoverflow':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Model$StackOverflow(_p5));
+			default:
+				return _elm_lang$core$Result$Err(
+					A2(_elm_lang$core$Basics_ops['++'], 'No match for social media handler: ', _p4));
+		}
+	};
+	var mapAllMedia = function (ls) {
+		return _elm_community$result_extra$Result_Extra$combine(
+			A2(_elm_lang$core$List$map, mapMedia, ls));
+	};
 	var matchValue = F3(
 		function (s, c, d) {
 			var matchType = function (t) {
-				var _p1 = _elm_lang$core$Native_Utils.eq(s, t);
-				if (_p1 === true) {
+				var _p6 = _elm_lang$core$Native_Utils.eq(s, t);
+				if (_p6 === true) {
 					return A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 						'value',
@@ -13860,32 +14023,13 @@ var _user$project$Model$socialMediaDecoder = function () {
 				matchType,
 				A2(_elm_lang$core$Json_Decode$field, 'type', _elm_lang$core$Json_Decode$string));
 		});
-	return _elm_lang$core$Json_Decode$oneOf(
-		{
-			ctor: '::',
-			_0: A3(matchValue, 'github', _user$project$Model$Github, _elm_lang$core$Json_Decode$string),
-			_1: {
-				ctor: '::',
-				_0: A3(matchValue, 'gtalk', _user$project$Model$GTalk, _elm_lang$core$Json_Decode$string),
-				_1: {
-					ctor: '::',
-					_0: A3(matchValue, 'twitter', _user$project$Model$Twitter, _elm_lang$core$Json_Decode$string),
-					_1: {
-						ctor: '::',
-						_0: A3(matchValue, 'skype', _user$project$Model$Skype, _elm_lang$core$Json_Decode$string),
-						_1: {
-							ctor: '::',
-							_0: A3(matchValue, 'linkedin', _user$project$Model$LinkedIn, _elm_lang$core$Json_Decode$string),
-							_1: {
-								ctor: '::',
-								_0: A3(matchValue, 'stackoverflow', _user$project$Model$StackOverflow, _elm_lang$core$Json_Decode$string),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			}
-		});
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (_p7) {
+			return mapAllMediaDecoder(
+				mapAllMedia(_p7));
+		},
+		_elm_lang$core$Json_Decode$keyValuePairs(_elm_lang$core$Json_Decode$string));
 }();
 var _user$project$Model$Experiences = function (a) {
 	return {ctor: 'Experiences', _0: a};
@@ -13902,7 +14046,7 @@ var _user$project$Model$bodyDecoder = function () {
 		'experiences',
 		_elm_lang$core$Json_Decode$list(
 			_elm_lang$core$Json_Decode$lazy(
-				function (_p2) {
+				function (_p8) {
 					return _user$project$Model$experienceItemDecoder;
 				})),
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Experiences));
@@ -13911,7 +14055,7 @@ var _user$project$Model$bodyDecoder = function () {
 		'skills',
 		_elm_lang$core$Json_Decode$list(
 			_elm_lang$core$Json_Decode$lazy(
-				function (_p3) {
+				function (_p9) {
 					return _user$project$Model$skillItemDecoder;
 				})),
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Model$Skills));
@@ -13987,12 +14131,12 @@ var _user$project$Model$resumeDecoder = A4(
 	A4(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
 		'secondarySocialMedia',
-		_elm_lang$core$Json_Decode$list(_user$project$Model$socialMediaDecoder),
+		_user$project$Model$socialMediaDecoder,
 		{ctor: '[]'},
 		A4(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
 			'socialMedia',
-			_elm_lang$core$Json_Decode$list(_user$project$Model$socialMediaDecoder),
+			_user$project$Model$socialMediaDecoder,
 			{ctor: '[]'},
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,

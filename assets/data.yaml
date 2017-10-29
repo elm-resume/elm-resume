@@ -4,22 +4,13 @@ contact:
   email: jane.doe@example.com
   phone: (777) 666-5555
 socialMedia:
-  - type: github
-    value: janedoe80
-  - type: twitter
-    value: janedoe80
-  - type: skype
-    value: janedoe80
-    prio: secondary
-  - type: gtalk
-    value: jane.doe80@gmail.com
-    prio: secondary
-  - type: linkedin
-    value: janedoe80
-    prio: secondary
-  - type: stackoverflow
-    value: janedoe80
-    prio: secondary
+  github: janedoe80
+  twitter: janedoe80
+secondarySocialMedia:
+  skype: janedoe80
+  gtalk: jane.doe80@gmail.com
+  linkedin: janedoe80
+  stackoverflow: janedoe80
 sections:
   - title: Work Experience
     body: "I don't have any"
@@ -30,7 +21,7 @@ sections:
           body: some skill description
         - title: another skill name
           body: another skill description
-  - title: Gaming Experience
+  - title: Other Experience
     body:
       experiences:
         - title: some

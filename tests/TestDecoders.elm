@@ -13,12 +13,8 @@ suite =
         testDecode """{ "name" : "Jane", "contact" : { "address" : "", "email" : "", "phone" : "" } }""" resumeDecoder { name = "Jane", contact = { address = "", email = "", phone = "" }, socialMedia = [], secondarySocialMedia = [], sections = [] }
       ]
     , describe "Contact decoders"
-      [ test "Twitter" <|
-        testDecode """{ "type" : "twitter", "value" : "t" }""" socialMediaDecoder (Twitter "t")
-      , test "Skype" <|
-        testDecode """{ "type" : "skype", "value" : "s" }""" socialMediaDecoder (Skype "s")
-      , test "Github" <|
-        testDecode """{ "type" : "github", "value" : "g" }""" socialMediaDecoder (Github "g")
+      [ test "Contact" <|
+        testDecode """{ "address" : "a", "email" : "e", "phone" : "p" }""" contactDecoder { address = "a", email = "e", phone = "p" }
       ]
     , describe "Priority decoders"
       [ test "Primary" <|
@@ -28,7 +24,7 @@ suite =
       ]
     , describe "SocialMedia decoders"
       [ test "Twitter Secondary" <|
-        testDecode """{ "type" : "twitter", "value" : "t" }""" socialMediaDecoder (Twitter "t")
+        testDecode """{ "twitter" : "t" }""" socialMediaDecoder [Twitter "t"]
       ]
     , describe "SkillItem decoders"
       [ test "SkillItem with text body" <|

@@ -5,6 +5,7 @@ import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
 import UDate exposing (..)
 import Config exposing (Config)
+import Result.Extra exposing (combine)
 
 type alias Model =
   { resume : WebData Resume
@@ -30,8 +31,8 @@ resumeDecoder =
   decode Resume
     |> required "name" string
     |> required "contact" contactDecoder
-    |> optional "socialMedia" (list socialMediaDecoder) []
-    |> optional "secondarySocialMedia" (list socialMediaDecoder) []
+    |> optional "socialMedia" socialMediaDecoder []
+    |> optional "secondarySocialMedia" socialMediaDecoder []
     |> optional "sections" (list sectionDecoder) []
 
 type alias Contact =
@@ -69,7 +70,7 @@ type SocialMedia
   | LinkedIn String
   | StackOverflow String
 
-socialMediaDecoder : Decoder SocialMedia
+socialMediaDecoder : Decoder (List SocialMedia)
 socialMediaDecoder =
   let
     matchValue s c d =
@@ -80,15 +81,30 @@ socialMediaDecoder =
             False -> fail <| "No match for " ++ t
       in
         andThen matchType <| field "type" string
+    mapMedia (key, value) =
+      case key of
+        "github" ->         Ok <| Github value
+        "gtalk" ->          Ok <| GTalk value
+        "twitter" ->        Ok <| Twitter value
+        "skype" ->          Ok <| Skype value
+        "linkedin" ->       Ok <| LinkedIn value
+        "stackoverflow" ->  Ok <| StackOverflow value
+        invalid ->          Err <| "No match for social media handler: " ++ invalid
+    mapAllMedia : List (String, String) -> Result String (List SocialMedia)
+    mapAllMedia ls =
+      combine (List.map mapMedia ls)
+    mapAllMediaDecoder : Result String (List SocialMedia) -> Decoder (List SocialMedia)
+    mapAllMediaDecoder r = resultToDecoder r
   in
-    oneOf
-      [ matchValue "github"        Github        string
-      , matchValue "gtalk"         GTalk         string
-      , matchValue "twitter"       Twitter       string
-      , matchValue "skype"         Skype         string
-      , matchValue "linkedin"      LinkedIn      string
-      , matchValue "stackoverflow" StackOverflow string
-      ]
+    Json.Decode.andThen (mapAllMediaDecoder << mapAllMedia) (keyValuePairs string)
+    -- oneOf
+    --   [ matchValue "github"        Github        string
+    --   , matchValue "gtalk"         GTalk         string
+    --   , matchValue "twitter"       Twitter       string
+    --   , matchValue "skype"         Skype         string
+    --   , matchValue "linkedin"      LinkedIn      string
+    --   , matchValue "stackoverflow" StackOverflow string
+    --   ]
 
 type alias SkillItem =
   { title : String
@@ -147,3 +163,8 @@ sectionDecoder =
   decode Section
     |> required "title" string
     |> required "body" bodyDecoder
+
+resultToDecoder : Result String a -> Decoder a
+resultToDecoder r = case r of
+  Err e -> fail e
+  Ok v -> succeed v
