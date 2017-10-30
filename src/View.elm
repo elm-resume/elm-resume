@@ -71,9 +71,9 @@ viewSocialMedia handle =
       a [ class "resume-social-link github", href <| "http://github.com/" ++ v ]
         [ text v ]
     Skype v -> Just <|
-      span [ class "resume-social-item skype" ] [ text v ]
+      span [ class "resume-social-link skype" ] [ text v ]
     GTalk v -> Just <|
-      span [ class "resume-social-item gtalk" ] [ text v ]
+      span [ class "resume-social-link gtalk" ] [ text v ]
     OpenHub v -> Just <|
       a [ class "resume-social-link open-hub", href <| "https://www.openhub.net/accounts/" ++ v ]
         [ text v ]
@@ -123,20 +123,25 @@ mapItem visibles item =
 
 viewDateRange : DateRange  -> Html Action
 viewDateRange dates =
-  case dates of
-    Between begin end ->
-      text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
-    After begin ->
-      text <| (uDateToString begin) ++ " to present"
-    Undetermined ->
-      text ""
+  let content =
+    case dates of
+      Between begin end ->
+        text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+      After begin ->
+        text <| (uDateToString begin) ++ " to present"
+      Undetermined ->
+        text ""
+  in
+    span [ class "date" ] [ content ]
 
 viewItem : Set Id -> Item -> Html Action
 viewItem visibles { title, body, dates, prio } =
   div
-    [ class "" ]
-    [ h2 [] [text title]
-    , viewDateRange dates
+    []
+    [ header [ class "title-and-date" ]
+      [ h3 [ class "resume-section-item-title" ] [text title]
+      , viewDateRange dates
+      ]
     , viewBody visibles body
     ]
 
