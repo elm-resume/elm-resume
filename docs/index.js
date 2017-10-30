@@ -6380,185 +6380,6 @@ var _elm_lang$core$Set$partition = F2(
 		};
 	});
 
-var _elm_community$maybe_extra$Maybe_Extra$foldrValues = F2(
-	function (item, list) {
-		var _p0 = item;
-		if (_p0.ctor === 'Nothing') {
-			return list;
-		} else {
-			return {ctor: '::', _0: _p0._0, _1: list};
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$values = A2(
-	_elm_lang$core$List$foldr,
-	_elm_community$maybe_extra$Maybe_Extra$foldrValues,
-	{ctor: '[]'});
-var _elm_community$maybe_extra$Maybe_Extra$filter = F2(
-	function (f, m) {
-		var _p1 = A2(_elm_lang$core$Maybe$map, f, m);
-		if ((_p1.ctor === 'Just') && (_p1._0 === true)) {
-			return m;
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$traverseArray = function (f) {
-	var step = F2(
-		function (e, acc) {
-			var _p2 = f(e);
-			if (_p2.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return A2(
-					_elm_lang$core$Maybe$map,
-					_elm_lang$core$Array$push(_p2._0),
-					acc);
-			}
-		});
-	return A2(
-		_elm_lang$core$Array$foldl,
-		step,
-		_elm_lang$core$Maybe$Just(_elm_lang$core$Array$empty));
-};
-var _elm_community$maybe_extra$Maybe_Extra$combineArray = _elm_community$maybe_extra$Maybe_Extra$traverseArray(_elm_lang$core$Basics$identity);
-var _elm_community$maybe_extra$Maybe_Extra$traverse = function (f) {
-	var step = F2(
-		function (e, acc) {
-			var _p3 = f(e);
-			if (_p3.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
-			} else {
-				return A2(
-					_elm_lang$core$Maybe$map,
-					F2(
-						function (x, y) {
-							return {ctor: '::', _0: x, _1: y};
-						})(_p3._0),
-					acc);
-			}
-		});
-	return A2(
-		_elm_lang$core$List$foldr,
-		step,
-		_elm_lang$core$Maybe$Just(
-			{ctor: '[]'}));
-};
-var _elm_community$maybe_extra$Maybe_Extra$combine = _elm_community$maybe_extra$Maybe_Extra$traverse(_elm_lang$core$Basics$identity);
-var _elm_community$maybe_extra$Maybe_Extra$toArray = function (m) {
-	var _p4 = m;
-	if (_p4.ctor === 'Nothing') {
-		return _elm_lang$core$Array$empty;
-	} else {
-		return A2(_elm_lang$core$Array$repeat, 1, _p4._0);
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$toList = function (m) {
-	var _p5 = m;
-	if (_p5.ctor === 'Nothing') {
-		return {ctor: '[]'};
-	} else {
-		return {
-			ctor: '::',
-			_0: _p5._0,
-			_1: {ctor: '[]'}
-		};
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$orElse = F2(
-	function (ma, mb) {
-		var _p6 = mb;
-		if (_p6.ctor === 'Nothing') {
-			return ma;
-		} else {
-			return mb;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$orElseLazy = F2(
-	function (fma, mb) {
-		var _p7 = mb;
-		if (_p7.ctor === 'Nothing') {
-			return fma(
-				{ctor: '_Tuple0'});
-		} else {
-			return mb;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$orLazy = F2(
-	function (ma, fmb) {
-		var _p8 = ma;
-		if (_p8.ctor === 'Nothing') {
-			return fmb(
-				{ctor: '_Tuple0'});
-		} else {
-			return ma;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$or = F2(
-	function (ma, mb) {
-		var _p9 = ma;
-		if (_p9.ctor === 'Nothing') {
-			return mb;
-		} else {
-			return ma;
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$prev = _elm_lang$core$Maybe$map2(_elm_lang$core$Basics$always);
-var _elm_community$maybe_extra$Maybe_Extra$next = _elm_lang$core$Maybe$map2(
-	_elm_lang$core$Basics$flip(_elm_lang$core$Basics$always));
-var _elm_community$maybe_extra$Maybe_Extra$andMap = _elm_lang$core$Maybe$map2(
-	F2(
-		function (x, y) {
-			return y(x);
-		}));
-var _elm_community$maybe_extra$Maybe_Extra$unpack = F3(
-	function (d, f, m) {
-		var _p10 = m;
-		if (_p10.ctor === 'Nothing') {
-			return d(
-				{ctor: '_Tuple0'});
-		} else {
-			return f(_p10._0);
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$unwrap = F3(
-	function (d, f, m) {
-		var _p11 = m;
-		if (_p11.ctor === 'Nothing') {
-			return d;
-		} else {
-			return f(_p11._0);
-		}
-	});
-var _elm_community$maybe_extra$Maybe_Extra$isJust = function (m) {
-	var _p12 = m;
-	if (_p12.ctor === 'Nothing') {
-		return false;
-	} else {
-		return true;
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$isNothing = function (m) {
-	var _p13 = m;
-	if (_p13.ctor === 'Nothing') {
-		return true;
-	} else {
-		return false;
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra$join = function (mx) {
-	var _p14 = mx;
-	if (_p14.ctor === 'Just') {
-		return _p14._0;
-	} else {
-		return _elm_lang$core$Maybe$Nothing;
-	}
-};
-var _elm_community$maybe_extra$Maybe_Extra_ops = _elm_community$maybe_extra$Maybe_Extra_ops || {};
-_elm_community$maybe_extra$Maybe_Extra_ops['?'] = F2(
-	function (mx, x) {
-		return A2(_elm_lang$core$Maybe$withDefault, x, mx);
-	});
-
 var _elm_community$result_extra$Result_Extra$merge = function (r) {
 	var _p0 = r;
 	if (_p0.ctor === 'Ok') {
@@ -14703,14 +14524,17 @@ var _user$project$View$viewDateRange = function (dates) {
 	var _p2 = dates;
 	switch (_p2.ctor) {
 		case 'Between':
-			return _elm_lang$html$Html$text(
+			var _p4 = _p2._1;
+			var _p3 = _p2._0;
+			return _elm_lang$core$Native_Utils.eq(_p3, _p4) ? _elm_lang$html$Html$text(
+				_user$project$UDate$uDateToString(_p3)) : _elm_lang$html$Html$text(
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_user$project$UDate$uDateToString(_p2._0),
+					_user$project$UDate$uDateToString(_p3),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						' to ',
-						_user$project$UDate$uDateToString(_p2._1))));
+						_user$project$UDate$uDateToString(_p4))));
 		case 'After':
 			return _elm_lang$html$Html$text(
 				A2(
@@ -14722,158 +14546,150 @@ var _user$project$View$viewDateRange = function (dates) {
 	}
 };
 var _user$project$View$viewSocialMedia = function (handle) {
-	var _p3 = handle;
-	switch (_p3.ctor) {
+	var _p5 = handle;
+	switch (_p5.ctor) {
 		case 'Twitter':
-			var _p4 = _p3._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
+			var _p6 = _p5._0;
+			return A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link twitter'),
+					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link twitter'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://twitter.com/', _p4)),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p4),
+						_0: _elm_lang$html$Html_Attributes$href(
+							A2(_elm_lang$core$Basics_ops['++'], 'http://twitter.com/', _p6)),
 						_1: {ctor: '[]'}
-					}));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p6),
+					_1: {ctor: '[]'}
+				});
 		case 'Github':
-			var _p5 = _p3._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
+			var _p7 = _p5._0;
+			return A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link github'),
+					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link github'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://github.com/', _p5)),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p5),
+						_0: _elm_lang$html$Html_Attributes$href(
+							A2(_elm_lang$core$Basics_ops['++'], 'http://github.com/', _p7)),
 						_1: {ctor: '[]'}
-					}));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p7),
+					_1: {ctor: '[]'}
+				});
 		case 'Skype':
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$span,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-item skype'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p3._0),
-						_1: {ctor: '[]'}
-					}));
+			return A2(
+				_elm_lang$html$Html$span,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-item skype'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p5._0),
+					_1: {ctor: '[]'}
+				});
 		case 'GTalk':
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$span,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-item gtalk'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p3._0),
-						_1: {ctor: '[]'}
-					}));
+			return A2(
+				_elm_lang$html$Html$span,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-item gtalk'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p5._0),
+					_1: {ctor: '[]'}
+				});
 		case 'OpenHub':
-			var _p6 = _p3._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
+			var _p8 = _p5._0;
+			return A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link open-hub'),
+					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link open-hub'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'https://www.openhub.net/accounts/', _p6)),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p6),
+						_0: _elm_lang$html$Html_Attributes$href(
+							A2(_elm_lang$core$Basics_ops['++'], 'https://www.openhub.net/accounts/', _p8)),
 						_1: {ctor: '[]'}
-					}));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p8),
+					_1: {ctor: '[]'}
+				});
 		case 'Website':
-			var _p7 = _p3._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
+			var _p9 = _p5._0;
+			return A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link website'),
+					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link website'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(_p7),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p7),
+						_0: _elm_lang$html$Html_Attributes$href(_p9),
 						_1: {ctor: '[]'}
-					}));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p9),
+					_1: {ctor: '[]'}
+				});
 		case 'LinkedIn':
-			var _p8 = _p3._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
+			var _p10 = _p5._0;
+			return A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link linkedin'),
+					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link linkedin'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://linkedin.com/in/', _p8)),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p8),
+						_0: _elm_lang$html$Html_Attributes$href(
+							A2(_elm_lang$core$Basics_ops['++'], 'http://linkedin.com/in/', _p10)),
 						_1: {ctor: '[]'}
-					}));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p10),
+					_1: {ctor: '[]'}
+				});
 		default:
-			var _p9 = _p3._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
+			var _p11 = _p5._0;
+			return A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link stack-ovrflow'),
+					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link stack-ovrflow'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://stackoverflow.com/users/', _p9)),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p9),
+						_0: _elm_lang$html$Html_Attributes$href(
+							A2(_elm_lang$core$Basics_ops['++'], 'http://stackoverflow.com/users/', _p11)),
 						_1: {ctor: '[]'}
-					}));
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p11),
+					_1: {ctor: '[]'}
+				});
 	}
 };
-var _user$project$View$viewSocialMediaList = function (_p10) {
+var _user$project$View$viewSocialMediaList = function (_p12) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14881,12 +14697,12 @@ var _user$project$View$viewSocialMediaList = function (_p10) {
 			_0: _elm_lang$html$Html_Attributes$class('resume-social'),
 			_1: {ctor: '[]'}
 		},
-		A2(_elm_lang$core$List$filterMap, _user$project$View$viewSocialMedia, _p10));
+		A2(_elm_lang$core$List$map, _user$project$View$viewSocialMedia, _p12));
 };
-var _user$project$View$viewContact = function (_p11) {
-	var _p12 = _p11;
-	var _p14 = _p12.phone;
-	var _p13 = _p12.email;
+var _user$project$View$viewContact = function (_p13) {
+	var _p14 = _p13;
+	var _p16 = _p14.phone;
+	var _p15 = _p14.email;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14909,7 +14725,7 @@ var _user$project$View$viewContact = function (_p11) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_p12.address),
+						_p14.address),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
@@ -14922,13 +14738,13 @@ var _user$project$View$viewContact = function (_p11) {
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'mailto:', _p13)),
+								A2(_elm_lang$core$Basics_ops['++'], 'mailto:', _p15)),
 							_1: {ctor: '[]'}
 						}
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p13),
+						_0: _elm_lang$html$Html$text(_p15),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -14941,13 +14757,13 @@ var _user$project$View$viewContact = function (_p11) {
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'tel:', _p14)),
+									A2(_elm_lang$core$Basics_ops['++'], 'tel:', _p16)),
 								_1: {ctor: '[]'}
 							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p14),
+							_0: _elm_lang$html$Html$text(_p16),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -14983,10 +14799,15 @@ var _user$project$View$expand = function (action) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$View$viewItem_ = F3(
-	function (visibles, prio, render) {
-		var _p15 = prio;
-		if (_p15.ctor === 'Mandatory') {
+var _user$project$View$viewItem = F2(
+	function (visibles, _p17) {
+		var _p18 = _p17;
+		var _p24 = _p18.title;
+		var _p23 = _p18.prio;
+		var _p22 = _p18.dates;
+		var _p21 = _p18.body;
+		var _p19 = _p23;
+		if (_p19.ctor === 'Mandatory') {
 			return A2(
 				_elm_lang$html$Html$li,
 				{
@@ -14996,13 +14817,27 @@ var _user$project$View$viewItem_ = F3(
 				},
 				{
 					ctor: '::',
-					_0: render(
-						{ctor: '_Tuple0'}),
-					_1: {ctor: '[]'}
+					_0: A2(
+						_elm_lang$html$Html$h2,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p24),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$View$viewDateRange(_p22),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$View$viewBody, visibles, _p21),
+							_1: {ctor: '[]'}
+						}
+					}
 				});
 		} else {
-			var _p16 = _p15._0;
-			return A2(_user$project$View$isVisible, visibles, prio) ? A2(
+			var _p20 = _p19._0;
+			return A2(_user$project$View$isVisible, visibles, _p23) ? A2(
 				_elm_lang$html$Html$li,
 				{
 					ctor: '::',
@@ -15012,12 +14847,26 @@ var _user$project$View$viewItem_ = F3(
 				{
 					ctor: '::',
 					_0: _user$project$View$collapse(
-						_user$project$Action$ToggleItem(_p16)),
+						_user$project$Action$ToggleItem(_p20)),
 					_1: {
 						ctor: '::',
-						_0: render(
-							{ctor: '_Tuple0'}),
-						_1: {ctor: '[]'}
+						_0: A2(
+							_elm_lang$html$Html$h2,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(_p24),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$View$viewDateRange(_p22),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$View$viewBody, visibles, _p21),
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}) : A2(
 				_elm_lang$html$Html$li,
@@ -15029,65 +14878,23 @@ var _user$project$View$viewItem_ = F3(
 				{
 					ctor: '::',
 					_0: _user$project$View$expand(
-						_user$project$Action$ToggleItem(_p16)),
+						_user$project$Action$ToggleItem(_p20)),
 					_1: {ctor: '[]'}
 				});
 		}
 	});
-var _user$project$View$mapItem = F2(
-	function (visibles, item) {
-		return A3(
-			_user$project$View$viewItem_,
-			visibles,
-			item.prio,
-			function (_p17) {
-				var _p18 = _p17;
-				return A2(_user$project$View$viewItem, visibles, item);
-			});
-	});
-var _user$project$View$viewItem = F2(
-	function (visibles, _p19) {
-		var _p20 = _p19;
-		return A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class(''),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$h2,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p20.title),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: _user$project$View$viewDateRange(_p20.dates),
-					_1: {
-						ctor: '::',
-						_0: A2(_user$project$View$viewBody, visibles, _p20.body),
-						_1: {ctor: '[]'}
-					}
-				}
-			});
-	});
 var _user$project$View$viewBody = F2(
 	function (visibles, body) {
 		var content = function () {
-			var _p21 = body;
-			switch (_p21.ctor) {
+			var _p25 = body;
+			switch (_p25.ctor) {
 				case 'Empty':
 					return _elm_lang$html$Html$text('');
 				case 'ContentOnly':
 					return A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_p21._0);
+						_p25._0);
 				case 'ItemsOnly':
 					return A2(
 						_elm_lang$html$Html$ul,
@@ -15098,8 +14905,8 @@ var _user$project$View$viewBody = F2(
 						},
 						A2(
 							_elm_lang$core$List$map,
-							_user$project$View$mapItem(visibles),
-							_p21._0));
+							_user$project$View$viewItem(visibles),
+							_p25._0));
 				default:
 					return A2(
 						_elm_lang$html$Html$div,
@@ -15109,7 +14916,7 @@ var _user$project$View$viewBody = F2(
 							_0: A2(
 								_evancz$elm_markdown$Markdown$toHtml,
 								{ctor: '[]'},
-								_p21._0),
+								_p25._0),
 							_1: {
 								ctor: '::',
 								_0: A2(
@@ -15121,8 +14928,8 @@ var _user$project$View$viewBody = F2(
 									},
 									A2(
 										_elm_lang$core$List$map,
-										_user$project$View$mapItem(visibles),
-										_p21._1)),
+										_user$project$View$viewItem(visibles),
+										_p25._1)),
 								_1: {ctor: '[]'}
 							}
 						});
@@ -15142,8 +14949,8 @@ var _user$project$View$viewBody = F2(
 			});
 	});
 var _user$project$View$viewSection = F2(
-	function (visibles, _p22) {
-		var _p23 = _p22;
+	function (visibles, _p26) {
+		var _p27 = _p26;
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -15162,19 +14969,19 @@ var _user$project$View$viewSection = F2(
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p23.title),
+						_0: _elm_lang$html$Html$text(_p27.title),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$View$viewBody, visibles, _p23.body),
+					_0: A2(_user$project$View$viewBody, visibles, _p27.body),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _user$project$View$viewResume = function (_p24) {
-	var _p25 = _p24;
-	var _p26 = _p25.optionalSocialMedia;
+var _user$project$View$viewResume = function (_p28) {
+	var _p29 = _p28;
+	var _p30 = _p29.optionalSocialMedia;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -15195,7 +15002,7 @@ var _user$project$View$viewResume = function (_p24) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p25.name),
+						_0: _elm_lang$html$Html$text(_p29.name),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -15211,19 +15018,19 @@ var _user$project$View$viewResume = function (_p24) {
 							_elm_lang$core$Basics_ops['++'],
 							{
 								ctor: '::',
-								_0: _user$project$View$viewContact(_p25.contact),
+								_0: _user$project$View$viewContact(_p29.contact),
 								_1: {
 									ctor: '::',
-									_0: _user$project$View$viewSocialMediaList(_p25.socialMedia),
+									_0: _user$project$View$viewSocialMediaList(_p29.socialMedia),
 									_1: {ctor: '[]'}
 								}
 							},
-							_p26.visible ? {
+							_p30.visible ? {
 								ctor: '::',
 								_0: _user$project$View$collapse(_user$project$Action$ToggleOptionalSocialMedia),
 								_1: {
 									ctor: '::',
-									_0: _user$project$View$viewSocialMediaList(_p26.handles),
+									_0: _user$project$View$viewSocialMediaList(_p30.handles),
 									_1: {ctor: '[]'}
 								}
 							} : {
@@ -15236,15 +15043,15 @@ var _user$project$View$viewResume = function (_p24) {
 			},
 			A2(
 				_elm_lang$core$List$map,
-				_user$project$View$viewSection(_p25.visible),
-				_p25.sections)));
+				_user$project$View$viewSection(_p29.visible),
+				_p29.sections)));
 };
-var _user$project$View$view = function (_p27) {
-	var _p28 = _p27;
-	var _p29 = _p28.resume;
-	switch (_p29.ctor) {
+var _user$project$View$view = function (_p31) {
+	var _p32 = _p31;
+	var _p33 = _p32.resume;
+	switch (_p33.ctor) {
 		case 'Success':
-			return _user$project$View$viewResume(_p29._0);
+			return _user$project$View$viewResume(_p33._0);
 		case 'Failure':
 			return A2(
 				_elm_lang$html$Html$div,
@@ -15263,7 +15070,7 @@ var _user$project$View$view = function (_p27) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_elm_lang$core$Basics$toString(_p29._0)),
+						_elm_lang$core$Basics$toString(_p33._0)),
 					_1: {ctor: '[]'}
 				});
 		default:
