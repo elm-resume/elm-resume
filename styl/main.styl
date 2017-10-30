@@ -1,0 +1,80 @@
+$primaryDark = #167
+$primaryLight = #7aa
+
+body
+  font: 14px "Open Sans", sans-serif
+
+a
+  color: $primaryDark
+  text-decoration: none
+
+.resume-name
+  border-bottom: 6px solid $primaryLight
+  color: $primaryDark
+
+.resume-section-title
+  border-bottom: 3px solid #ddd
+  color: #666
+  font-size: 18px
+  margin-top: 26px
+
+.resume-section-item-title
+  color: $primaryDark
+  font-size: 14px
+  margin-bottom: 0
+
+ul
+  list-style: none
+  margin-top: 8px
+  margin-bottom: 20px
+  padding-left: 34px
+
+ul + ul
+  break-inside: avoid-page
+  margin-bottom: 12px
+
+li
+  margin-bottom: 8px
+
+  &:before
+    content: ""
+    border: 2px solid $primaryLight
+    position: absolute
+    margin-top: 6px
+    margin-left: -14px
+    transform: rotate(45deg)
+
+li li:before
+  border-color: #999
+
+address
+  font-style: normal
+
+.resume-contact-section
+.title-and-date
+  display: flex
+
+.resume-address-email,
+.resume-address-phone,
+.resume-social-link
+  display block
+
+.resume-social
+  margin-left: auto
+
+.title-and-date
+  margin-bottom: 10px
+
+  h3, h4
+    margin-top: 0
+    margin-bottom: 0
+
+  + ul
+    margin-right: 140px
+
+.ml-auto
+  margin-left: auto
+
+.date
+  color: #666
+  font-weight: normal

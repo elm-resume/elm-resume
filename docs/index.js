@@ -14521,29 +14521,43 @@ var _user$project$View$isVisible = F2(
 		}
 	});
 var _user$project$View$viewDateRange = function (dates) {
-	var _p2 = dates;
-	switch (_p2.ctor) {
-		case 'Between':
-			var _p4 = _p2._1;
-			var _p3 = _p2._0;
-			return _elm_lang$core$Native_Utils.eq(_p3, _p4) ? _elm_lang$html$Html$text(
-				_user$project$UDate$uDateToString(_p3)) : _elm_lang$html$Html$text(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_user$project$UDate$uDateToString(_p3),
+	var content = function () {
+		var _p2 = dates;
+		switch (_p2.ctor) {
+			case 'Between':
+				var _p4 = _p2._1;
+				var _p3 = _p2._0;
+				return _elm_lang$core$Native_Utils.eq(_p3, _p4) ? _elm_lang$html$Html$text(
+					_user$project$UDate$uDateToString(_p3)) : _elm_lang$html$Html$text(
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						' to ',
-						_user$project$UDate$uDateToString(_p4))));
-		case 'After':
-			return _elm_lang$html$Html$text(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_user$project$UDate$uDateToString(_p2._0),
-					' to present'));
-		default:
-			return _elm_lang$html$Html$text('');
-	}
+						_user$project$UDate$uDateToString(_p3),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' to ',
+							_user$project$UDate$uDateToString(_p4))));
+			case 'After':
+				return _elm_lang$html$Html$text(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$UDate$uDateToString(_p2._0),
+						' to present'));
+			default:
+				return _elm_lang$html$Html$text('');
+		}
+	}();
+	return A2(
+		_elm_lang$html$Html$span,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('date'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: content,
+			_1: {ctor: '[]'}
+		});
 };
 var _user$project$View$viewSocialMedia = function (handle) {
 	var _p5 = handle;
@@ -14591,7 +14605,7 @@ var _user$project$View$viewSocialMedia = function (handle) {
 				_elm_lang$html$Html$span,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('resume-social-item skype'),
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link skype'),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -14604,7 +14618,7 @@ var _user$project$View$viewSocialMedia = function (handle) {
 				_elm_lang$html$Html$span,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('resume-social-item gtalk'),
+					_0: _elm_lang$html$Html_Attributes$class('resume-social-link gtalk'),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -14818,22 +14832,44 @@ var _user$project$View$viewItem = F2(
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$h2,
+						_elm_lang$html$Html$div,
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p24),
-							_1: {ctor: '[]'}
+							_0: A2(
+								_elm_lang$html$Html$header,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('title-and-date'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$h3,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('resume-section-item-title'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(_p24),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _user$project$View$viewDateRange(_p22),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$View$viewBody, visibles, _p21),
+								_1: {ctor: '[]'}
+							}
 						}),
-					_1: {
-						ctor: '::',
-						_0: _user$project$View$viewDateRange(_p22),
-						_1: {
-							ctor: '::',
-							_0: A2(_user$project$View$viewBody, visibles, _p21),
-							_1: {ctor: '[]'}
-						}
-					}
+					_1: {ctor: '[]'}
 				});
 		} else {
 			var _p20 = _p19._0;
@@ -14851,22 +14887,44 @@ var _user$project$View$viewItem = F2(
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$h2,
+							_elm_lang$html$Html$div,
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(_p24),
-								_1: {ctor: '[]'}
+								_0: A2(
+									_elm_lang$html$Html$header,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('title-and-date'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$h3,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('resume-section-item-title'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(_p24),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: _user$project$View$viewDateRange(_p22),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$View$viewBody, visibles, _p21),
+									_1: {ctor: '[]'}
+								}
 							}),
-						_1: {
-							ctor: '::',
-							_0: _user$project$View$viewDateRange(_p22),
-							_1: {
-								ctor: '::',
-								_0: A2(_user$project$View$viewBody, visibles, _p21),
-								_1: {ctor: '[]'}
-							}
-						}
+						_1: {ctor: '[]'}
 					}
 				}) : A2(
 				_elm_lang$html$Html$li,

@@ -70,9 +70,9 @@ viewSocialMedia handle =
       a [ class "resume-social-link github", href <| "http://github.com/" ++ v ]
         [ text v ]
     Skype v ->
-      span [ class "resume-social-item skype" ] [ text v ]
+      span [ class "resume-social-link skype" ] [ text v ]
     GTalk v ->
-      span [ class "resume-social-item gtalk" ] [ text v ]
+      span [ class "resume-social-link gtalk" ] [ text v ]
     OpenHub v ->
       a [ class "resume-social-link open-hub", href <| "https://www.openhub.net/accounts/" ++ v ]
         [ text v ]
@@ -118,16 +118,19 @@ viewBody visibles body =
 
 viewDateRange : DateRange  -> Html Action
 viewDateRange dates =
-  case dates of
-    Between begin end ->
-      if begin == end then
-        text <| (uDateToString begin)
-      else
-        text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
-    After begin ->
-      text <| (uDateToString begin) ++ " to present"
-    Undetermined ->
-      text ""
+  let content =
+    case dates of
+      Between begin end ->
+        if begin == end then
+          text <| (uDateToString begin)
+        else
+          text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+      After begin ->
+        text <| (uDateToString begin) ++ " to present"
+      Undetermined ->
+        text ""
+  in
+    span [ class "date" ] [ content ]
 
 -- viewItem : Set Id -> Item -> Html Action
 -- viewItem visibles { title, body, dates, prio } =
@@ -144,18 +147,29 @@ viewItem visibles { title, body, dates, prio } =
     Mandatory ->
       li
         [ class "resume-skill-item" ]
-        [ h2 [] [text title]
-        , viewDateRange dates
-        , viewBody visibles body
+        [
+          div
+            []
+            [ header [ class "title-and-date" ]
+              [ h3 [ class "resume-section-item-title" ] [text title]
+              , viewDateRange dates
+              ]
+            , viewBody visibles body
+            ]
         ]
     Optional id ->
       if isVisible visibles prio then
         li
           [ class "resume-skill-item" ]
           [ collapse (ToggleItem id)
-          , h2 [] [text title]
-          , viewDateRange dates
-          , viewBody visibles body
+          , div
+              []
+              [ header [ class "title-and-date" ]
+                [ h3 [ class "resume-section-item-title" ] [text title]
+                , viewDateRange dates
+                ]
+              , viewBody visibles body
+              ]
           ]
       else
         li
