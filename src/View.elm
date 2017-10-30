@@ -10,6 +10,8 @@ import Resume exposing (..)
 import ResumeState exposing (..)
 import Action exposing (..)
 import Maybe.Extra exposing (toList)
+import Set exposing (Set)
+import UDate exposing (..)
 
 view : Model -> Html Action
 view { resume } =
@@ -44,7 +46,7 @@ viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible 
           else
             [ expand ToggleOptionalSocialMedia ]
         ))
-    ] ++ (List.map viewSection sections)
+    ] ++ (List.map (viewSection visible) sections)
 
 viewContact : Contact -> Html Action
 viewContact { address, email, phone } =
@@ -85,11 +87,11 @@ viewSocialMedia handle =
       a [ class "resume-social-link stack-ovrflow", href <| "http://stackoverflow.com/users/" ++ v ]
         [ text v ]
 
-viewSection : Section -> Html Action
-viewSection { title, body } =
+viewSection : Set Id -> Section -> Html Action
+viewSection visibles { title, body } =
   div [ class "resume-section" ]
     [ h1 [ class "resume-section-title" ] [ text title ]
-    , viewBody body
+    , viewBody visibles body
     ]
 
 viewContent : Maybe String -> List (Html Action)
@@ -97,8 +99,8 @@ viewContent m = case m of
   Nothing -> []
   Just s -> [Markdown.toHtml [] s]
 
-viewBody : Body -> Html Action
-viewBody body =
+viewBody : Set Id -> Body -> Html Action
+viewBody visibles body =
   let
     content : Html Action
     content =
@@ -106,28 +108,83 @@ viewBody body =
         Text v ->
           Markdown.toHtml [] v
         Skills c v ->
-          div [] <| viewContent c ++ [ul [ class "resume-skill-items" ] <| List.map viewSkillItem v]
+          div [] <| viewContent c ++ [
+            ul [ class "resume-skill-items" ]
+              <| List.map (mapSkillItem visibles) v
+          ]
         Experiences c v ->
-          div [] <| viewContent c ++ [ul [ class "resume-experience-items" ] <| List.map viewExperienceItem v]
+          div [] <| viewContent c ++ [
+            ul [ class "resume-experience-items" ]
+              <| List.map (mapExperienceItem visibles) v
+          ]
   in
     div [ class "resume-section-body" ] [ content ]
 
-viewMaybeBody : Maybe Body -> List (Html Action)
-viewMaybeBody m =
-  toList
-    <| Maybe.map viewBody
-       m
+viewMaybeBody : Set Id -> Maybe Body -> List (Html Action)
+viewMaybeBody visibles m = toList <| Maybe.map (viewBody visibles) m
 
-viewSkillItem : SkillItem -> Html Action
-viewSkillItem { title, body, prio } =
-  li
-    [ class "resume-skill-item" ]
-    ([ h2 [] [text title]
-    ] ++ viewMaybeBody body) -- TODO prio
+mapSkillItem : Set Id -> SkillItem -> Html Action
+mapSkillItem visibles item =
+  viewItem visibles item.prio (\() -> viewSkillItem visibles item)
 
-viewExperienceItem : ExperienceItem -> Html Action
-viewExperienceItem { title, body, begin, end, prio } =
-  li
-    [ class "resume-skill-item" ]
+viewSkillItem : Set Id -> SkillItem -> Html Action
+viewSkillItem visibles { title, body, prio } =
+  div
+    [ class "" ]
     ([ h2 [] [text title]
-    ] ++ viewMaybeBody body) -- TODO prio, begin, end
+    ] ++ viewMaybeBody visibles body)
+
+mapExperienceItem : Set Id -> ExperienceItem -> Html Action
+mapExperienceItem visibles item =
+  viewItem visibles item.prio (\() -> viewExperienceItem visibles item)
+
+viewDateRange : UDate -> Maybe UDate -> Html Action
+viewDateRange begin mend =
+  case mend of
+    Nothing ->
+      text <| (uDateToString begin) ++ " to present"
+    Just end ->
+      if begin == end then
+        text <| (uDateToString begin)
+      else
+        text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+
+
+viewExperienceItem : Set Id -> ExperienceItem -> Html Action
+viewExperienceItem visibles { title, body, begin, end, prio } =
+  div
+    [ class "" ]
+    (
+      [ h2 [] [text title]
+      , viewDateRange begin end
+      ] ++ viewMaybeBody visibles body)
+
+viewItem : Set Id -> Priority -> (() -> Html Action) -> Html Action
+viewItem visibles prio render =
+  case prio of
+    Mandatory ->
+      li
+        [ class "resume-skill-item" ]
+        [ render () ]
+    Optional id ->
+      if isVisible visibles prio then
+        li
+          [ class "resume-skill-item" ]
+          [ collapse (ToggleItem id)
+          , render () ]
+      else
+        li
+          [ class "resume-skill-item-expand" ]
+          [ expand (ToggleItem id) ]
+
+isVisible : Set Id -> Priority -> Bool
+isVisible visibles prio =
+  case prio of
+    Mandatory -> True
+    Optional id -> Set.member id visibles
+
+canToggle : Priority -> Bool
+canToggle prio =
+  case prio of
+    Mandatory -> False
+    Optional _ -> True
