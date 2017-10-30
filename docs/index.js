@@ -14816,11 +14816,46 @@ var _user$project$View$expand = function (action) {
 var _user$project$View$viewItem = F2(
 	function (visibles, _p17) {
 		var _p18 = _p17;
-		var _p24 = _p18.title;
-		var _p23 = _p18.prio;
-		var _p22 = _p18.dates;
-		var _p21 = _p18.body;
-		var _p19 = _p23;
+		var _p21 = _p18.prio;
+		var content = A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$header,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('title-and-date'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h3,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('resume-section-item-title'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(_p18.title),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$View$viewDateRange(_p18.dates),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(_user$project$View$viewBody, visibles, _p18.body),
+					_1: {ctor: '[]'}
+				}
+			});
+		var _p19 = _p21;
 		if (_p19.ctor === 'Mandatory') {
 			return A2(
 				_elm_lang$html$Html$li,
@@ -14831,49 +14866,12 @@ var _user$project$View$viewItem = F2(
 				},
 				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$header,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('title-and-date'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$h3,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('resume-section-item-title'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(_p24),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: _user$project$View$viewDateRange(_p22),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(_user$project$View$viewBody, visibles, _p21),
-								_1: {ctor: '[]'}
-							}
-						}),
+					_0: content,
 					_1: {ctor: '[]'}
 				});
 		} else {
 			var _p20 = _p19._0;
-			return A2(_user$project$View$isVisible, visibles, _p23) ? A2(
+			return A2(_user$project$View$isVisible, visibles, _p21) ? A2(
 				_elm_lang$html$Html$li,
 				{
 					ctor: '::',
@@ -14886,44 +14884,7 @@ var _user$project$View$viewItem = F2(
 						_user$project$Action$ToggleItem(_p20)),
 					_1: {
 						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$header,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('title-and-date'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$h3,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('resume-section-item-title'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(_p24),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: _user$project$View$viewDateRange(_p22),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(_user$project$View$viewBody, visibles, _p21),
-									_1: {ctor: '[]'}
-								}
-							}),
+						_0: content,
 						_1: {ctor: '[]'}
 					}
 				}) : A2(
@@ -14944,15 +14905,15 @@ var _user$project$View$viewItem = F2(
 var _user$project$View$viewBody = F2(
 	function (visibles, body) {
 		var content = function () {
-			var _p25 = body;
-			switch (_p25.ctor) {
+			var _p22 = body;
+			switch (_p22.ctor) {
 				case 'Empty':
 					return _elm_lang$html$Html$text('');
 				case 'ContentOnly':
 					return A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_p25._0);
+						_p22._0);
 				case 'ItemsOnly':
 					return A2(
 						_elm_lang$html$Html$ul,
@@ -14964,7 +14925,7 @@ var _user$project$View$viewBody = F2(
 						A2(
 							_elm_lang$core$List$map,
 							_user$project$View$viewItem(visibles),
-							_p25._0));
+							_p22._0));
 				default:
 					return A2(
 						_elm_lang$html$Html$div,
@@ -14974,7 +14935,7 @@ var _user$project$View$viewBody = F2(
 							_0: A2(
 								_evancz$elm_markdown$Markdown$toHtml,
 								{ctor: '[]'},
-								_p25._0),
+								_p22._0),
 							_1: {
 								ctor: '::',
 								_0: A2(
@@ -14987,7 +14948,7 @@ var _user$project$View$viewBody = F2(
 									A2(
 										_elm_lang$core$List$map,
 										_user$project$View$viewItem(visibles),
-										_p25._1)),
+										_p22._1)),
 								_1: {ctor: '[]'}
 							}
 						});
@@ -15007,8 +14968,8 @@ var _user$project$View$viewBody = F2(
 			});
 	});
 var _user$project$View$viewSection = F2(
-	function (visibles, _p26) {
-		var _p27 = _p26;
+	function (visibles, _p23) {
+		var _p24 = _p23;
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -15027,19 +14988,19 @@ var _user$project$View$viewSection = F2(
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p27.title),
+						_0: _elm_lang$html$Html$text(_p24.title),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(_user$project$View$viewBody, visibles, _p27.body),
+					_0: A2(_user$project$View$viewBody, visibles, _p24.body),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _user$project$View$viewResume = function (_p28) {
-	var _p29 = _p28;
-	var _p30 = _p29.optionalSocialMedia;
+var _user$project$View$viewResume = function (_p25) {
+	var _p26 = _p25;
+	var _p27 = _p26.optionalSocialMedia;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -15060,7 +15021,7 @@ var _user$project$View$viewResume = function (_p28) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p29.name),
+						_0: _elm_lang$html$Html$text(_p26.name),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -15076,19 +15037,19 @@ var _user$project$View$viewResume = function (_p28) {
 							_elm_lang$core$Basics_ops['++'],
 							{
 								ctor: '::',
-								_0: _user$project$View$viewContact(_p29.contact),
+								_0: _user$project$View$viewContact(_p26.contact),
 								_1: {
 									ctor: '::',
-									_0: _user$project$View$viewSocialMediaList(_p29.socialMedia),
+									_0: _user$project$View$viewSocialMediaList(_p26.socialMedia),
 									_1: {ctor: '[]'}
 								}
 							},
-							_p30.visible ? {
+							_p27.visible ? {
 								ctor: '::',
 								_0: _user$project$View$collapse(_user$project$Action$ToggleOptionalSocialMedia),
 								_1: {
 									ctor: '::',
-									_0: _user$project$View$viewSocialMediaList(_p30.handles),
+									_0: _user$project$View$viewSocialMediaList(_p27.handles),
 									_1: {ctor: '[]'}
 								}
 							} : {
@@ -15101,15 +15062,15 @@ var _user$project$View$viewResume = function (_p28) {
 			},
 			A2(
 				_elm_lang$core$List$map,
-				_user$project$View$viewSection(_p29.visible),
-				_p29.sections)));
+				_user$project$View$viewSection(_p26.visible),
+				_p26.sections)));
 };
-var _user$project$View$view = function (_p31) {
-	var _p32 = _p31;
-	var _p33 = _p32.resume;
-	switch (_p33.ctor) {
+var _user$project$View$view = function (_p28) {
+	var _p29 = _p28;
+	var _p30 = _p29.resume;
+	switch (_p30.ctor) {
 		case 'Success':
-			return _user$project$View$viewResume(_p33._0);
+			return _user$project$View$viewResume(_p30._0);
 		case 'Failure':
 			return A2(
 				_elm_lang$html$Html$div,
@@ -15128,7 +15089,7 @@ var _user$project$View$view = function (_p31) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_elm_lang$core$Basics$toString(_p33._0)),
+						_elm_lang$core$Basics$toString(_p30._0)),
 					_1: {ctor: '[]'}
 				});
 		default:

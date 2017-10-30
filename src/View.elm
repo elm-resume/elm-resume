@@ -132,49 +132,35 @@ viewDateRange dates =
   in
     span [ class "date" ] [ content ]
 
--- viewItem : Set Id -> Item -> Html Action
--- viewItem visibles { title, body, dates, prio } =
---   div
---     [ class "" ]
---     [ h2 [] [text title]
---     , viewDateRange dates
---     , viewBody visibles body
---     ]
-
 viewItem : Set Id -> Item -> Html Action
 viewItem visibles { title, body, dates, prio } =
-  case prio of
-    Mandatory ->
-      li
-        [ class "resume-skill-item" ]
-        [
-          div
-            []
-            [ header [ class "title-and-date" ]
-              [ h3 [ class "resume-section-item-title" ] [text title]
-              , viewDateRange dates
-              ]
-            , viewBody visibles body
-            ]
+  let
+    content =
+      div
+        []
+        [ header [ class "title-and-date" ]
+          [ h3 [ class "resume-section-item-title" ] [text title]
+          , viewDateRange dates
+          ]
+        , viewBody visibles body
         ]
-    Optional id ->
-      if isVisible visibles prio then
+  in
+    case prio of
+      Mandatory ->
         li
           [ class "resume-skill-item" ]
-          [ collapse (ToggleItem id)
-          , div
-              []
-              [ header [ class "title-and-date" ]
-                [ h3 [ class "resume-section-item-title" ] [text title]
-                , viewDateRange dates
-                ]
-              , viewBody visibles body
-              ]
-          ]
-      else
-        li
-          [ class "resume-skill-item-expand" ]
-          [ expand (ToggleItem id) ]
+          [ content ]
+      Optional id ->
+        if isVisible visibles prio then
+          li
+            [ class "resume-skill-item" ]
+            [ collapse (ToggleItem id)
+            , content
+            ]
+        else
+          li
+            [ class "resume-skill-item-expand" ]
+            [ expand (ToggleItem id) ]
 
 isVisible : Set Id -> Priority -> Bool
 isVisible visibles prio =
