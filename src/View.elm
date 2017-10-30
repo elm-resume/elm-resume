@@ -9,6 +9,7 @@ import Model exposing (..)
 import Resume exposing (..)
 import ResumeState exposing (..)
 import Action exposing (..)
+import Maybe.Extra exposing (toList)
 
 view : Model -> Html Action
 view { resume } =
@@ -16,13 +17,6 @@ view { resume } =
     Success r -> viewResume r
     Failure msg -> div [style [("font-family", "monospace")]] [Markdown.toHtml [] <| toString msg]
     _ -> div [] []
-
-toggle : (Bool -> Action) -> Bool -> Html Action
-toggle f expanded =
-  if expanded then
-    button [ onClick (f expanded) ] [ text "collapse" ]
-  else
-    button [ onClick (f expanded) ] [ text "expand" ]
 
 expand : Action -> Html Action
 expand action =
@@ -118,11 +112,22 @@ viewBody body =
   in
     div [ class "resume-section-body" ] [ content ]
 
-viewSkillItem : SkillItem -> Html Action
-viewSkillItem { title, body } =
-  li [ class "resume-skill-item" ] [ text title ] -- TODO
+viewMaybeBody : Maybe Body -> List (Html Action)
+viewMaybeBody m =
+  toList
+    <| Maybe.map viewBody
+       m
 
+viewSkillItem : SkillItem -> Html Action
+viewSkillItem { title, body, prio } =
+  li
+    [ class "resume-skill-item" ]
+    ([ h2 [] [text title]
+    ] ++ viewMaybeBody body) -- TODO prio
 
 viewExperienceItem : ExperienceItem -> Html Action
-viewExperienceItem { title, body, begin, end } =
-  li [ class "resume-skill-item" ] [ text title ] -- TODO
+viewExperienceItem { title, body, begin, end, prio } =
+  li
+    [ class "resume-skill-item" ]
+    ([ h2 [] [text title]
+    ] ++ viewMaybeBody body) -- TODO prio, begin, end
