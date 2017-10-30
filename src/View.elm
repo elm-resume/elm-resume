@@ -94,29 +94,28 @@ viewSection visibles { title, body } =
     , viewBody visibles body
     ]
 
-viewContent : Maybe String -> List (Html Action)
-viewContent m = case m of
-  Nothing -> []
-  Just s -> [Markdown.toHtml [] s]
-
 viewBody : Set Id -> Body -> Html Action
 viewBody visibles body =
   let
     content : Html Action
     content =
       case body of
-        Text v ->
+        Empty ->
+          text ""
+        ContentOnly v ->
           Markdown.toHtml [] v
-        Items c v ->
-          div [] <| viewContent c ++ [
-            ul [ class "resume-items" ]
-              <| List.map (mapItem visibles) v
-          ]
+        ItemsOnly v ->
+          ul [ class "resume-items" ]
+            <| List.map (mapItem visibles) v
+        ContentAndItems c v ->
+          div
+            []
+            [ Markdown.toHtml [] c
+            , ul [ class "resume-items" ]
+                <| List.map (mapItem visibles) v
+            ]
   in
     div [ class "resume-section-body" ] [ content ]
-
-viewMaybeBody : Set Id -> Maybe Body -> List (Html Action)
-viewMaybeBody visibles m = toList <| Maybe.map (viewBody visibles) m
 
 mapItem : Set Id -> Item -> Html Action
 mapItem visibles item =
@@ -136,10 +135,10 @@ viewItem : Set Id -> Item -> Html Action
 viewItem visibles { title, body, dates, prio } =
   div
     [ class "" ]
-    (
-      [ h2 [] [text title]
-      , viewDateRange dates
-      ] ++ viewMaybeBody visibles body)
+    [ h2 [] [text title]
+    , viewDateRange dates
+    , viewBody visibles body
+    ]
 
 viewItem_ : Set Id -> Priority -> (() -> Html Action) -> Html Action
 viewItem_ visibles prio render =
