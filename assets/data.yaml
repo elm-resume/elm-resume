@@ -13,17 +13,15 @@ optionalSocialMedia:
   stackoverflow: janedoe80
 sections:
   - title: Work Experience
-    body: "I don't have any"
+    content: "I don't have any"
   - title: Gaming Experience
-    body:
-      skills:
-        - title: some skill name
-          body: some skill description
-        - title: another skill name
-          body: another skill description
+    items:
+      - title: some skill name
+        content: some skill description
+      - title: another skill name
+        content: another skill description
   - title: Other Experience
-    body:
-      experiences:
-        - title: some
-          body: body
-          begin: 2017
+    items:
+      - title: some
+        content: body
+        begin: 2017

@@ -4,7 +4,6 @@ import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
 import UDate exposing (..)
 import Result.Extra exposing (combine)
-import Debug
 
 type alias Resume =
   { name : String
