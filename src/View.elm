@@ -107,15 +107,10 @@ viewBody visibles body =
       case body of
         Text v ->
           Markdown.toHtml [] v
-        Skills c v ->
+        Items c v ->
           div [] <| viewContent c ++ [
-            ul [ class "resume-skill-items" ]
-              <| List.map (mapSkillItem visibles) v
-          ]
-        Experiences c v ->
-          div [] <| viewContent c ++ [
-            ul [ class "resume-experience-items" ]
-              <| List.map (mapExperienceItem visibles) v
+            ul [ class "resume-items" ]
+              <| List.map (mapItem visibles) v
           ]
   in
     div [ class "resume-section-body" ] [ content ]
@@ -123,44 +118,31 @@ viewBody visibles body =
 viewMaybeBody : Set Id -> Maybe Body -> List (Html Action)
 viewMaybeBody visibles m = toList <| Maybe.map (viewBody visibles) m
 
-mapSkillItem : Set Id -> SkillItem -> Html Action
-mapSkillItem visibles item =
-  viewItem visibles item.prio (\() -> viewSkillItem visibles item)
+mapItem : Set Id -> Item -> Html Action
+mapItem visibles item =
+  viewItem_ visibles item.prio (\() -> viewItem visibles item)
 
-viewSkillItem : Set Id -> SkillItem -> Html Action
-viewSkillItem visibles { title, body, prio } =
-  div
-    [ class "" ]
-    ([ h2 [] [text title]
-    ] ++ viewMaybeBody visibles body)
-
-mapExperienceItem : Set Id -> ExperienceItem -> Html Action
-mapExperienceItem visibles item =
-  viewItem visibles item.prio (\() -> viewExperienceItem visibles item)
-
-viewDateRange : UDate -> Maybe UDate -> Html Action
-viewDateRange begin mend =
-  case mend of
-    Nothing ->
+viewDateRange : DateRange  -> Html Action
+viewDateRange dates =
+  case dates of
+    Between begin end ->
+      text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+    After begin ->
       text <| (uDateToString begin) ++ " to present"
-    Just end ->
-      if begin == end then
-        text <| (uDateToString begin)
-      else
-        text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+    Undetermined ->
+      text ""
 
-
-viewExperienceItem : Set Id -> ExperienceItem -> Html Action
-viewExperienceItem visibles { title, body, begin, end, prio } =
+viewItem : Set Id -> Item -> Html Action
+viewItem visibles { title, body, dates, prio } =
   div
     [ class "" ]
     (
       [ h2 [] [text title]
-      , viewDateRange begin end
+      , viewDateRange dates
       ] ++ viewMaybeBody visibles body)
 
-viewItem : Set Id -> Priority -> (() -> Html Action) -> Html Action
-viewItem visibles prio render =
+viewItem_ : Set Id -> Priority -> (() -> Html Action) -> Html Action
+viewItem_ visibles prio render =
   case prio of
     Mandatory ->
       li

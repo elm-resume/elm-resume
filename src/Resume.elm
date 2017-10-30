@@ -4,6 +4,7 @@ import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
 import UDate exposing (..)
 import Result.Extra exposing (combine)
+import Debug
 
 type alias Resume =
   { name : String
@@ -91,23 +92,34 @@ socialMediaDecoder =
   in
     Json.Decode.andThen (mapAllMediaDecoder << mapAllMedia) (keyValuePairs string)
 
-type alias SkillItem =
-  { title : String
-  , body : Maybe Body
-  , prio : Priority
-  }
+type DateRange
+  = Between UDate UDate
+  | After UDate
+  | Undetermined
 
-skillItemDecoder : Decoder SkillItem
-skillItemDecoder =
-  andThen (\f -> map f priorityDecoder) (decode SkillItem
-    |> required "title" string
-    |> maybeField "body" bodyDecoder)
+dateRangeDecoder : Decoder DateRange
+dateRangeDecoder =
+  let
+    between =
+      decode Between
+        |> required "begin" uDateDecoder
+        |> required "end" uDateDecoder
+    after =
+      decode After
+        |> required "begin" uDateDecoder
+    undetermined =
+      succeed Undetermined
+  in
+    oneOf
+      [ between
+      , after
+      , undetermined
+      ]
 
-type alias ExperienceItem =
+type alias Item =
   { title : String
-  , body : Maybe Body
-  , begin : UDate
-  , end : Maybe UDate
+  , body  : Maybe Body
+  , dates : DateRange
   , prio : Priority
   }
 
@@ -115,18 +127,23 @@ maybeField : String -> Decoder a -> Decoder (Maybe a -> b) -> Decoder b
 maybeField s d =
   optional s (custom d <| decode Just) Nothing
 
-experienceItemDecoder : Decoder ExperienceItem
-experienceItemDecoder =
-  andThen (\f -> map f priorityDecoder) (decode ExperienceItem
-    |> required   "title" string
-    |> maybeField "body"  bodyDecoder
-    |> required   "begin" uDateDecoder
-    |> maybeField "end"   uDateDecoder)
+itemDecoder : Decoder Item
+itemDecoder =
+  let
+    half : Decoder (DateRange -> Priority -> Item)
+    half = decode Item
+      |> required   "title" string
+      |> maybeField "body"  bodyDecoder
+    withDate =
+      andThen (\f -> map f dateRangeDecoder) half
+    withPrio =
+      andThen (\f -> map f priorityDecoder) withDate
+  in
+    withPrio
 
 type Body
   = Text String
-  | Skills (Maybe String) (List SkillItem)
-  | Experiences (Maybe String) (List ExperienceItem)
+  | Items (Maybe String) (List Item) -- TODO
 
 bodyDecoder : Decoder Body
 bodyDecoder =
@@ -136,16 +153,12 @@ bodyDecoder =
     contentDecoder =
       decode identity
         |> maybeField "content" string
-    skillsDecoder =
-      andThen (\v -> decode (Skills v)
-        |> required "skills" (list (lazy (\_ -> skillItemDecoder)))) contentDecoder
     experienceDecoder =
-      andThen (\v -> decode (Experiences v)
-        |> required "experiences" (list (lazy (\_ -> experienceItemDecoder)))) contentDecoder
+      andThen (\v -> decode (Items v)
+        |> required "items" (list (lazy (\_ -> itemDecoder)))) contentDecoder
   in
     oneOf
       [ experienceDecoder
-      , skillsDecoder
       , textDecoder
       ]
 
