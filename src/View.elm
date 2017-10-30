@@ -9,7 +9,6 @@ import Model exposing (..)
 import Resume exposing (..)
 import ResumeState exposing (..)
 import Action exposing (..)
-import Maybe.Extra exposing (toList)
 import Set exposing (Set)
 import UDate exposing (..)
 
@@ -58,32 +57,32 @@ viewContact { address, email, phone } =
 
 viewSocialMediaList : List SocialMedia -> Html Action
 viewSocialMediaList =
-  div [ class "resume-social" ] << List.filterMap viewSocialMedia
+  div [ class "resume-social" ] << List.map viewSocialMedia
 
 -- TODO icons
-viewSocialMedia : SocialMedia -> Maybe (Html Action)
+viewSocialMedia : SocialMedia -> Html Action
 viewSocialMedia handle =
   case handle of
-    Twitter v -> Just <|
+    Twitter v ->
       a [ class "resume-social-link twitter", href <| "http://twitter.com/" ++ v ]
         [ text v ]
-    Github v -> Just <|
+    Github v ->
       a [ class "resume-social-link github", href <| "http://github.com/" ++ v ]
         [ text v ]
-    Skype v -> Just <|
+    Skype v ->
       span [ class "resume-social-link skype" ] [ text v ]
-    GTalk v -> Just <|
+    GTalk v ->
       span [ class "resume-social-link gtalk" ] [ text v ]
-    OpenHub v -> Just <|
+    OpenHub v ->
       a [ class "resume-social-link open-hub", href <| "https://www.openhub.net/accounts/" ++ v ]
         [ text v ]
-    Website v -> Just <|
+    Website v ->
       a [ class "resume-social-link website", href <| v ]
         [ text v ]
-    LinkedIn v -> Just <|
+    LinkedIn v ->
       a [ class "resume-social-link linkedin", href <| "http://linkedin.com/in/" ++ v ]
         [ text v ]
-    StackOverflow v -> Just <| -- TODO: string should be int here
+    StackOverflow v -> -- TODO: string should be int here
       a [ class "resume-social-link stack-ovrflow", href <| "http://stackoverflow.com/users/" ++ v ]
         [ text v ]
 
@@ -106,27 +105,26 @@ viewBody visibles body =
           Markdown.toHtml [] v
         ItemsOnly v ->
           ul [ class "resume-items" ]
-            <| List.map (mapItem visibles) v
+            <| List.map (viewItem visibles) v
         ContentAndItems c v ->
           div
             []
             [ Markdown.toHtml [] c
             , ul [ class "resume-items" ]
-                <| List.map (mapItem visibles) v
+                <| List.map (viewItem visibles) v
             ]
   in
     div [ class "resume-section-body" ] [ content ]
-
-mapItem : Set Id -> Item -> Html Action
-mapItem visibles item =
-  viewItem_ visibles item.prio (\() -> viewItem visibles item)
 
 viewDateRange : DateRange  -> Html Action
 viewDateRange dates =
   let content =
     case dates of
       Between begin end ->
-        text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+        if begin == end then
+          text <| (uDateToString begin)
+        else
+          text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
       After begin ->
         text <| (uDateToString begin) ++ " to present"
       Undetermined ->
@@ -134,30 +132,45 @@ viewDateRange dates =
   in
     span [ class "date" ] [ content ]
 
+-- viewItem : Set Id -> Item -> Html Action
+-- viewItem visibles { title, body, dates, prio } =
+--   div
+--     [ class "" ]
+--     [ h2 [] [text title]
+--     , viewDateRange dates
+--     , viewBody visibles body
+--     ]
+
 viewItem : Set Id -> Item -> Html Action
 viewItem visibles { title, body, dates, prio } =
-  div
-    []
-    [ header [ class "title-and-date" ]
-      [ h3 [ class "resume-section-item-title" ] [text title]
-      , viewDateRange dates
-      ]
-    , viewBody visibles body
-    ]
-
-viewItem_ : Set Id -> Priority -> (() -> Html Action) -> Html Action
-viewItem_ visibles prio render =
   case prio of
     Mandatory ->
       li
         [ class "resume-skill-item" ]
-        [ render () ]
+        [
+          div
+            []
+            [ header [ class "title-and-date" ]
+              [ h3 [ class "resume-section-item-title" ] [text title]
+              , viewDateRange dates
+              ]
+            , viewBody visibles body
+            ]
+        ]
     Optional id ->
       if isVisible visibles prio then
         li
           [ class "resume-skill-item" ]
           [ collapse (ToggleItem id)
-          , render () ]
+          , div
+              []
+              [ header [ class "title-and-date" ]
+                [ h3 [ class "resume-section-item-title" ] [text title]
+                , viewDateRange dates
+                ]
+              , viewBody visibles body
+              ]
+          ]
       else
         li
           [ class "resume-skill-item-expand" ]
