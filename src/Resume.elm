@@ -57,6 +57,8 @@ type SocialMedia
   | Skype String
   | LinkedIn String
   | StackOverflow String
+  | OpenHub String
+  | Website String
 
 socialMediaDecoder : Decoder (List SocialMedia)
 socialMediaDecoder =
@@ -77,10 +79,13 @@ socialMediaDecoder =
         "skype" ->          Ok <| Skype value
         "linkedin" ->       Ok <| LinkedIn value
         "stackoverflow" ->  Ok <| StackOverflow value
+        "ohloh" ->          Ok <| OpenHub value
+        "openhub" ->        Ok <| OpenHub value
+        "website" ->        Ok <| Website value
         invalid ->          Err <| "No match for social media handler: " ++ invalid
     mapAllMedia : List (String, String) -> Result String (List SocialMedia)
     mapAllMedia ls =
-      combine (List.map mapMedia ls)
+      combine (List.map mapMedia <| List.reverse ls)
     mapAllMediaDecoder : Result String (List SocialMedia) -> Decoder (List SocialMedia)
     mapAllMediaDecoder r = resultToDecoder r
   in
@@ -88,7 +93,7 @@ socialMediaDecoder =
 
 type alias SkillItem =
   { title : String
-  , body : Body
+  , body : Maybe Body
   , prio : Priority
   }
 
@@ -96,43 +101,52 @@ skillItemDecoder : Decoder SkillItem
 skillItemDecoder =
   andThen (\f -> map f priorityDecoder) (decode SkillItem
     |> required "title" string
-    |> required "body" bodyDecoder)
+    |> maybeField "body" bodyDecoder)
 
 type alias ExperienceItem =
   { title : String
-  , body : Body
+  , body : Maybe Body
   , begin : UDate
   , end : Maybe UDate
   , prio : Priority
   }
 
+maybeField : String -> Decoder a -> Decoder (Maybe a -> b) -> Decoder b
+maybeField s d =
+  optional s (custom d <| decode Just) Nothing
+
 experienceItemDecoder : Decoder ExperienceItem
 experienceItemDecoder =
   andThen (\f -> map f priorityDecoder) (decode ExperienceItem
-    |> required "title" string
-    |> required "body" bodyDecoder
-    |> required "begin" uDateDecoder
-    |> optional "end" (oneOf
-      [ null Nothing
-      , (custom uDateDecoder <| decode Just)
-      ]) Nothing)
+    |> required   "title" string
+    |> maybeField "body"  bodyDecoder
+    |> required   "begin" uDateDecoder
+    |> maybeField "end"   uDateDecoder)
 
 type Body
   = Text String
-  | Skills (List SkillItem)
-  | Experiences (List ExperienceItem)
+  | Skills (Maybe String) (List SkillItem)
+  | Experiences (Maybe String) (List ExperienceItem)
 
 bodyDecoder : Decoder Body
 bodyDecoder =
   let
-    textDecoder = map Text string
-    skillsDecoder = decode Skills |> required "skills" (list (lazy (\_ -> skillItemDecoder)))
-    experienceDecoder = decode Experiences |> required "experiences" (list (lazy (\_ -> experienceItemDecoder)))
+    textDecoder =
+      map Text string
+    contentDecoder =
+      decode identity
+        |> maybeField "content" string
+    skillsDecoder =
+      andThen (\v -> decode (Skills v)
+        |> required "skills" (list (lazy (\_ -> skillItemDecoder)))) contentDecoder
+    experienceDecoder =
+      andThen (\v -> decode (Experiences v)
+        |> required "experiences" (list (lazy (\_ -> experienceItemDecoder)))) contentDecoder
   in
     oneOf
-      [ textDecoder
+      [ experienceDecoder
       , skillsDecoder
-      , experienceDecoder
+      , textDecoder
       ]
 
 type alias Section =

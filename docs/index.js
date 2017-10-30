@@ -12984,6 +12984,121 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'checked',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'value',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
+
 var _elm_lang$http$Native_Http = function() {
 
 
@@ -14019,6 +14134,17 @@ var _user$project$Resume$resultToDecoder = function (r) {
 		return _elm_lang$core$Json_Decode$succeed(_p0._0);
 	}
 };
+var _user$project$Resume$maybeField = F2(
+	function (s, d) {
+		return A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+			s,
+			A2(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
+				d,
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
+			_elm_lang$core$Maybe$Nothing);
+	});
 var _user$project$Resume$Resume = F5(
 	function (a, b, c, d, e) {
 		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e};
@@ -14076,6 +14202,12 @@ var _user$project$Resume$priorityDecoder = function () {
 			'',
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Basics$identity)));
 }();
+var _user$project$Resume$Website = function (a) {
+	return {ctor: 'Website', _0: a};
+};
+var _user$project$Resume$OpenHub = function (a) {
+	return {ctor: 'OpenHub', _0: a};
+};
 var _user$project$Resume$StackOverflow = function (a) {
 	return {ctor: 'StackOverflow', _0: a};
 };
@@ -14121,6 +14253,15 @@ var _user$project$Resume$socialMediaDecoder = function () {
 			case 'stackoverflow':
 				return _elm_lang$core$Result$Ok(
 					_user$project$Resume$StackOverflow(_p5));
+			case 'ohloh':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Resume$OpenHub(_p5));
+			case 'openhub':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Resume$OpenHub(_p5));
+			case 'website':
+				return _elm_lang$core$Result$Ok(
+					_user$project$Resume$Website(_p5));
 			default:
 				return _elm_lang$core$Result$Err(
 					A2(_elm_lang$core$Basics_ops['++'], 'No match for social media handler: ', _p4));
@@ -14128,7 +14269,10 @@ var _user$project$Resume$socialMediaDecoder = function () {
 	};
 	var mapAllMedia = function (ls) {
 		return _elm_community$result_extra$Result_Extra$combine(
-			A2(_elm_lang$core$List$map, mapMedia, ls));
+			A2(
+				_elm_lang$core$List$map,
+				mapMedia,
+				_elm_lang$core$List$reverse(ls)));
 	};
 	var matchValue = F3(
 		function (s, c, d) {
@@ -14158,45 +14302,64 @@ var _user$project$Resume$socialMediaDecoder = function () {
 		},
 		_elm_lang$core$Json_Decode$keyValuePairs(_elm_lang$core$Json_Decode$string));
 }();
-var _user$project$Resume$Experiences = function (a) {
-	return {ctor: 'Experiences', _0: a};
-};
-var _user$project$Resume$Skills = function (a) {
-	return {ctor: 'Skills', _0: a};
-};
+var _user$project$Resume$Experiences = F2(
+	function (a, b) {
+		return {ctor: 'Experiences', _0: a, _1: b};
+	});
+var _user$project$Resume$Skills = F2(
+	function (a, b) {
+		return {ctor: 'Skills', _0: a, _1: b};
+	});
 var _user$project$Resume$Text = function (a) {
 	return {ctor: 'Text', _0: a};
 };
 var _user$project$Resume$bodyDecoder = function () {
-	var experienceDecoder = A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'experiences',
-		_elm_lang$core$Json_Decode$list(
-			_elm_lang$core$Json_Decode$lazy(
-				function (_p8) {
-					return _user$project$Resume$experienceItemDecoder;
-				})),
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Experiences));
-	var skillsDecoder = A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'skills',
-		_elm_lang$core$Json_Decode$list(
-			_elm_lang$core$Json_Decode$lazy(
-				function (_p9) {
-					return _user$project$Resume$skillItemDecoder;
-				})),
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Skills));
+	var contentDecoder = A3(
+		_user$project$Resume$maybeField,
+		'content',
+		_elm_lang$core$Json_Decode$string,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Basics$identity));
+	var skillsDecoder = A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (v) {
+			return A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'skills',
+				_elm_lang$core$Json_Decode$list(
+					_elm_lang$core$Json_Decode$lazy(
+						function (_p8) {
+							return _user$project$Resume$skillItemDecoder;
+						})),
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(
+					_user$project$Resume$Skills(v)));
+		},
+		contentDecoder);
+	var experienceDecoder = A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (v) {
+			return A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'experiences',
+				_elm_lang$core$Json_Decode$list(
+					_elm_lang$core$Json_Decode$lazy(
+						function (_p9) {
+							return _user$project$Resume$experienceItemDecoder;
+						})),
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(
+					_user$project$Resume$Experiences(v)));
+		},
+		contentDecoder);
 	var textDecoder = A2(_elm_lang$core$Json_Decode$map, _user$project$Resume$Text, _elm_lang$core$Json_Decode$string);
 	return _elm_lang$core$Json_Decode$oneOf(
 		{
 			ctor: '::',
-			_0: textDecoder,
+			_0: experienceDecoder,
 			_1: {
 				ctor: '::',
 				_0: skillsDecoder,
 				_1: {
 					ctor: '::',
-					_0: experienceDecoder,
+					_0: textDecoder,
 					_1: {ctor: '[]'}
 				}
 			}
@@ -14207,29 +14370,16 @@ var _user$project$Resume$experienceItemDecoder = A2(
 	function (f) {
 		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Resume$priorityDecoder);
 	},
-	A4(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+	A3(
+		_user$project$Resume$maybeField,
 		'end',
-		_elm_lang$core$Json_Decode$oneOf(
-			{
-				ctor: '::',
-				_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$custom,
-						_user$project$UDate$uDateDecoder,
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
-					_1: {ctor: '[]'}
-				}
-			}),
-		_elm_lang$core$Maybe$Nothing,
+		_user$project$UDate$uDateDecoder,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 			'begin',
 			_user$project$UDate$uDateDecoder,
 			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				_user$project$Resume$maybeField,
 				'body',
 				_user$project$Resume$bodyDecoder,
 				A3(
@@ -14243,7 +14393,7 @@ var _user$project$Resume$skillItemDecoder = A2(
 		return A2(_elm_lang$core$Json_Decode$map, f, _user$project$Resume$priorityDecoder);
 	},
 	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		_user$project$Resume$maybeField,
 		'body',
 		_user$project$Resume$bodyDecoder,
 		A3(
@@ -14350,33 +14500,68 @@ var _user$project$View$viewSkillItem = function (_p2) {
 			_1: {ctor: '[]'}
 		});
 };
+var _user$project$View$viewContent = function (m) {
+	var _p4 = m;
+	if (_p4.ctor === 'Nothing') {
+		return {ctor: '[]'};
+	} else {
+		return {
+			ctor: '::',
+			_0: A2(
+				_evancz$elm_markdown$Markdown$toHtml,
+				{ctor: '[]'},
+				_p4._0),
+			_1: {ctor: '[]'}
+		};
+	}
+};
 var _user$project$View$viewBody = function (body) {
 	var content = function () {
-		var _p4 = body;
-		switch (_p4.ctor) {
+		var _p5 = body;
+		switch (_p5.ctor) {
 			case 'Text':
 				return A2(
 					_evancz$elm_markdown$Markdown$toHtml,
 					{ctor: '[]'},
-					_p4._0);
+					_p5._0);
 			case 'Skills':
 				return A2(
-					_elm_lang$html$Html$ul,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-skill-items'),
-						_1: {ctor: '[]'}
-					},
-					A2(_elm_lang$core$List$map, _user$project$View$viewSkillItem, _p4._0));
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$View$viewContent(_p5._0),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$ul,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('resume-skill-items'),
+									_1: {ctor: '[]'}
+								},
+								A2(_elm_lang$core$List$map, _user$project$View$viewSkillItem, _p5._1)),
+							_1: {ctor: '[]'}
+						}));
 			default:
 				return A2(
-					_elm_lang$html$Html$ul,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-experience-items'),
-						_1: {ctor: '[]'}
-					},
-					A2(_elm_lang$core$List$map, _user$project$View$viewExperienceItem, _p4._0));
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$View$viewContent(_p5._0),
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$ul,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('resume-experience-items'),
+									_1: {ctor: '[]'}
+								},
+								A2(_elm_lang$core$List$map, _user$project$View$viewExperienceItem, _p5._1)),
+							_1: {ctor: '[]'}
+						}));
 		}
 	}();
 	return A2(
@@ -14392,8 +14577,8 @@ var _user$project$View$viewBody = function (body) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$View$viewSection = function (_p5) {
-	var _p6 = _p5;
+var _user$project$View$viewSection = function (_p6) {
+	var _p7 = _p6;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14412,51 +14597,31 @@ var _user$project$View$viewSection = function (_p5) {
 				},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(_p6.title),
+					_0: _elm_lang$html$Html$text(_p7.title),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _user$project$View$viewBody(_p6.body),
+				_0: _user$project$View$viewBody(_p7.body),
 				_1: {ctor: '[]'}
 			}
 		});
 };
 var _user$project$View$viewSocialMedia = function (handle) {
-	var _p7 = handle;
-	switch (_p7.ctor) {
+	var _p8 = handle;
+	switch (_p8.ctor) {
 		case 'Twitter':
-			var _p8 = _p7._0;
+			var _p9 = _p8._0;
 			return _elm_lang$core$Maybe$Just(
 				A2(
 					_elm_lang$html$Html$a,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link twitter'),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://twitter.com/', _p8)),
-							_1: {ctor: '[]'}
-						}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p8),
-						_1: {ctor: '[]'}
-					}));
-		case 'Github':
-			var _p9 = _p7._0;
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://github.com/', _p9)),
+								A2(_elm_lang$core$Basics_ops['++'], 'http://twitter.com/', _p9)),
 							_1: {ctor: '[]'}
 						}
 					},
@@ -14465,38 +14630,18 @@ var _user$project$View$viewSocialMedia = function (handle) {
 						_0: _elm_lang$html$Html$text(_p9),
 						_1: {ctor: '[]'}
 					}));
-		case 'Skype':
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p7._0),
-						_1: {ctor: '[]'}
-					}));
-		case 'GTalk':
-			return _elm_lang$core$Maybe$Just(
-				A2(
-					_elm_lang$html$Html$a,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p7._0),
-						_1: {ctor: '[]'}
-					}));
-		case 'LinkedIn':
-			var _p10 = _p7._0;
+		case 'Github':
+			var _p10 = _p8._0;
 			return _elm_lang$core$Maybe$Just(
 				A2(
 					_elm_lang$html$Html$a,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link github'),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://linkedin.com/in/', _p10)),
+								A2(_elm_lang$core$Basics_ops['++'], 'http://github.com/', _p10)),
 							_1: {ctor: '[]'}
 						}
 					},
@@ -14505,18 +14650,46 @@ var _user$project$View$viewSocialMedia = function (handle) {
 						_0: _elm_lang$html$Html$text(_p10),
 						_1: {ctor: '[]'}
 					}));
-		default:
-			var _p11 = _p7._0;
+		case 'Skype':
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$span,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-item skype'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p8._0),
+						_1: {ctor: '[]'}
+					}));
+		case 'GTalk':
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$span,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-item gtalk'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p8._0),
+						_1: {ctor: '[]'}
+					}));
+		case 'OpenHub':
+			var _p11 = _p8._0;
 			return _elm_lang$core$Maybe$Just(
 				A2(
 					_elm_lang$html$Html$a,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('resume-social-link'),
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link open-hub'),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'http://stackoverflow.com/users/', _p11)),
+								A2(_elm_lang$core$Basics_ops['++'], 'https://www.openhub.net/accounts/', _p11)),
 							_1: {ctor: '[]'}
 						}
 					},
@@ -14525,9 +14698,68 @@ var _user$project$View$viewSocialMedia = function (handle) {
 						_0: _elm_lang$html$Html$text(_p11),
 						_1: {ctor: '[]'}
 					}));
+		case 'Website':
+			var _p12 = _p8._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link website'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href(_p12),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p12),
+						_1: {ctor: '[]'}
+					}));
+		case 'LinkedIn':
+			var _p13 = _p8._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link linkedin'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'http://linkedin.com/in/', _p13)),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p13),
+						_1: {ctor: '[]'}
+					}));
+		default:
+			var _p14 = _p8._0;
+			return _elm_lang$core$Maybe$Just(
+				A2(
+					_elm_lang$html$Html$a,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('resume-social-link stack-ovrflow'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'http://stackoverflow.com/users/', _p14)),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(_p14),
+						_1: {ctor: '[]'}
+					}));
 	}
 };
-var _user$project$View$viewSocialMediaList = function (_p12) {
+var _user$project$View$viewSocialMediaList = function (_p15) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14535,12 +14767,12 @@ var _user$project$View$viewSocialMediaList = function (_p12) {
 			_0: _elm_lang$html$Html_Attributes$class('resume-social'),
 			_1: {ctor: '[]'}
 		},
-		A2(_elm_lang$core$List$filterMap, _user$project$View$viewSocialMedia, _p12));
+		A2(_elm_lang$core$List$filterMap, _user$project$View$viewSocialMedia, _p15));
 };
-var _user$project$View$viewContact = function (_p13) {
-	var _p14 = _p13;
-	var _p16 = _p14.phone;
-	var _p15 = _p14.email;
+var _user$project$View$viewContact = function (_p16) {
+	var _p17 = _p16;
+	var _p19 = _p17.phone;
+	var _p18 = _p17.email;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14563,7 +14795,7 @@ var _user$project$View$viewContact = function (_p13) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_p14.address),
+						_p17.address),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
@@ -14576,13 +14808,13 @@ var _user$project$View$viewContact = function (_p13) {
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], 'mailto:', _p15)),
+								A2(_elm_lang$core$Basics_ops['++'], 'mailto:', _p18)),
 							_1: {ctor: '[]'}
 						}
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p15),
+						_0: _elm_lang$html$Html$text(_p18),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -14595,13 +14827,13 @@ var _user$project$View$viewContact = function (_p13) {
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html_Attributes$href(
-									A2(_elm_lang$core$Basics_ops['++'], 'tel:', _p16)),
+									A2(_elm_lang$core$Basics_ops['++'], 'tel:', _p19)),
 								_1: {ctor: '[]'}
 							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p16),
+							_0: _elm_lang$html$Html$text(_p19),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -14609,8 +14841,37 @@ var _user$project$View$viewContact = function (_p13) {
 			}
 		});
 };
-var _user$project$View$viewResume = function (_p17) {
-	var _p18 = _p17;
+var _user$project$View$collapse = function (action) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(action),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('collapse'),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$View$expand = function (action) {
+	return A2(
+		_elm_lang$html$Html$button,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(action),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('expand'),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$View$viewResume = function (_p20) {
+	var _p21 = _p20;
+	var _p22 = _p21.optionalSocialMedia;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -14631,7 +14892,7 @@ var _user$project$View$viewResume = function (_p17) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p18.name),
+						_0: _elm_lang$html$Html$text(_p21.name),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -14643,26 +14904,69 @@ var _user$project$View$viewResume = function (_p17) {
 							_0: _elm_lang$html$Html_Attributes$class('resume-contact-section'),
 							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: _user$project$View$viewContact(_p18.contact),
-							_1: {
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							{
 								ctor: '::',
-								_0: _user$project$View$viewSocialMediaList(_p18.socialMedia),
+								_0: _user$project$View$viewContact(_p21.contact),
+								_1: {
+									ctor: '::',
+									_0: _user$project$View$viewSocialMediaList(_p21.socialMedia),
+									_1: {ctor: '[]'}
+								}
+							},
+							_p22.visible ? {
+								ctor: '::',
+								_0: _user$project$View$collapse(_user$project$Action$ToggleOptionalSocialMedia),
+								_1: {
+									ctor: '::',
+									_0: _user$project$View$viewSocialMediaList(_p22.handles),
+									_1: {ctor: '[]'}
+								}
+							} : {
+								ctor: '::',
+								_0: _user$project$View$expand(_user$project$Action$ToggleOptionalSocialMedia),
 								_1: {ctor: '[]'}
-							}
-						}),
+							})),
 					_1: {ctor: '[]'}
 				}
 			},
-			A2(_elm_lang$core$List$map, _user$project$View$viewSection, _p18.sections)));
+			A2(_elm_lang$core$List$map, _user$project$View$viewSection, _p21.sections)));
 };
-var _user$project$View$view = function (_p19) {
-	var _p20 = _p19;
-	var _p21 = _p20.resume;
-	switch (_p21.ctor) {
+var _user$project$View$toggle = F2(
+	function (f, expanded) {
+		return expanded ? A2(
+			_elm_lang$html$Html$button,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(
+					f(expanded)),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('collapse'),
+				_1: {ctor: '[]'}
+			}) : A2(
+			_elm_lang$html$Html$button,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(
+					f(expanded)),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('expand'),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$View$view = function (_p23) {
+	var _p24 = _p23;
+	var _p25 = _p24.resume;
+	switch (_p25.ctor) {
 		case 'Success':
-			return _user$project$View$viewResume(_p21._0);
+			return _user$project$View$viewResume(_p25._0);
 		case 'Failure':
 			return A2(
 				_elm_lang$html$Html$div,
@@ -14681,7 +14985,7 @@ var _user$project$View$view = function (_p19) {
 					_0: A2(
 						_evancz$elm_markdown$Markdown$toHtml,
 						{ctor: '[]'},
-						_elm_lang$core$Basics$toString(_p21._0)),
+						_elm_lang$core$Basics$toString(_p25._0)),
 					_1: {ctor: '[]'}
 				});
 		default:
@@ -14793,7 +15097,7 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Resume.Resume"],"ToggleItem":["ResumeState.Id"],"ToggleOptionalSocialMedia":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Resume.Body":{"args":[],"tags":{"Text":["String"],"Skills":["List Resume.SkillItem"],"Experiences":["List Resume.ExperienceItem"]}},"Resume.Priority":{"args":[],"tags":{"Mandatory":[],"Optional":["String"]}},"Resume.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"LinkedIn":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}}},"aliases":{"Resume.ExperienceItem":{"args":[],"type":"{ title : String , body : Resume.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate , prio : Resume.Priority }"},"Resume.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"ResumeState.Id":{"args":[],"type":"String"},"Resume.SkillItem":{"args":[],"type":"{ title : String, body : Resume.Body, prio : Resume.Priority }"},"Resume.Section":{"args":[],"type":"{ title : String, body : Resume.Body }"},"Resume.Resume":{"args":[],"type":"{ name : String , contact : Resume.Contact , socialMedia : List Resume.SocialMedia , optionalSocialMedia : List Resume.SocialMedia , sections : List Resume.Section }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"UDate.UDate":{"args":[],"tags":{"Day":["Int","Int","Int"],"Year":["Int"],"Month":["Int","Int"]}},"Action.Action":{"args":[],"tags":{"RequestedData":["RemoteData.WebData Resume.Resume"],"ToggleItem":["ResumeState.Id"],"ToggleOptionalSocialMedia":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"RemoteData.RemoteData":{"args":["e","a"],"tags":{"NotAsked":[],"Success":["a"],"Loading":[],"Failure":["e"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Resume.Body":{"args":[],"tags":{"Text":["String"],"Skills":["Maybe.Maybe String","List Resume.SkillItem"],"Experiences":["Maybe.Maybe String","List Resume.ExperienceItem"]}},"Resume.Priority":{"args":[],"tags":{"Mandatory":[],"Optional":["String"]}},"Resume.SocialMedia":{"args":[],"tags":{"Skype":["String"],"Twitter":["String"],"Website":["String"],"StackOverflow":["String"],"GTalk":["String"],"Github":["String"],"OpenHub":["String"],"LinkedIn":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}}},"aliases":{"Resume.ExperienceItem":{"args":[],"type":"{ title : String , body : Maybe.Maybe Resume.Body , begin : UDate.UDate , end : Maybe.Maybe UDate.UDate , prio : Resume.Priority }"},"Resume.Contact":{"args":[],"type":"{ address : String, email : String, phone : String }"},"RemoteData.WebData":{"args":["a"],"type":"RemoteData.RemoteData Http.Error a"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"ResumeState.Id":{"args":[],"type":"String"},"Resume.SkillItem":{"args":[],"type":"{ title : String , body : Maybe.Maybe Resume.Body , prio : Resume.Priority }"},"Resume.Section":{"args":[],"type":"{ title : String, body : Resume.Body }"},"Resume.Resume":{"args":[],"type":"{ name : String , contact : Resume.Contact , socialMedia : List Resume.SocialMedia , optionalSocialMedia : List Resume.SocialMedia , sections : List Resume.Section }"}},"message":"Action.Action"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

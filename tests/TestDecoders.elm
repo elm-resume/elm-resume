@@ -28,21 +28,21 @@ suite =
       ]
     , describe "SkillItem decoders"
       [ test "SkillItem with text body" <|
-        testDecode """{ "title" : "TITLE", "body" : "hi!" }""" skillItemDecoder { title = "TITLE", body = Text "hi!", prio = Mandatory }
+        testDecode """{ "title" : "TITLE", "body" : "hi!" }""" skillItemDecoder { title = "TITLE", body = Just (Text "hi!"), prio = Mandatory }
       ]
     , describe "ExperienceItem decoders"
       [ test "Experience with text body" <|
-        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007" }""" experienceItemDecoder { title = "TITLE", body = Text "hi!", begin = year 2007, end = Nothing, prio = Mandatory }
+        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007" }""" experienceItemDecoder { title = "TITLE", body = Just (Text "hi!"), begin = year 2007, end = Nothing, prio = Mandatory }
       , test "Experience with text body and `end` date" <|
-        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007", "end" : "2010-10", "optional" : "blah" }""" experienceItemDecoder { title = "TITLE", body = Text "hi!", begin = year 2007, end = Just (month 2010 10), prio = Optional "blah" }
+        testDecode """{ "title" : "TITLE", "body" : "hi!", "begin" : "2007", "end" : "2010-10", "optional" : "blah" }""" experienceItemDecoder { title = "TITLE", body = Just (Text "hi!"), begin = year 2007, end = Just (month 2010 10), prio = Optional "blah" }
       ]
     , describe "Body decoders"
       [ test "Body Text" <|
         testDecode "\"content\"" bodyDecoder (Text "content")
       , test "Skills Text" <|
-        testDecode """{ "skills" : [] }""" bodyDecoder (Skills [])
+        testDecode """{ "skills" : [] }""" bodyDecoder (Skills Nothing [])
       , test "Experience Text" <|
-        testDecode """{ "experiences" : [] }""" bodyDecoder (Experiences [])
+        testDecode """{ "experiences" : [] }""" bodyDecoder (Experiences Nothing [])
       ]
     , describe "Section decoders"
       [ test "Section with text body" <|
