@@ -20,7 +20,7 @@ resumeDecoder =
     |> required "contact" contactDecoder
     |> optional "socialMedia" socialMediaDecoder []
     |> optional "optionalSocialMedia" socialMediaDecoder []
-    |> optional "sections" (list sectionDecoder) []
+    |> optional "sections" (list (lazy (\() -> sectionDecoder))) []
 
 type alias Contact =
   { address: String
@@ -57,6 +57,8 @@ type SocialMedia
   | Skype String
   | LinkedIn String
   | StackOverflow String
+  | OpenHub String
+  | Website String
 
 socialMediaDecoder : Decoder (List SocialMedia)
 socialMediaDecoder =
@@ -77,62 +79,94 @@ socialMediaDecoder =
         "skype" ->          Ok <| Skype value
         "linkedin" ->       Ok <| LinkedIn value
         "stackoverflow" ->  Ok <| StackOverflow value
+        "ohloh" ->          Ok <| OpenHub value
+        "openhub" ->        Ok <| OpenHub value
+        "website" ->        Ok <| Website value
         invalid ->          Err <| "No match for social media handler: " ++ invalid
     mapAllMedia : List (String, String) -> Result String (List SocialMedia)
     mapAllMedia ls =
-      combine (List.map mapMedia ls)
+      combine (List.map mapMedia <| List.reverse ls)
     mapAllMediaDecoder : Result String (List SocialMedia) -> Decoder (List SocialMedia)
     mapAllMediaDecoder r = resultToDecoder r
   in
     Json.Decode.andThen (mapAllMediaDecoder << mapAllMedia) (keyValuePairs string)
 
-type alias SkillItem =
+type DateRange
+  = Between UDate UDate
+  | After UDate
+  | Undetermined
+
+dateRangeDecoder : Decoder DateRange
+dateRangeDecoder =
+  let
+    between =
+      decode Between
+        |> required "begin" uDateDecoder
+        |> required "end" uDateDecoder
+    after =
+      decode After
+        |> required "begin" uDateDecoder
+    undetermined =
+      succeed Undetermined
+  in
+    oneOf
+      [ between
+      , after
+      , undetermined
+      ]
+
+type alias Item =
   { title : String
-  , body : Body
+  , body  : Body
+  , dates : DateRange
   , prio : Priority
   }
 
-skillItemDecoder : Decoder SkillItem
-skillItemDecoder =
-  andThen (\f -> map f priorityDecoder) (decode SkillItem
-    |> required "title" string
-    |> required "body" bodyDecoder)
+maybeField : String -> Decoder a -> Decoder (Maybe a -> b) -> Decoder b
+maybeField s d =
+  optional s (custom d <| decode Just) Nothing
 
-type alias ExperienceItem =
-  { title : String
-  , body : Body
-  , begin : UDate
-  , end : Maybe UDate
-  , prio : Priority
-  }
-
-experienceItemDecoder : Decoder ExperienceItem
-experienceItemDecoder =
-  andThen (\f -> map f priorityDecoder) (decode ExperienceItem
-    |> required "title" string
-    |> required "body" bodyDecoder
-    |> required "begin" uDateDecoder
-    |> optional "end" (oneOf
-      [ null Nothing
-      , (custom uDateDecoder <| decode Just)
-      ]) Nothing)
+itemDecoder : Decoder Item
+itemDecoder =
+  let
+    half : Decoder (Body -> DateRange -> Priority -> Item)
+    half = decode Item
+      |> required "title" string
+    withBody =
+      andThen (\f -> map f <| bodyDecoder) half
+    withDate =
+      andThen (\f -> map f dateRangeDecoder) withBody
+    withPrio =
+      andThen (\f -> map f priorityDecoder) withDate
+  in
+    withPrio
 
 type Body
-  = Text String
-  | Skills (List SkillItem)
-  | Experiences (List ExperienceItem)
+  = Empty
+  | ContentOnly String
+  | ItemsOnly (List Item)
+  | ContentAndItems String (List Item)
 
 bodyDecoder : Decoder Body
 bodyDecoder =
   let
-    textDecoder = map Text string
-    skillsDecoder = decode Skills |> required "skills" (list (lazy (\_ -> skillItemDecoder)))
-    experienceDecoder = decode Experiences |> required "experiences" (list (lazy (\_ -> experienceItemDecoder)))
+    decodeContentAndItems =
+      decode ContentAndItems
+        |> required "content" string
+        |> required "items" (list (lazy (\() -> itemDecoder)))
+    decodeContent =
+      decode ContentOnly
+        |> required "content" string
+    decodeItems =
+      decode ItemsOnly
+        |> required "items" (list (lazy (\() -> itemDecoder)))
+    decodeEmpty = succeed Empty
   in
     oneOf
-      [ textDecoder
-      , skillsDecoder
-      , experienceDecoder
+      [ decodeContentAndItems
+      , decodeContent
+      , decodeItems
+      , decodeEmpty
       ]
 
 type alias Section =
@@ -142,9 +176,11 @@ type alias Section =
 
 sectionDecoder : Decoder Section
 sectionDecoder =
-  decode Section
-    |> required "title" string
-    |> required "body" bodyDecoder
+  let
+    half = decode Section |> required "title" string
+    withBody = andThen (\f -> map f <| bodyDecoder) half
+  in
+    withBody
 
 resultToDecoder : Result String a -> Decoder a
 resultToDecoder r = case r of

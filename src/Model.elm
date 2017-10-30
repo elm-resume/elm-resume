@@ -22,7 +22,10 @@ resumeToResumeState r =
   { name = r.name
   , contact = r.contact
   , socialMedia = r.socialMedia
-  , optionalSocialMedia = { visible = False, handles = r.optionalSocialMedia }
+  , optionalSocialMedia =
+    { visible = False
+    , handles = r.optionalSocialMedia
+    }
   , sections = r.sections
   , visible = empty
   }
