@@ -148,22 +148,26 @@ itemDecoder =
 type Body
   = Empty
   | ContentOnly String
-  | ItemsOnly (List Item)
-  | ContentAndItems String (List Item)
+  | ItemsOnly (List Item) (Maybe String)
+  | ContentAndItems String (List Item) (Maybe String)
 
 bodyDecoder : Decoder Body
 bodyDecoder =
   let
     decodeContentAndItems =
-      decode ContentAndItems
-        |> required "content" string
-        |> required "items" (list (lazy (\() -> itemDecoder)))
+      andThen
+        (\f -> map f <| (decode identity |> maybeField "optionalItems" string))
+        (decode ContentAndItems
+          |> required "content" string
+          |> required "items" (list (lazy (\() -> itemDecoder))))
     decodeContent =
       decode ContentOnly
         |> required "content" string
     decodeItems =
-      decode ItemsOnly
-        |> required "items" (list (lazy (\() -> itemDecoder)))
+      andThen
+        (\f -> map f <| (decode identity |> maybeField "optionalItems" string))
+        (decode ItemsOnly
+          |> required "items" (list (lazy (\() -> itemDecoder))))
     decodeEmpty = succeed Empty
   in
     oneOf

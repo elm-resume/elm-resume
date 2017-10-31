@@ -17,7 +17,7 @@ view : Model -> Html Action
 view { resume } =
   case resume of
     Success r -> viewResume r
-    Failure msg -> div [style [("font-family", "monospace")]] [Markdown.toHtml [ class "markdown "] <| toString msg]
+    Failure msg -> div [style [("font-family", "monospace")]] [markdown <| toString msg]
     _ -> div [] []
 
 onClickPrevendDefault : msg -> Attribute msg
@@ -65,12 +65,12 @@ viewIntro maybeIntro =
     Just intro ->
       div
         [ class "resume-intro" ]
-        [ Markdown.toHtml [ class "markdown "] intro ]
+        [ markdown intro ]
 
 viewContact : Contact -> Html Action
 viewContact { address, email, phone } =
   div [ class "resume-address" ]
-    [ node "address" [ class "resume-address-street" ] [ Markdown.toHtml [ class "markdown "] address ]
+    [ node "address" [ class "resume-address-street" ] [ markdown address ]
     , a [ class "resume-address-email", href <| "mailto:" ++ email ] [ text email ]
     , a [ class "resume-address-phone", href <| "tel:" ++ phone ] [ text phone ]
     ]
@@ -79,7 +79,6 @@ viewSocialMediaList : List SocialMedia -> Html Action
 viewSocialMediaList =
   div [ class "resume-social" ] << List.map viewSocialMedia
 
--- TODO icons
 viewSocialMedia : SocialMedia -> Html Action
 viewSocialMedia handle =
   case handle of
@@ -109,9 +108,27 @@ viewSocialMedia handle =
 viewSection : Set Id -> Section -> Html Action
 viewSection visibles { title, body } =
   div [ class "resume-section" ]
-    [ h1 [ class "resume-section-title" ] [ text title ]
+    [ h1 [ class "resume-section-title" ] [ markdown title ]
     , viewBody visibles body
     ]
+
+viewCollapsible : Set Id -> Maybe String -> (() -> Html Action) -> Html Action
+viewCollapsible ids maybeId render =
+  case maybeId of
+    Nothing ->
+      render ()
+    Just id ->
+      if Set.member id ids then
+        div
+          []
+          [ collapse <| ToggleItem id
+          , render ()
+          ]
+      else
+        div
+          []
+          [ expand <| ToggleItem id
+          ]
 
 viewBody : Set Id -> Body -> Html Action
 viewBody visibles body =
@@ -122,16 +139,20 @@ viewBody visibles body =
         Empty ->
           text ""
         ContentOnly v ->
-          Markdown.toHtml [ class "markdown "] v
-        ItemsOnly v ->
-          ul [ class "resume-items" ]
-            <| List.map (viewItem visibles) v
-        ContentAndItems c v ->
+          markdown v
+        ItemsOnly v opt ->
+          viewCollapsible visibles opt (\() ->
+            ul [ class "resume-items" ]
+              <| List.map (viewItem visibles) v
+          )
+        ContentAndItems c v opt ->
           div
             []
-            [ Markdown.toHtml [ class "markdown "] c
-            , ul [ class "resume-items" ]
-                <| List.map (viewItem visibles) v
+            [ markdown c
+            , viewCollapsible visibles opt (\() ->
+                ul [ class "resume-items" ]
+                  <| List.map (viewItem visibles) v
+              )
             ]
   in
     div [ class "resume-section-body" ] [ content ]
@@ -204,3 +225,13 @@ canToggle prio =
   case prio of
     Mandatory -> False
     Optional _ -> True
+
+markdown : String -> Html Action
+markdown s = Markdown.toHtml [ class "markodwn" ] s
+
+
+-- TODO add page effect
+-- TODO display logo on print version
+-- TODO highlight links
+-- TODO hide links in print
+-- TODO header / footer
