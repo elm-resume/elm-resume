@@ -10,6 +10,7 @@ type alias ResumeState =
   , optionalSocialMedia : { visible : Bool, handles : List SocialMedia }
   , sections : List Section
   , visible : Set Id
+  , intro : Maybe String
   }
 
 type alias Id = String

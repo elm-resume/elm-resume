@@ -28,4 +28,5 @@ resumeToResumeState r =
     }
   , sections = r.sections
   , visible = empty
+  , intro = r.intro
   }
