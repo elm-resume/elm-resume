@@ -11,6 +11,7 @@ type alias Resume =
   , socialMedia : List SocialMedia
   , optionalSocialMedia : List SocialMedia
   , sections : List Section
+  , intro: Maybe String
   }
 
 resumeDecoder : Decoder Resume
@@ -21,6 +22,7 @@ resumeDecoder =
     |> optional "socialMedia" socialMediaDecoder []
     |> optional "optionalSocialMedia" socialMediaDecoder []
     |> optional "sections" (list (lazy (\() -> sectionDecoder))) []
+    |> maybeField "intro" string
 
 type alias Contact =
   { address: String
@@ -117,6 +119,7 @@ dateRangeDecoder =
 
 type alias Item =
   { title : String
+  , context : Maybe String
   , body  : Body
   , dates : DateRange
   , prio : Priority
@@ -132,6 +135,7 @@ itemDecoder =
     half : Decoder (Body -> DateRange -> Priority -> Item)
     half = decode Item
       |> required "title" string
+      |> maybeField "context" string
     withBody =
       andThen (\f -> map f <| bodyDecoder) half
     withDate =

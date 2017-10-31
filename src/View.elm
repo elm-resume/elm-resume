@@ -11,24 +11,30 @@ import ResumeState exposing (..)
 import Action exposing (..)
 import Set exposing (Set)
 import UDate exposing (..)
+import Json.Decode
 
 view : Model -> Html Action
 view { resume } =
   case resume of
     Success r -> viewResume r
-    Failure msg -> div [style [("font-family", "monospace")]] [Markdown.toHtml [] <| toString msg]
+    Failure msg -> div [style [("font-family", "monospace")]] [Markdown.toHtml [ class "markdown "] <| toString msg]
     _ -> div [] []
+
+onClickPrevendDefault : msg -> Attribute msg
+onClickPrevendDefault msg =
+  onWithOptions "click" { stopPropagation = True, preventDefault = True } (Json.Decode.succeed msg)
 
 expand : Action -> Html Action
 expand action =
-  button [ onClick action ] [ text "expand" ]
+  a [ href "#", onClickPrevendDefault action, class "toggle expand" ]
+    [ span [ class "text" ] [text "expand"] ]
 collapse : Action -> Html Action
 collapse action =
-  button [ onClick action ] [ text "collapse" ]
+  a [ href "#", onClickPrevendDefault action, class "toggle collapse" ]
+    [ span [ class "text" ] [text "collapse"] ]
 
 viewResume : ResumeState -> Html Action
-viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible } =
-  -- TODO visible
+viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible, intro } =
   div
     [ class "resume" ] <|
     [ h1 [ class "resume-name" ] [ text name ]
@@ -38,19 +44,33 @@ viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible 
         , viewSocialMediaList socialMedia
         ]
         ++ (
-          if optionalSocialMedia.visible then
-            [ collapse ToggleOptionalSocialMedia
-            , viewSocialMediaList optionalSocialMedia.handles
-            ]
+          if List.isEmpty optionalSocialMedia.handles then
+            []
           else
-            [ expand ToggleOptionalSocialMedia ]
+            if optionalSocialMedia.visible then
+              [ viewSocialMediaList optionalSocialMedia.handles
+              , collapse ToggleOptionalSocialMedia
+              ]
+            else
+              [ expand ToggleOptionalSocialMedia ]
         ))
-    ] ++ (List.map (viewSection visible) sections)
+    ]
+     ++ [viewIntro intro]
+     ++ (List.map (viewSection visible) sections)
+
+viewIntro : Maybe String -> Html Action
+viewIntro maybeIntro =
+  case maybeIntro of
+    Nothing -> text ""
+    Just intro ->
+      div
+        [ class "resume-intro" ]
+        [ Markdown.toHtml [ class "markdown "] intro ]
 
 viewContact : Contact -> Html Action
 viewContact { address, email, phone } =
   div [ class "resume-address" ]
-    [ node "address" [ class "resume-address-street" ] [ Markdown.toHtml [] address ]
+    [ node "address" [ class "resume-address-street" ] [ Markdown.toHtml [ class "markdown "] address ]
     , a [ class "resume-address-email", href <| "mailto:" ++ email ] [ text email ]
     , a [ class "resume-address-phone", href <| "tel:" ++ phone ] [ text phone ]
     ]
@@ -83,7 +103,7 @@ viewSocialMedia handle =
       a [ class "resume-social-link linkedin", href <| "http://linkedin.com/in/" ++ v ]
         [ text v ]
     StackOverflow v -> -- TODO: string should be int here
-      a [ class "resume-social-link stack-ovrflow", href <| "http://stackoverflow.com/users/" ++ v ]
+      a [ class "resume-social-link stack-overflow", href <| "http://stackoverflow.com/users/" ++ v ]
         [ text v ]
 
 viewSection : Set Id -> Section -> Html Action
@@ -102,14 +122,14 @@ viewBody visibles body =
         Empty ->
           text ""
         ContentOnly v ->
-          Markdown.toHtml [] v
+          Markdown.toHtml [ class "markdown "] v
         ItemsOnly v ->
           ul [ class "resume-items" ]
             <| List.map (viewItem visibles) v
         ContentAndItems c v ->
           div
             []
-            [ Markdown.toHtml [] c
+            [ Markdown.toHtml [ class "markdown "] c
             , ul [ class "resume-items" ]
                 <| List.map (viewItem visibles) v
             ]
@@ -132,14 +152,25 @@ viewDateRange dates =
   in
     span [ class "date" ] [ content ]
 
+viewContext : String -> Html Action
+viewContext ctx =
+  span
+    [ class "item-title-context" ]
+    [ text ctx ]
+
 viewItem : Set Id -> Item -> Html Action
-viewItem visibles { title, body, dates, prio } =
+viewItem visibles { title, context, body, dates, prio } =
   let
     content =
       div
         []
         [ header [ class "title-and-date" ]
-          [ h3 [ class "resume-section-item-title" ] [text title]
+          [ h3
+              [ class "resume-section-item-title" ]
+              [ span
+                  [ class "item-title-text" ]
+                  [ text title ]
+              , Maybe.withDefault (text "") <| Maybe.map viewContext context]
           , viewDateRange dates
           ]
         , viewBody visibles body
