@@ -27,24 +27,28 @@ ul
   list-style: none
   margin-top: 8px
   margin-bottom: 20px
-  padding-left: 34px
+  padding-left: 0
 
 ul + ul
   break-inside: avoid-page
   margin-bottom: 12px
+  padding-left: 34px
 
 li
   margin-bottom: 8px
 
   &:before
     content: ""
-    border: 2px solid $primaryLight
+    border: 0
     position: absolute
     margin-top: 6px
     margin-left: -14px
     transform: rotate(45deg)
 
 li li:before
+  border: 2px solid $primaryLight
+
+li li li:before
   border-color: #999
 
 address
@@ -69,11 +73,13 @@ address
     margin-top: 0
     margin-bottom: 0
 
+  .date
+    flex-shrink: 0
+    margin-left: auto
+    padding-left: 20px
+
   + ul
     margin-right: 140px
-
-.ml-auto
-  margin-left: auto
 
 .date
   color: #666
