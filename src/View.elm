@@ -57,6 +57,16 @@ viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible,
     ]
      ++ [viewIntro intro]
      ++ (List.map (viewSection visible) sections)
+     ++ [ div
+            [ class "resume-footer"]
+            [ div
+                [ class "footer" ]
+                [ div [ class "left" ] [ text name ]
+                , div [ class "center" ] [ text contact.email ]
+                , div [ class "right" ] [ text contact.phone ]
+                ]
+            ]
+        ]
 
 viewIntro : Maybe String -> Html Action
 viewIntro maybeIntro =
@@ -227,11 +237,6 @@ canToggle prio =
     Optional _ -> True
 
 markdown : String -> Html Action
-markdown s = Markdown.toHtml [ class "markodwn" ] s
+markdown s = Markdown.toHtml [ class "markdown" ] s
 
-
--- TODO add page effect
--- TODO display logo on print version
--- TODO highlight links
--- TODO hide links in print
 -- TODO header / footer

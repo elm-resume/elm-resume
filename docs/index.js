@@ -10583,7 +10583,7 @@ var _user$project$View$markdown = function (s) {
 		_evancz$elm_markdown$Markdown$toHtml,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('markodwn'),
+			_0: _elm_lang$html$Html_Attributes$class('markdown'),
 			_1: {ctor: '[]'}
 		},
 		s);
@@ -11218,7 +11218,9 @@ var _user$project$View$viewSection = F2(
 	});
 var _user$project$View$viewResume = function (_p32) {
 	var _p33 = _p32;
-	var _p34 = _p33.optionalSocialMedia;
+	var _p36 = _p33.optionalSocialMedia;
+	var _p35 = _p33.name;
+	var _p34 = _p33.contact;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -11239,7 +11241,7 @@ var _user$project$View$viewResume = function (_p32) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p33.name),
+						_0: _elm_lang$html$Html$text(_p35),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -11255,16 +11257,16 @@ var _user$project$View$viewResume = function (_p32) {
 							_elm_lang$core$Basics_ops['++'],
 							{
 								ctor: '::',
-								_0: _user$project$View$viewContact(_p33.contact),
+								_0: _user$project$View$viewContact(_p34),
 								_1: {
 									ctor: '::',
 									_0: _user$project$View$viewSocialMediaList(_p33.socialMedia),
 									_1: {ctor: '[]'}
 								}
 							},
-							_elm_lang$core$List$isEmpty(_p34.handles) ? {ctor: '[]'} : (_p34.visible ? {
+							_elm_lang$core$List$isEmpty(_p36.handles) ? {ctor: '[]'} : (_p36.visible ? {
 								ctor: '::',
-								_0: _user$project$View$viewSocialMediaList(_p34.handles),
+								_0: _user$project$View$viewSocialMediaList(_p36.handles),
 								_1: {
 									ctor: '::',
 									_0: _user$project$View$collapse(_user$project$Action$ToggleOptionalSocialMedia),
@@ -11286,16 +11288,86 @@ var _user$project$View$viewResume = function (_p32) {
 					_1: {ctor: '[]'}
 				},
 				A2(
-					_elm_lang$core$List$map,
-					_user$project$View$viewSection(_p33.visible),
-					_p33.sections))));
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$View$viewSection(_p33.visible),
+						_p33.sections),
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('resume-footer'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('footer'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('left'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(_p35),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('center'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(_p34.email),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('right'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(_p34.phone),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}))));
 };
-var _user$project$View$view = function (_p35) {
-	var _p36 = _p35;
-	var _p37 = _p36.resume;
-	switch (_p37.ctor) {
+var _user$project$View$view = function (_p37) {
+	var _p38 = _p37;
+	var _p39 = _p38.resume;
+	switch (_p39.ctor) {
 		case 'Success':
-			return _user$project$View$viewResume(_p37._0);
+			return _user$project$View$viewResume(_p39._0);
 		case 'Failure':
 			return A2(
 				_elm_lang$html$Html$div,
@@ -11312,7 +11384,7 @@ var _user$project$View$view = function (_p35) {
 				{
 					ctor: '::',
 					_0: _user$project$View$markdown(
-						_elm_lang$core$Basics$toString(_p37._0)),
+						_elm_lang$core$Basics$toString(_p39._0)),
 					_1: {ctor: '[]'}
 				});
 		default:
