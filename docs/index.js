@@ -9975,44 +9975,74 @@ var _user$project$UDate$resultToDecoder = function (r) {
 		return _elm_lang$core$Json_Decode$succeed(_p0._0);
 	}
 };
-var _user$project$UDate$uDateToString = function (d) {
-	var f = function (i) {
-		return _elm_lang$core$Basics$toString(i);
-	};
-	var f2 = function (i) {
-		var _p1 = _elm_lang$core$Native_Utils.cmp(i, 10) < 0;
-		if (_p1 === true) {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'0',
-				f(i));
-		} else {
-			return f(i);
-		}
-	};
-	var fd = function (i) {
+var _user$project$UDate$format = function (i) {
+	var f = _elm_lang$core$Basics$toString;
+	var _p1 = _elm_lang$core$Native_Utils.cmp(i, 10) < 0;
+	if (_p1 === true) {
 		return A2(
 			_elm_lang$core$Basics_ops['++'],
-			'-',
-			f2(i));
-	};
+			'0',
+			f(i));
+	} else {
+		return f(i);
+	}
+};
+var _user$project$UDate$uDateToString = function (d) {
 	var _p2 = d;
 	switch (_p2.ctor) {
 		case 'Year':
-			return f(_p2._0);
+			return _elm_lang$core$Basics$toString(_p2._0);
 		case 'Month':
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
-				f(_p2._0),
-				fd(_p2._1));
+				_elm_lang$core$Basics$toString(_p2._0),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'-',
+					_user$project$UDate$format(_p2._1)));
 		default:
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
-				f(_p2._0),
+				_elm_lang$core$Basics$toString(_p2._0),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					fd(_p2._1),
-					fd(_p2._2)));
+					'-',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$UDate$format(_p2._1),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'-',
+							_user$project$UDate$format(_p2._2)))));
+	}
+};
+var _user$project$UDate$uDateToUSString = function (d) {
+	var _p3 = d;
+	switch (_p3.ctor) {
+		case 'Year':
+			return _elm_lang$core$Basics$toString(_p3._0);
+		case 'Month':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$UDate$format(_p3._1),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'-',
+					_elm_lang$core$Basics$toString(_p3._0)));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$UDate$format(_p3._1),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'-',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$UDate$format(_p3._2),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'-',
+							_elm_lang$core$Basics$toString(_p3._0)))));
 	}
 };
 var _user$project$UDate$month_ = F2(
@@ -10026,8 +10056,8 @@ var _user$project$UDate$daysInMonth = F2(
 	function (y, m) {
 		var n = A2(_user$project$UDate$month_, y, m);
 		var days = function () {
-			var _p3 = _user$project$UDate$isLeapYear(n.y);
-			if (_p3 === true) {
+			var _p4 = _user$project$UDate$isLeapYear(n.y);
+			if (_p4 === true) {
 				return _user$project$UDate$daysToMonth366_;
 			} else {
 				return _user$project$UDate$daysToMonth365_;
@@ -10056,21 +10086,21 @@ var _user$project$UDate$day = F3(
 			var n = A2(_user$project$UDate$month_, y, m);
 			var dm = A2(_user$project$UDate$daysInMonth, n.y, n.m);
 			if (_elm_lang$core$Native_Utils.cmp(d, dm) > 0) {
-				var _v4 = n.y,
-					_v5 = n.m + 1,
-					_v6 = d - dm;
-				y = _v4;
-				m = _v5;
-				d = _v6;
+				var _v5 = n.y,
+					_v6 = n.m + 1,
+					_v7 = d - dm;
+				y = _v5;
+				m = _v6;
+				d = _v7;
 				continue day;
 			} else {
 				if (_elm_lang$core$Native_Utils.cmp(d, 0) < 1) {
-					var _v7 = n.y,
-						_v8 = n.m - 1,
-						_v9 = d + A2(_user$project$UDate$daysInMonth, n.y, n.m - 1);
-					y = _v7;
-					m = _v8;
-					d = _v9;
+					var _v8 = n.y,
+						_v9 = n.m - 1,
+						_v10 = d + A2(_user$project$UDate$daysInMonth, n.y, n.m - 1);
+					y = _v8;
+					m = _v9;
+					d = _v10;
 					continue day;
 				} else {
 					return A3(_user$project$UDate$Day, n.y, n.m, d);
@@ -10096,51 +10126,51 @@ var _user$project$UDate$year = function (y) {
 var _user$project$UDate$uDateParse = function (s) {
 	var uDatePattern = _elm_lang$core$Regex$regex('^(\\d{4})(?:[-](\\d{2}))?(?:[-](\\d{2}))?$');
 	var matches = A3(_elm_lang$core$Regex$find, _elm_lang$core$Regex$All, uDatePattern, s);
-	var _p4 = matches;
-	if ((_p4.ctor === '::') && (_p4._1.ctor === '[]')) {
-		var _p5 = _p4._0.submatches;
-		_v11_3:
+	var _p5 = matches;
+	if ((_p5.ctor === '::') && (_p5._1.ctor === '[]')) {
+		var _p6 = _p5._0.submatches;
+		_v12_3:
 		do {
-			if (((_p5.ctor === '::') && (_p5._0.ctor === 'Just')) && (_p5._1.ctor === '::')) {
-				if (_p5._1._0.ctor === 'Nothing') {
-					if (((_p5._1._1.ctor === '::') && (_p5._1._1._0.ctor === 'Nothing')) && (_p5._1._1._1.ctor === '[]')) {
+			if (((_p6.ctor === '::') && (_p6._0.ctor === 'Just')) && (_p6._1.ctor === '::')) {
+				if (_p6._1._0.ctor === 'Nothing') {
+					if (((_p6._1._1.ctor === '::') && (_p6._1._1._0.ctor === 'Nothing')) && (_p6._1._1._1.ctor === '[]')) {
 						return A2(
 							_elm_lang$core$Result$map,
 							_user$project$UDate$year,
-							_elm_lang$core$String$toInt(_p5._0._0));
+							_elm_lang$core$String$toInt(_p6._0._0));
 					} else {
-						break _v11_3;
+						break _v12_3;
 					}
 				} else {
-					if (_p5._1._1.ctor === '::') {
-						if (_p5._1._1._0.ctor === 'Nothing') {
-							if (_p5._1._1._1.ctor === '[]') {
+					if (_p6._1._1.ctor === '::') {
+						if (_p6._1._1._0.ctor === 'Nothing') {
+							if (_p6._1._1._1.ctor === '[]') {
 								return A3(
 									_elm_lang$core$Result$map2,
 									_user$project$UDate$month,
-									_elm_lang$core$String$toInt(_p5._0._0),
-									_elm_lang$core$String$toInt(_p5._1._0._0));
+									_elm_lang$core$String$toInt(_p6._0._0),
+									_elm_lang$core$String$toInt(_p6._1._0._0));
 							} else {
-								break _v11_3;
+								break _v12_3;
 							}
 						} else {
-							if (_p5._1._1._1.ctor === '[]') {
+							if (_p6._1._1._1.ctor === '[]') {
 								return A4(
 									_elm_lang$core$Result$map3,
 									_user$project$UDate$day,
-									_elm_lang$core$String$toInt(_p5._0._0),
-									_elm_lang$core$String$toInt(_p5._1._0._0),
-									_elm_lang$core$String$toInt(_p5._1._1._0._0));
+									_elm_lang$core$String$toInt(_p6._0._0),
+									_elm_lang$core$String$toInt(_p6._1._0._0),
+									_elm_lang$core$String$toInt(_p6._1._1._0._0));
 							} else {
-								break _v11_3;
+								break _v12_3;
 							}
 						}
 					} else {
-						break _v11_3;
+						break _v12_3;
 					}
 				}
 			} else {
-				break _v11_3;
+				break _v12_3;
 			}
 		} while(false);
 		return _elm_lang$core$Result$Err(
@@ -10158,9 +10188,9 @@ var _user$project$UDate$uDateDecoder = _elm_lang$core$Json_Decode$oneOf(
 			ctor: '::',
 			_0: A2(
 				_elm_lang$core$Json_Decode$andThen,
-				function (_p6) {
+				function (_p7) {
 					return _user$project$UDate$resultToDecoder(
-						_user$project$UDate$uDateParse(_p6));
+						_user$project$UDate$uDateParse(_p7));
 				},
 				_elm_lang$core$Json_Decode$string),
 			_1: {ctor: '[]'}
@@ -10627,19 +10657,19 @@ var _user$project$View$viewDateRange = function (dates) {
 				var _p4 = _p2._1;
 				var _p3 = _p2._0;
 				return _elm_lang$core$Native_Utils.eq(_p3, _p4) ? _elm_lang$html$Html$text(
-					_user$project$UDate$uDateToString(_p3)) : _elm_lang$html$Html$text(
+					_user$project$UDate$uDateToUSString(_p3)) : _elm_lang$html$Html$text(
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_user$project$UDate$uDateToString(_p3),
+						_user$project$UDate$uDateToUSString(_p3),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							' to ',
-							_user$project$UDate$uDateToString(_p4))));
+							_user$project$UDate$uDateToUSString(_p4))));
 			case 'After':
 				return _elm_lang$html$Html$text(
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_user$project$UDate$uDateToString(_p2._0),
+						_user$project$UDate$uDateToUSString(_p2._0),
 						' to present'));
 			default:
 				return _elm_lang$html$Html$text('');

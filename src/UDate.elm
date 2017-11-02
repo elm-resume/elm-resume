@@ -1,4 +1,4 @@
-module UDate exposing (UDate, year, month, day, uDateDecoder, uDateParse, uDateToString, isLeapYear, daysInMonth)
+module UDate exposing (UDate, year, month, day, uDateDecoder, uDateParse, uDateToString, uDateToUSString, isLeapYear, daysInMonth)
 
 import Array exposing (..)
 import Json.Decode exposing (..)
@@ -40,19 +40,28 @@ day y m d =
     else
       Day n.y n.m d
 
+format : Int -> String
+format i =
+    let
+      f = Basics.toString
+    in
+      case i < 10 of
+        True -> "0" ++ (f i)
+        False -> f i
+
 uDateToString : UDate -> String
 uDateToString d =
-  let
-    f i = Basics.toString i
-    f2 i = case i < 10 of
-      True -> "0" ++ (f i)
-      False -> f i
-    fd i = "-" ++ f2 i
-  in
-    case d of
-      Year y -> f y
-      Month y m -> f y ++ fd m
-      Day y m d -> f y ++ fd m ++ fd d
+  case d of
+    Year  y     -> toString y
+    Month y m   -> toString y ++ "-" ++ format m
+    Day   y m d -> toString y ++ "-" ++ format m ++ "-" ++ format d
+
+uDateToUSString : UDate -> String
+uDateToUSString d =
+  case d of
+    Year  y     -> toString y
+    Month y m   -> format m ++ "-" ++ toString y
+    Day   y m d -> format m ++ "-" ++ format d ++ "-" ++ toString y
 
 uDateParse : String -> Result String UDate
 uDateParse s =
