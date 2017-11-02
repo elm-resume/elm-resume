@@ -173,11 +173,11 @@ viewDateRange dates =
     case dates of
       Between begin end ->
         if begin == end then
-          text <| (uDateToString begin)
+          text <| (uDateToUSString begin)
         else
-          text <| (uDateToString begin) ++ " to " ++ (uDateToString end)
+          text <| (uDateToUSString begin) ++ " to " ++ (uDateToUSString end)
       After begin ->
-        text <| (uDateToString begin) ++ " to present"
+        text <| (uDateToUSString begin) ++ " to present"
       Undetermined ->
         text ""
   in
