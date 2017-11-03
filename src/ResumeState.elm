@@ -11,6 +11,7 @@ type alias ResumeState =
   , sections : List Section
   , visible : Set Id
   , intro : Maybe String
+  , headline : Maybe String
   }
 
 type alias Id = String

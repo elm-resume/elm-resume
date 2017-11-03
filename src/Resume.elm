@@ -12,6 +12,7 @@ type alias Resume =
   , optionalSocialMedia : List SocialMedia
   , sections : List Section
   , intro: Maybe String
+  , headline: Maybe String
   }
 
 resumeDecoder : Decoder Resume
@@ -23,6 +24,7 @@ resumeDecoder =
     |> optional "optionalSocialMedia" socialMediaDecoder []
     |> optional "sections" (list (lazy (\() -> sectionDecoder))) []
     |> maybeField "intro" string
+    |> maybeField "headline" string
 
 type alias Contact =
   { address: String

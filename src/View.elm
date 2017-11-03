@@ -34,10 +34,13 @@ collapse action =
     [ span [ class "text" ] [text "collapse"] ]
 
 viewResume : ResumeState -> Html Action
-viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible, intro } =
+viewResume { name, contact, socialMedia, optionalSocialMedia, sections, visible, intro, headline } =
   div
     [ class "resume" ] <|
-    [ h1 [ class "resume-name" ] [ text name ]
+    [ h1 [ class "resume-name" ]
+      [ span [] [text name]
+      , Maybe.withDefault (text "") (Maybe.map (\v -> span [ class "resume-headline" ] [ text v ]) headline)
+      ]
     , div
         [ class "resume-contact-section" ]
         ([ viewContact contact

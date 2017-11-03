@@ -10216,9 +10216,9 @@ var _user$project$Resume$maybeField = F2(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_elm_lang$core$Maybe$Just)),
 			_elm_lang$core$Maybe$Nothing);
 	});
-var _user$project$Resume$Resume = F6(
-	function (a, b, c, d, e, f) {
-		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e, intro: f};
+var _user$project$Resume$Resume = F7(
+	function (a, b, c, d, e, f, g) {
+		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e, intro: f, headline: g};
 	});
 var _user$project$Resume$Contact = F3(
 	function (a, b, c) {
@@ -10540,41 +10540,45 @@ var _user$project$Resume$sectionDecoder = function () {
 }();
 var _user$project$Resume$resumeDecoder = A3(
 	_user$project$Resume$maybeField,
-	'intro',
+	'headline',
 	_elm_lang$core$Json_Decode$string,
-	A4(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-		'sections',
-		_elm_lang$core$Json_Decode$list(
-			_elm_lang$core$Json_Decode$lazy(
-				function (_p12) {
-					var _p13 = _p12;
-					return _user$project$Resume$sectionDecoder;
-				})),
-		{ctor: '[]'},
+	A3(
+		_user$project$Resume$maybeField,
+		'intro',
+		_elm_lang$core$Json_Decode$string,
 		A4(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-			'optionalSocialMedia',
-			_user$project$Resume$socialMediaDecoder,
+			'sections',
+			_elm_lang$core$Json_Decode$list(
+				_elm_lang$core$Json_Decode$lazy(
+					function (_p12) {
+						var _p13 = _p12;
+						return _user$project$Resume$sectionDecoder;
+					})),
 			{ctor: '[]'},
 			A4(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-				'socialMedia',
+				'optionalSocialMedia',
 				_user$project$Resume$socialMediaDecoder,
 				{ctor: '[]'},
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'contact',
-					_user$project$Resume$contactDecoder,
+				A4(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+					'socialMedia',
+					_user$project$Resume$socialMediaDecoder,
+					{ctor: '[]'},
 					A3(
 						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-						'name',
-						_elm_lang$core$Json_Decode$string,
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Resume)))))));
+						'contact',
+						_user$project$Resume$contactDecoder,
+						A3(
+							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+							'name',
+							_elm_lang$core$Json_Decode$string,
+							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Resume$Resume))))))));
 
-var _user$project$ResumeState$ResumeState = F7(
-	function (a, b, c, d, e, f, g) {
-		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e, visible: f, intro: g};
+var _user$project$ResumeState$ResumeState = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {name: a, contact: b, socialMedia: c, optionalSocialMedia: d, sections: e, visible: f, intro: g, headline: h};
 	});
 
 var _user$project$Action$ToggleItem = function (a) {
@@ -10597,7 +10601,8 @@ var _user$project$Model$resumeToResumeState = function (r) {
 		optionalSocialMedia: {visible: false, handles: r.optionalSocialMedia},
 		sections: r.sections,
 		visible: _elm_lang$core$Set$empty,
-		intro: r.intro
+		intro: r.intro,
+		headline: r.headline
 	};
 };
 var _user$project$Model$initModel = function (config) {
@@ -11271,8 +11276,38 @@ var _user$project$View$viewResume = function (_p32) {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p35),
-						_1: {ctor: '[]'}
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(_p35),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Maybe$withDefault,
+								_elm_lang$html$Html$text(''),
+								A2(
+									_elm_lang$core$Maybe$map,
+									function (v) {
+										return A2(
+											_elm_lang$html$Html$span,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('resume-headline'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(v),
+												_1: {ctor: '[]'}
+											});
+									},
+									_p33.headline)),
+							_1: {ctor: '[]'}
+						}
 					}),
 				_1: {
 					ctor: '::',
