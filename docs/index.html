@@ -1,17 +1,18 @@
 <!doctype html>
 <html
   <head>
-    <title>Franco's Resume</title>
+    <title>Franco Ponticelli - Resume</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./main.css" />
+    <link rel="stylesheet" href="http://localhost:8080/main.css" />
+    <script src="https://use.fontawesome.com/768597c32e.js"></script>
   </head>
-  <body>
+  <body contenteditable="true">
     <div id="main"></div>
     <script src="index.js"></script>
     <script>Elm.Main.embed(document.getElementById("main"), {
-      api_base_url : "./"
+      api_base_url : "http://localhost:8080/"
     });</script>
   </body>
 </html>
