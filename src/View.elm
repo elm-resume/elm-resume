@@ -121,7 +121,7 @@ viewSocialMedia handle =
 viewSection : Set Id -> Section -> Html Action
 viewSection visibles { title, body } =
   div [ class "resume-section" ]
-    [ h1 [ class "resume-section-title" ] [ markdown title ]
+    [ h2 [ class "resume-section-title" ] [ text title ]
     , viewBody visibles body
     ]
 
