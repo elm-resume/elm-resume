@@ -11233,7 +11233,7 @@ var _user$project$View$viewSection = F2(
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$h1,
+					_elm_lang$html$Html$h2,
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$class('resume-section-title'),
@@ -11241,7 +11241,7 @@ var _user$project$View$viewSection = F2(
 					},
 					{
 						ctor: '::',
-						_0: _user$project$View$markdown(_p31.title),
+						_0: _elm_lang$html$Html$text(_p31.title),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
